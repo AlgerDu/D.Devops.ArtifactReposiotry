@@ -34,7 +34,7 @@ namespace D.ArtifactReposiotry
         /// 将使用完成的 entity 放回 repository
         /// </summary>
         /// <param name="entity"></param>
-        void Put(TEntity entity);
+        bool Put(TEntity entity);
 
         /// <summary>
         /// 插入
@@ -49,5 +49,12 @@ namespace D.ArtifactReposiotry
         /// <param name="key"></param>
         /// <returns></returns>
         bool Delete(TPrimaryKey key);
+
+        /// <summary>
+        /// 基本搜索
+        /// </summary>
+        /// <param name="key">predicate</param>
+        /// <returns></returns>
+        IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate = null);
     }
 }
