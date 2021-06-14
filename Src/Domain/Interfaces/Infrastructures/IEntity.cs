@@ -22,6 +22,6 @@ namespace D.ArtifactReposiotry
         /// <summary>
         /// 唯一标识
         /// </summary>
-        TPrimaryKey PK { get; }
+        TPrimaryKey PK { get; set; }
     }
 }
