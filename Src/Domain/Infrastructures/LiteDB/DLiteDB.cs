@@ -18,12 +18,14 @@ namespace D.ArtifactReposiotry
 
         public DLiteDB(
             ILogger<DLiteDB> logger
-            , IOptionsSnapshot<LiteDBOptions> options
+            , IOptions<LiteDBOptions> options
             )
         {
             _logger = logger;
 
             _options = options.Value;
+
+            InitAsync().ConfigureAwait(false);
         }
 
         public ILiteDatabase CreateContext()
