@@ -13,6 +13,11 @@ namespace D.ArtifactReposiotry
         [BsonId]
         public string PK { get => Name; set { } }
 
+        /// <summary>
+        /// 类型
+        /// </summary>
+        public ArtifactRepoType Type { get; set; }
+
         public string Name { get; set; }
     }
 }
