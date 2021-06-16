@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 **/launchSettings.json
 **/appsettings.json
+**/data/**
