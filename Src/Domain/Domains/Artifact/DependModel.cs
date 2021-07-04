@@ -8,6 +8,6 @@ namespace D.ArtifactReposiotry
     {
         public Dictionary<string, string> Conditions { get; set; }
 
-        public string[] ArtifactNames { get; set; }
+        public DependArtifactModel[] Artifacts { get; set; }
     }
 }

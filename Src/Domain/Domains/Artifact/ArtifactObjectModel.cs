@@ -4,8 +4,7 @@ using System.Text;
 
 namespace D.ArtifactReposiotry
 {
-    public class ArtifactObjectModel
+    public class ArtifactObjectModel : ArtifactBaseModel
     {
-        public int TotalDownloadCount { get; set; }
     }
 }

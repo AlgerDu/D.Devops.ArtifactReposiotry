@@ -8,7 +8,7 @@ namespace D.ArtifactReposiotry
     /// <summary>
     /// 制品
     /// </summary>
-    public class Artifact : IEntity<string>
+    public class Artifact : ArtifactBaseModel, IEntity<string>
     {
         /// <summary>
         /// Guid
@@ -16,8 +16,9 @@ namespace D.ArtifactReposiotry
         [BsonId]
         public string PK { get; set; }
 
-        public string Name { get; set; }
-
+        /// <summary>
+        /// 版本
+        /// </summary>
         public string Version { get; set; }
 
         /// <summary>
@@ -26,12 +27,13 @@ namespace D.ArtifactReposiotry
         public string RepoName { get; set; }
 
         /// <summary>
-        /// 标签
+        /// 归属于同一个制品下的二进制文件（比如不同的环境）
         /// </summary>
-        public string Tags { get; set; }
-
         public ArtifactObjectModel[] Objects { get; set; }
 
+        /// <summary>
+        /// 依赖的其它制品
+        /// </summary>
         public DependModel[] Depends { get; set; }
     }
 }
