@@ -58,5 +58,11 @@ namespace D.ArtifactReposiotry.Controllers
                 return ok ? Result.CreateSuccess() : Result.CreateError("insert faild");
             }
         }
+
+        [HttpGet]
+        public ArtifactRepo[] GetList()
+        {
+            return _artifactRepoRepository.Query().ToArray();
+        }
     }
 }
