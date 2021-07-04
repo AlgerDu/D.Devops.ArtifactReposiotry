@@ -35,6 +35,7 @@ namespace D.ArtifactReposiotry
             });
 
             services.AddSingleton<IArtifactRepoRepository, ArtifactRepoRepository>();
+            services.AddSingleton<IArtifactRepository, ArtifactRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
