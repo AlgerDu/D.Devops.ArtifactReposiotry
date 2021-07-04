@@ -35,6 +35,8 @@ namespace D.ArtifactReposiotry.Controllers
         [HttpPost]
         public IResult PostItem(ArtifactRepo artifactRepo)
         {
+            artifactRepo.Code = artifactRepo.Code.ToLower();
+
             var pk = artifactRepo.PK;
 
             using (var a = _entityAtomic.Get(pk))
