@@ -17,6 +17,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -40,7 +41,7 @@ registerLocaleData(zh);
     NzMenuModule,
     NzModalModule,
     NzFormModule,
-    NzGridModule, 
+    NzGridModule, NzNotificationModule,
     NzButtonModule ,NzInputModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
