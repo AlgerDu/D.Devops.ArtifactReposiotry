@@ -13,13 +13,17 @@ export class ArtifactRepoService {
 
   artifactRepos = [
     { code: "welcome", name: 'Dr Nice' },
-    { code: "test", name: 'Dr Nice' },
-    { code: "test2", name: 'Narco' }
+    { code: "test", name: 'Dr Nice' }
   ];
 
   constructor() { }
 
   get(): Observable<ArtifactRepo[]> {
     return of(this.artifactRepos);
+  }
+
+  add(item: ArtifactRepo): Observable<void> {
+    this.artifactRepos.push(item);
+    return of();
   }
 }
