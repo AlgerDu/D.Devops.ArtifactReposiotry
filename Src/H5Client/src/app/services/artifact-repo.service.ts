@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { observable, Observable, of } from 'rxjs';
 
 export interface ArtifactRepo {
   code: string;
@@ -22,8 +22,8 @@ export class ArtifactRepoService {
     return of(this.artifactRepos);
   }
 
-  add(item: ArtifactRepo): Observable<void> {
+  add(item: ArtifactRepo): Observable<any> {
     this.artifactRepos.push(item);
-    return of();
+    return of<any>(null);
   }
 }

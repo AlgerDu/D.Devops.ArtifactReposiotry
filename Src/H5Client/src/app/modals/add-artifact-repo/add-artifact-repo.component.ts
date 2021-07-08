@@ -4,6 +4,10 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 import { ArtifactRepoService } from 'src/app/services/artifact-repo.service';
+import { DEventService } from 'src/app/services/event.service';
+import { ArtifactRepo } from '../../services/artifact-repo.service';
+import { EventCode } from '../../models/events';
+import { sharedStylesheetJitUrl } from '@angular/compiler';
 
 @Component({
   selector: 'app-add-artifact-repo',
@@ -12,21 +16,26 @@ import { ArtifactRepoService } from 'src/app/services/artifact-repo.service';
 })
 export class AddArtifactRepoComponent implements OnInit {
 
+  item: ArtifactRepo;
   validateForm!: FormGroup;
 
-  isConfriming : boolean = false;
+  isConfriming: boolean = false;
 
   constructor(
     private modal: NzModalRef
     , private notification: NzNotificationService
     , private fb: FormBuilder
-    , private artifactRepoService: ArtifactRepoService 
-    ) {}
+    , private artifactRepoService: ArtifactRepoService
+    , private eventService: DEventService
+  ) {
+    this.item = {code :"",name:""}
+  }
 
   ngOnInit(): void {
 
     this.validateForm = this.fb.group({
-      name: [null, [Validators.required]]
+      name: [null, [Validators.required]],
+      code: [null, [Validators.required]]
     });
 
   }
@@ -34,22 +43,36 @@ export class AddArtifactRepoComponent implements OnInit {
 
 
 
-  destroyModal(): void {
+  confrime(): void {
 
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
 
-    if (this.validateForm.invalid){
+    if (this.validateForm.invalid) {
       return;
     }
 
     this.isConfriming = true;
 
-    this.notification.error("新建仓库","出现异常未能成功");
+    this.artifactRepoService.add(this.item).subscribe((d) => {
 
-    this.isConfriming = false;
+      this.eventService.publish({ code: EventCode.ArtifactRepoCountChange, data: null });
+
+      this.notification.info("仓库添加成功","");
+
+      this.destroyModal();
+
+    }, (err) => {
+      console.log("eee");
+      
+    }, () => {
+      this.isConfriming = false;
+    });
   }
 
+  destroyModal(): void {
+    this.modal.destroy();
+  }
 }

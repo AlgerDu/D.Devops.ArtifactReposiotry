@@ -38,11 +38,11 @@ export class AppComponent implements OnInit {
     });
   }
 
-  handleRepoChange(devent: DEvent) {
+  handleRepoChange(devent: DEvent): void {
     this.refreash();
   }
 
-  refreash(){
+  refreash(): void {
     this.artifactRepoService.get().subscribe(repos => {
       this.artifactRepos = repos;
     });
