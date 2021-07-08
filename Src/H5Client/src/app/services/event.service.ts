@@ -10,9 +10,20 @@ export interface DEventHandleFunction {
   (devent: DEvent): void;
 }
 export interface DEventHandler {
+  code: string;
+  handle: DEventHandleFunction;
+}
+
+class DEventHandlerCache implements DEventHandler {
   key: string;
   code: string;
   handle: DEventHandleFunction;
+
+  constructor(key: string, handler: DEventHandler) {
+    this.key = key;
+    this.code = handler.code;
+    this.handle = handler.handle;
+  }
 }
 
 @Injectable({
@@ -21,7 +32,7 @@ export interface DEventHandler {
 export class DEventService {
 
   key: number;
-  handlers: { [key: string]: DEventHandler[]; };
+  handlers: { [key: string]: DEventHandlerCache[]; };
 
   constructor() {
     this.key = 0;
@@ -38,8 +49,12 @@ export class DEventService {
     var key = this.key.toString();
 
     handlers.forEach((v, i) => {
-      v.key = key;
-      this.handlers[v.code].push(v);
+
+      if (this.handlers[v.code]==null){
+        this.handlers[v.code] = [];
+      }
+
+      this.handlers[v.code].push(new DEventHandlerCache(key, v));
     });
 
     return key;
