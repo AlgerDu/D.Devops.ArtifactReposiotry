@@ -14,7 +14,7 @@
       <li nz-submenu nzOpen nzTitle="仓库" nzIcon="appstore">
         <ul>
           <li nz-menu-item nzMatchRouter *ngFor="let repo of artifactRepos">
-            <a routerLink="/{{repo.code}}">{{repo.name}}</a>
+            <a routerLink="/repo/{{repo.code}}">{{repo.name}}</a>
           </li>
         </ul>
       </li>
