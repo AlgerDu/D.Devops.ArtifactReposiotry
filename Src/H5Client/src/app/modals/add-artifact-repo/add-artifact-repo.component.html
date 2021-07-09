@@ -1,21 +1,21 @@
 <div>
-    <form nz-form  [formGroup]="validateForm" >
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="">编号</nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="不能为空">
-              <input nz-input formControlName="code"  id="code" [(ngModel)]="item.code"/>
-            </nz-form-control>
-          </nz-form-item>
+  <form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="">编号</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="不能为空">
+        <input nz-input formControlName="code" id="code" [(ngModel)]="item.code" />
+      </nz-form-control>
+    </nz-form-item>
 
-          <nz-form-item>
-              <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="">名称</nz-form-label>
-              <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="不能为空">
-                <input nz-input formControlName="name"  id="name" [(ngModel)]="item.name"/>
-              </nz-form-control>
-            </nz-form-item>
-    </form>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="">名称</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="不能为空">
+        <input nz-input formControlName="name" id="name" [(ngModel)]="item.name" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
 </div>
 <div *nzModalFooter>
-    <button nz-button nzType="default" (click)="destroyModal()">取消</button>
-    <button nz-button nzType="primary" [nzLoading]="isConfriming" (click)="confrime()">确认</button>
+  <button nz-button nzType="default" (click)="destroyModal()">取消</button>
+  <button nz-button nzType="primary" [nzLoading]="isConfriming" (click)="confrime()">确认</button>
 </div>
