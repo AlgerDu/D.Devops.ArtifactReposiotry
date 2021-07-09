@@ -22,13 +22,15 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddArtifactRepoComponent } from './modals/add-artifact-repo/add-artifact-repo.component';
+import { RepoDetailsComponent } from './pages/repo-details/repo-details.component';
 
 registerLocaleData(zh);
 
 @NgModule({
   declarations: [
     AppComponent,
-    AddArtifactRepoComponent
+    AddArtifactRepoComponent,
+    RepoDetailsComponent
   ],
   imports: [
     BrowserModule,
