@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 export interface DEvent {
   code: string;
@@ -31,43 +31,19 @@ class DEventHandlerCache implements DEventHandler {
 })
 export class DEventService {
 
-  key: number;
-  handlers: { [key: string]: DEventHandlerCache[]; };
+  handlers: { [key: string]: Subject<DEvent> };
 
   constructor() {
-    this.key = 0;
     this.handlers = {};
   }
 
-  subscribe(handlers: DEventHandler[]): string {
+  subscribe(code: string): Subject<DEvent> {
 
-    if (handlers == null || handlers.length == 0) {
-      return "";
+    if (this.handlers[code] == null) {
+      this.handlers[code] = new Subject<DEvent>();
     }
 
-    this.key++;
-    var key = this.key.toString();
-
-    handlers.forEach((v, i) => {
-
-      if (this.handlers[v.code]==null){
-        this.handlers[v.code] = [];
-      }
-
-      this.handlers[v.code].push(new DEventHandlerCache(key, v));
-    });
-
-    return key;
-  }
-
-  unsubscribe(key: string) {
-    if (key == null || key == "") {
-      return;
-    }
-
-    for (let k in this.handlers) {
-      this.handlers[k] = this.handlers[k].filter(ii => ii.key != key);
-    }
+    return this.handlers[code];
   }
 
   publish(devent: DEvent) {
@@ -75,9 +51,11 @@ export class DEventService {
       return;
     }
 
-    this.handlers[devent.code].forEach((v, i) => {
-      v.handle(devent);
-    });
+    if (this.handlers[devent.code] == null) {
+      return;
+    }
+
+    this.handlers[devent.code].next(devent);
   }
 
 }
