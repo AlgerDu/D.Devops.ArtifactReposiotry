@@ -28,7 +28,7 @@ export class AddArtifactRepoComponent implements OnInit {
     , private artifactRepoService: ArtifactRepoService
     , private eventService: DEventService
   ) {
-    this.item = {code :"",name:""}
+    this.item = { code: "", name: "" }
   }
 
   ngOnInit(): void {
@@ -60,13 +60,13 @@ export class AddArtifactRepoComponent implements OnInit {
 
       this.eventService.publish({ code: EventCode.ArtifactRepoCountChange, data: null });
 
-      this.notification.info("仓库添加成功","");
+      this.notification.info("仓库添加成功", "名称：" + this.item.name);
 
       this.destroyModal();
 
     }, (err) => {
       console.log("eee");
-      
+
     }, () => {
       this.isConfriming = false;
     });
