@@ -12,7 +12,6 @@ import { EventCode } from './models/events';
 })
 export class AppComponent implements OnInit {
 
-  eventKey?: string;
   isCollapsed = false;
 
   artifactRepos: ArtifactRepo[] = [];
@@ -24,9 +23,9 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.eventKey = this.eventService.subscribe([
-      { code: EventCode.ArtifactRepoCountChange, handle: this.handleRepoChange }
-    ]);
+    this.eventService.subscribe(EventCode.ArtifactRepoCountChange).subscribe((device)=>{
+      this.refreash();
+    });
 
     this.refreash();
   }
