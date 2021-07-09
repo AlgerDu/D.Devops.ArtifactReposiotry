@@ -12,8 +12,8 @@ export interface ArtifactRepo {
 export class ArtifactRepoService {
 
   artifactRepos = [
-    { code: "welcome", name: 'Dr Nice' },
-    { code: "test", name: 'Dr Nice' }
+    { code: "welcome", name: 'welcome' },
+    { code: "test", name: 'test' }
   ];
 
   constructor() { }
