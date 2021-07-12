@@ -26,9 +26,9 @@
 
 </nz-page-header>
 
-<nz-table nzShowSizeChanger [nzData]="artifacts" [nzFrontPagination]="false" [nzLoading]="tableIsLoading"
-  [nzTotal]="totalCount" [nzPageSize]="page.size" [nzPageIndex]="page.index"
-  (nzQueryParams)="onQueryParamsChange($event)">
+<nz-table nzShowSizeChanger [nzData]="artifactTable.datas" [nzFrontPagination]="false"
+  [nzLoading]="artifactTable.isLoading" [nzTotal]="artifactTable.total" [nzPageSize]="artifactTable.page.size"
+  [nzPageIndex]="artifactTable.page.index" (nzQueryParams)="artifactTable.onQueryParamsChange($event)">
   <thead>
     <tr>
       <th>制品名</th>
@@ -38,7 +38,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of artifacts">
+    <tr *ngFor="let data of artifactTable.datas">
       <td>{{data.name}}</td>
       <td>{{data.lastVersion}}</td>
       <td>{{data.lastUpdateTime}}</td>
