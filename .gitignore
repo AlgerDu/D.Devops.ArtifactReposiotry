@@ -365,3 +365,4 @@ FodyWeavers.xsd
 **/launchSettings.json
 **/appsettings.json
 **/data/**
+Src/H5Client/src/proxy.conf.json
