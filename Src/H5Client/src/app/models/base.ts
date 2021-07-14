@@ -26,8 +26,8 @@ export interface SearchResult<DataType> extends Result {
     page: PageModel;
 }
 
-export interface TableGetDataFunc<DataType> {
-    (model: TableModel<DataType>): Observable<SearchResult<DataType>>;
+export interface TableGetDatable<DataType> {
+    getDate (model: TableModel<DataType>): Observable<SearchResult<DataType>>;
 }
 
 export class TableModel<DataType> {
@@ -40,9 +40,9 @@ export class TableModel<DataType> {
 
     isLoading: boolean;
 
-    getDateFunc?: TableGetDataFunc<DataType>;
+    getter?: TableGetDatable<DataType>;
 
-    constructor() {
+    constructor(getter:TableGetDatable<DataType>) {
         this.page = {
             index: 1,
             size: 20
@@ -51,6 +51,8 @@ export class TableModel<DataType> {
         this.total = 0;
         this.datas = [];
         this.isLoading = false;
+
+        this.getter = getter;
     }
 
     onQueryParamsChange(params: NzTableQueryParams): void {
@@ -66,13 +68,13 @@ export class TableModel<DataType> {
 
     refreash(): void {
 
-        if (this.getDateFunc == null) {
+        if (this.getter == null) {
             return;
         }
 
         this.isLoading = true;
 
-        this.getDateFunc(this).subscribe((rst) => {
+        this.getter.getDate(this).subscribe((rst) => {
             this.total = rst.totalCount;
             this.page = rst.page;
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArtifactList, ArtifactRepoService, ArtifactRepo } from '../../services/artifact-repo.service';
-import { SearchResult, PageModel, TableModel } from '../../models/base';
+import { SearchResult, PageModel, TableModel, TableGetDatable } from '../../models/base';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
 
@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
   templateUrl: './repo-details.component.html',
   styleUrls: ['./repo-details.component.less']
 })
-export class RepoDetailsComponent implements OnInit {
+export class RepoDetailsComponent implements TableGetDatable<ArtifactList>, OnInit {
 
   repo: ArtifactRepo = { code: "", name: "" };
 
@@ -20,8 +20,11 @@ export class RepoDetailsComponent implements OnInit {
     private route: ActivatedRoute
     , private repoService: ArtifactRepoService
   ) {
-    this.artifactTable = new TableModel<ArtifactList>();
-    this.artifactTable.getDateFunc = this.getArtifacts;
+    this.artifactTable = new TableModel<ArtifactList>(this);
+  }
+  
+  getDate(model: TableModel<ArtifactList>): Observable<SearchResult<ArtifactList>> {
+    return this.repoService.getArtifacts(this.repo, { page: model.page, condition: model.condition });
   }
 
   ngOnInit(): void {
@@ -30,9 +33,5 @@ export class RepoDetailsComponent implements OnInit {
 
       this.artifactTable.refreash();
     });
-  }
-
-  getArtifacts(model: TableModel<ArtifactList>): Observable<SearchResult<ArtifactList>> {
-    return this.repoService.getArtifacts(this.repo, { page: model.page, condition: model.condition });
   }
 }
