@@ -81,9 +81,14 @@ namespace D.ArtifactReposiotry
             {
                 var col = db.GetCollection<TEntity>();
 
-                var list = col.Query().Where(predicate).ToList();
+                var list = col.Query();
 
-                return list.AsQueryable();
+                if (predicate != null)
+                {
+                    list = list.Where(predicate);
+                }
+
+                return list.ToList().AsQueryable();
             }
         }
     }
