@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { observable, Observable, of } from 'rxjs';
 import { Search, SearchResult } from '../models/base';
+import { ApiUrl } from '../models/urls';
 
 export interface ArtifactRepo {
   code: string;
@@ -29,10 +31,12 @@ export class ArtifactRepoService {
     { name: "a3", lastVersion: "3.0", lastUpdateTime: new Date() }
   ]
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   get(): Observable<ArtifactRepo[]> {
-    return of(this.artifactRepos);
+    return this.http.get<ArtifactRepo[]>(ApiUrl.getRepos);
   }
 
   add(item: ArtifactRepo): Observable<any> {
