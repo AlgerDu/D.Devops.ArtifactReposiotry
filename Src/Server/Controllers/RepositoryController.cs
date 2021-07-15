@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 namespace D.ArtifactReposiotry.Controllers
 {
     [ApiController]
-    [Route("api/[controller]s")]
     public class RepositoryController : ControllerBase
     {
         readonly ILogger _logger;
@@ -32,7 +31,7 @@ namespace D.ArtifactReposiotry.Controllers
             _artifactRepoRepository = artifactRepoRepository;
         }
 
-        [HttpPost]
+        [HttpPost("api/repositorys")]
         public IResult PostItem(ArtifactRepo artifactRepo)
         {
             artifactRepo.Code = artifactRepo.Code.ToLower();
@@ -59,7 +58,22 @@ namespace D.ArtifactReposiotry.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("api/repositorys/{repoCode}")]
+        public IResult<ArtifactRepo> GetDetail([FromRoute] string repoCode)
+        {
+            var pk = repoCode.ToLower();
+
+            var repo = _artifactRepoRepository.Get(pk);
+
+            if (repo == null)
+            {
+                return Result.CreateError<ArtifactRepo>($"[{pk}] repo is not exist.");
+            }
+
+            return Result.CreateSuccess(repo);
+        }
+
+        [HttpGet("api/repositorys")]
         public ArtifactRepo[] GetList()
         {
             return _artifactRepoRepository.Query().ToArray();
