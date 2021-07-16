@@ -31,6 +31,12 @@ namespace D.ArtifactReposiotry.Controllers
             _artifactRepository = artifactRepository;
         }
 
+        [HttpPost("api/repositorys/{repoCode}/artifacts/search")]
+        public SearchResult<string> Search([FromRoute] string repoCode, [FromBody] Search req)
+        {
+            return null;
+        }
+
         [HttpPost("api/repositorys/{repoCode}/artifacts")]
         public IResult AddItem([FromRoute] string repoCode, [FromBody] Artifact item)
         {
