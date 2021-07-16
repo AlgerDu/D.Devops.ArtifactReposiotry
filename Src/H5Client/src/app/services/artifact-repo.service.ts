@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { observable, Observable, of } from 'rxjs';
-import { Search, SearchResult } from '../models/base';
+import { DataResult, Result, Search, SearchResult } from '../models/base';
 import { ApiUrl } from '../models/urls';
 
 export interface ArtifactRepo {
@@ -9,50 +9,31 @@ export interface ArtifactRepo {
   name: string;
 }
 
-export interface ArtifactList {
-  name: string;
-  lastVersion: string;
-  lastUpdateTime: Date;
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class ArtifactRepoService {
 
-  artifactRepos = [
-    { code: "welcome", name: 'welcome' },
-    { code: "test", name: 'test' }
-  ];
-
-  artifacts = [
-    { name: "a1", lastVersion: "1.0", lastUpdateTime: new Date() },
-    { name: "a2", lastVersion: "2.0", lastUpdateTime: new Date() },
-    { name: "a3", lastVersion: "3.0", lastUpdateTime: new Date() }
-  ]
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
   constructor(
     private http: HttpClient
   ) { }
 
-  get(): Observable<ArtifactRepo[]> {
+  getAll(): Observable<ArtifactRepo[]> {
     return this.http.get<ArtifactRepo[]>(ApiUrl.getRepos);
   }
 
-  add(item: ArtifactRepo): Observable<any> {
-    this.artifactRepos.push(item);
-    return of<any>(null);
+  add(item: ArtifactRepo): Observable<Result> {
+
+    item.code = item.code.toLowerCase();
+
+    return this.http.post<Result>(ApiUrl.addRepos,item,this.httpOptions);
   }
 
-  getArtifacts(repo: ArtifactRepo, search: Search): Observable<SearchResult<ArtifactList>> {
-
-    var rst: SearchResult<ArtifactList> = {
-      code: 0,
-      page: { size: 10, index: 1 },
-      datas: this.artifacts,
-      totalCount: 20
-    };
-
-    return of(rst);
+  getDetail(repoCode:string):Observable<DataResult<ArtifactRepo>> {
+    return this.http.get<DataResult<ArtifactRepo>>(ApiUrl.reposBase+"/" +repoCode.toLowerCase());
   }
 }
