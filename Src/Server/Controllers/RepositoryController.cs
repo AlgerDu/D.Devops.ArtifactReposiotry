@@ -13,15 +13,18 @@ namespace D.ArtifactReposiotry.Controllers
     public class RepositoryController : ControllerBase
     {
         readonly ILogger _logger;
-        readonly IArtifactRepoRepository _artifactRepoRepository;
         readonly IMemoryCache _cache;
         readonly IEntityAtomicProvider _entityAtomic;
+
+        readonly IArtifactRepoRepository _artifactRepoRepository;
+        readonly IArtifactRepository _artifactRepository;
 
         public RepositoryController(
             ILogger<RepositoryController> logger
             , IArtifactRepoRepository artifactRepoRepository
             , ICacheProvider cacheProvider
             , IEntityAtomicProvider entityAtomic
+            , IArtifactRepository artifactRepository
             )
         {
             _logger = logger;
@@ -29,6 +32,7 @@ namespace D.ArtifactReposiotry.Controllers
             _cache = cacheProvider.Get();
 
             _artifactRepoRepository = artifactRepoRepository;
+            _artifactRepository = artifactRepository;
         }
 
         [HttpPost("api/repositorys")]
@@ -42,7 +46,7 @@ namespace D.ArtifactReposiotry.Controllers
             {
                 if (a.IsOprting)
                 {
-                    return Result.CreateSuccess($"[{pk}] it is tring to add by others.");
+                    return Result.CreateError($"[{pk}] it is tring to add by others.");
                 }
 
                 var exist = _artifactRepoRepository.Get(pk);
@@ -71,6 +75,38 @@ namespace D.ArtifactReposiotry.Controllers
             }
 
             return Result.CreateSuccess(repo);
+        }
+
+        [HttpDelete("api/repositorys/{repoCode}")]
+        public IResult Delete([FromRoute] string repoCode)
+        {
+            var pk = repoCode.ToLower();
+
+            using (var a = _entityAtomic.Get(pk))
+            {
+                if (a.IsOprting)
+                {
+                    return Result.CreateError($"[{pk}] it is operting by others.");
+                }
+
+                var exist = _artifactRepoRepository.Get(pk);
+
+                if (exist == null)
+                {
+                    return Result.CreateError($"[{pk}] repo is not exist.");
+                }
+
+                var hasArtifacts = _artifactRepository.Query(aa => aa.RepoCode == pk).Count() > 0;
+
+                if (hasArtifacts)
+                {
+                    return Result.CreateError($"[{pk}] delete all artifacts belong this repo first");
+                }
+
+                var ok = _artifactRepoRepository.Delete(pk);
+
+                return ok ? Result.CreateSuccess() : Result.CreateError("delete faild");
+            }
         }
 
         [HttpGet("api/repositorys")]
