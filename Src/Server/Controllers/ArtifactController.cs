@@ -32,9 +32,14 @@ namespace D.ArtifactReposiotry.Controllers
         }
 
         [HttpPost("api/repositorys/{repoCode}/artifacts/search")]
-        public SearchResult<string> Search([FromRoute] string repoCode, [FromBody] Search req)
+        public SearchResult<Artifact> Search([FromRoute] string repoCode, [FromBody] Search query)
         {
-            return null;
+            return new SearchResult<Artifact>()
+            {
+                Code = 0,
+                TotalCount = 0,
+                Page = new PageModel()
+            };
         }
 
         [HttpPost("api/repositorys/{repoCode}/artifacts")]
