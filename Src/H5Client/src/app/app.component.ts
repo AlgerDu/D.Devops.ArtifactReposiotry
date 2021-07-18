@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
   }
 
   refreash(): void {
-    this.artifactRepoService.get().subscribe(repos => {
+    this.artifactRepoService.getAll().subscribe(repos => {
       this.artifactRepos = repos;
     });
   }
