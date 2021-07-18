@@ -30,10 +30,14 @@ export class ArtifactRepoService {
 
     item.code = item.code.toLowerCase();
 
-    return this.http.post<Result>(ApiUrl.addRepos,item,this.httpOptions);
+    return this.http.post<Result>(ApiUrl.addRepos, item, this.httpOptions);
   }
 
-  getDetail(repoCode:string):Observable<DataResult<ArtifactRepo>> {
-    return this.http.get<DataResult<ArtifactRepo>>(ApiUrl.reposBase+"/" +repoCode.toLowerCase());
+  getDetail(repoCode: string): Observable<DataResult<ArtifactRepo>> {
+    return this.http.get<DataResult<ArtifactRepo>>(ApiUrl.reposBase + "/" + repoCode.toLowerCase());
+  }
+
+  delete(repoCode: string): Observable<Result> {
+    return this.http.delete<Result>(ApiUrl.reposBase+"/"+repoCode.toLowerCase(),this.httpOptions);
   }
 }
