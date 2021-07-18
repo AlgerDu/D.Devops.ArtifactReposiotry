@@ -6,6 +6,14 @@ export interface Result {
     msg?: string;
 }
 
+export interface Result {
+    isSuccess(): boolean;
+}
+
+export function isSuccess (rst:Result) {
+    return rst.code != 1;
+}
+
 export interface DataResult<DataType> extends Result {
     data?: DataType;
 }
@@ -27,7 +35,7 @@ export interface SearchResult<DataType> extends Result {
 }
 
 export interface TableGetDatable<DataType> {
-    getDate (model: TableModel<DataType>): Observable<SearchResult<DataType>>;
+    getDate(model: TableModel<DataType>): Observable<SearchResult<DataType>>;
 }
 
 export class TableModel<DataType> {
@@ -42,7 +50,7 @@ export class TableModel<DataType> {
 
     getter?: TableGetDatable<DataType>;
 
-    constructor(getter:TableGetDatable<DataType>) {
+    constructor(getter: TableGetDatable<DataType>) {
         this.page = {
             index: 1,
             size: 20
