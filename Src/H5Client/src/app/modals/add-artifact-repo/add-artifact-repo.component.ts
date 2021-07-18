@@ -8,6 +8,7 @@ import { DEventService } from 'src/app/services/event.service';
 import { ArtifactRepo } from '../../services/artifact-repo.service';
 import { EventCode } from '../../models/events';
 import { sharedStylesheetJitUrl } from '@angular/compiler';
+import { isSuccess } from '../../models/base';
 
 @Component({
   selector: 'app-add-artifact-repo',
@@ -56,7 +57,12 @@ export class AddArtifactRepoComponent implements OnInit {
 
     this.isConfriming = true;
 
-    this.artifactRepoService.add(this.item).subscribe((d) => {
+    this.artifactRepoService.add(this.item).subscribe((rst) => {
+
+      if (!isSuccess(rst)) {
+        this.notification.error("仓库添加失败", rst.msg ?? "");
+        return;
+      }
 
       this.eventService.publish({ code: EventCode.ArtifactRepoCountChange, data: null });
 
