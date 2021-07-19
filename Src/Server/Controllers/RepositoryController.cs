@@ -36,7 +36,7 @@ namespace D.ArtifactReposiotry.Controllers
         }
 
         [HttpPost("api/repositorys")]
-        public IResult PostItem(ArtifactRepo artifactRepo)
+        public IResult AddItem(ArtifactRepo artifactRepo)
         {
             artifactRepo.Code = artifactRepo.Code.ToLower();
 
@@ -46,12 +46,12 @@ namespace D.ArtifactReposiotry.Controllers
             {
                 if (a.IsOprting)
                 {
-                    return Result.CreateError($"[{pk}] it is tring to add by others.");
+                    return Result.CreateError($"[{pk}] it is operting by others.");
                 }
 
-                var exist = _artifactRepoRepository.Get(pk);
+                var exist = _artifactRepoRepository.Query(ii => ii.PK == pk || ii.Name == artifactRepo.Name).Count() > 0;
 
-                if (exist != null)
+                if (exist)
                 {
                     return Result.CreateError($"[{pk}] repo is aleardy exist.");
                 }
