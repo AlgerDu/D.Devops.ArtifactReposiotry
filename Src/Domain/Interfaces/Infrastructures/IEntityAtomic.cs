@@ -6,6 +6,8 @@ namespace D.ArtifactReposiotry
 {
     public interface IEntityAtomic : IDisposable
     {
+        string PK { get; }
+
         bool IsOprting { get; }
     }
 }

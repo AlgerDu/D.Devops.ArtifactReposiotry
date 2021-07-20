@@ -12,6 +12,8 @@ namespace D.ArtifactReposiotry
 
         public bool IsOprting { get; private set; }
 
+        public string PK => _pk;
+
         public EntityAtomic(
             IMemoryCache cache
             , string pk
