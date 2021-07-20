@@ -46,7 +46,7 @@ namespace D.ArtifactReposiotry.Controllers
             {
                 if (a.IsOprting)
                 {
-                    return Result.CreateError($"[{pk}] it is operting by others.");
+                    return a.CreateOtherOpertingRst();
                 }
 
                 var exist = _artifactRepoRepository.Query(ii => ii.PK == pk || ii.Name == artifactRepo.Name).Count() > 0;
@@ -86,7 +86,7 @@ namespace D.ArtifactReposiotry.Controllers
             {
                 if (a.IsOprting)
                 {
-                    return Result.CreateError($"[{pk}] it is operting by others.");
+                    return a.CreateOtherOpertingRst();
                 }
 
                 var exist = _artifactRepoRepository.Get(pk);
