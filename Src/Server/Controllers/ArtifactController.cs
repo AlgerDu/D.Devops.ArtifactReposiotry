@@ -107,10 +107,7 @@ namespace D.ArtifactReposiotry.Controllers
                     return Result.CreateError($"[{pk}] artifact aleardy has exist tag = {tag}.");
                 }
 
-                var tags = new List<string>(artifact.Tags);
-                tags.Add(tag);
-
-                artifact.Tags = tags.ToArray();
+                artifact.Tags.Add(tag);
 
                 var ok = _artifactRepository.Put(artifact);
 
@@ -147,11 +144,7 @@ namespace D.ArtifactReposiotry.Controllers
                     return Result.CreateError($"[{pk}] artifact has not tag = {tag}.");
                 }
 
-                var tags = new List<string>(artifact.Tags);
-
-                tags.Remove(tag);
-
-                artifact.Tags = tags.ToArray();
+                artifact.Tags.Remove(tag);
 
                 var ok = _artifactRepository.Put(artifact);
 
