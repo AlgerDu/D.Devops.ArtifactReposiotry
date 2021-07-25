@@ -14,11 +14,11 @@ namespace D.ArtifactReposiotry
         /// <summary>
         /// 标签
         /// </summary>
-        public string[] Tags { get; set; }
+        public List<string> Tags { get; set; } = new List<string>();
 
         /// <summary>
         /// 属性，默认和用户自定义
         /// </summary>
-        public Dictionary<string, string> Attributes { get; set; }
+        public Dictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
     }
 }

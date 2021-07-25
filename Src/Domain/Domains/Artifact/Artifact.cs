@@ -29,11 +29,11 @@ namespace D.ArtifactReposiotry
         /// <summary>
         /// 归属于同一个制品下的二进制文件（比如不同的环境）
         /// </summary>
-        public ArtifactObjectModel[] Objects { get; set; }
+        public List<ArtifactObjectModel> Objects { get; set; } = new List<ArtifactObjectModel>();
 
         /// <summary>
         /// 依赖的其它制品
         /// </summary>
-        public DependModel[] Depends { get; set; }
+        public List<DependModel> Depends { get; set; } = new List<DependModel>();
     }
 }
