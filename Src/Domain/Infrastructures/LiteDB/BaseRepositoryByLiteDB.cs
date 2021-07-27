@@ -50,7 +50,7 @@ namespace D.ArtifactReposiotry
 
                 var success = col.Update(entity);
 
-                if (success)
+                if (!success)
                 {
                     success = col.Insert(entity);
                 }
