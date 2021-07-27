@@ -48,7 +48,14 @@ namespace D.ArtifactReposiotry
             {
                 var col = db.GetCollection<TEntity>();
 
-                return col.Update(entity);
+                var success = col.Update(entity);
+
+                if (success)
+                {
+                    success = col.Insert(entity);
+                }
+
+                return success;
             }
         }
 
