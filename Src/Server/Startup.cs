@@ -34,6 +34,8 @@ namespace D.ArtifactReposiotry
                 options.Path = "./data/localdata.db";
             });
 
+            services.Configure<MinioOptions>(Configuration.GetSection("Minio"));
+
             services.AddSingleton<IArtifactRepoRepository, ArtifactRepoRepository>();
             services.AddSingleton<IArtifactRepository, ArtifactRepository>();
 
