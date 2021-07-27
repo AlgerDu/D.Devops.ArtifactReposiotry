@@ -1,6 +1,8 @@
 ﻿using D.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Minio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +19,14 @@ namespace D.ArtifactReposiotry.Controllers
         readonly IArtifactRepoRepository _artifactRepoRepository;
         readonly IArtifactRepository _artifactRepository;
 
+        readonly MinioClient _minioClient;
+
         public UploadController(
             ILogger<UploadController> logger
             , IEntityAtomicProvider entityAtomic
             , IArtifactRepoRepository artifactRepoRepository
             , IArtifactRepository artifactRepository
+            , IMinioClientProvider minioClientProvider
             )
         {
             _logger = logger;
@@ -29,10 +34,12 @@ namespace D.ArtifactReposiotry.Controllers
 
             _artifactRepoRepository = artifactRepoRepository;
             _artifactRepository = artifactRepository;
+
+            _minioClient = minioClientProvider.Get();
         }
 
         [HttpPost("api/repositorys/{repoCode}/artifacts/upload"), DisableRequestSizeLimit]
-        public IResult Upload([FromRoute] string repoCode)
+        public async Task<IResult> Upload([FromRoute] string repoCode)
         {
             var identifier = HttpContext.TraceIdentifier;
             var files = HttpContext.Request.Form?.Files;
@@ -68,6 +75,13 @@ namespace D.ArtifactReposiotry.Controllers
             {
                 if (a.IsOprting) return a.CreateOtherOpertingRst();
 
+                var repoExist = _artifactRepoRepository.Get(optItem.RepoCode);
+
+                if (repoExist == null)
+                {
+                    return Result.CreateError($"[{optItem.RepoCode}] repo is not exist");
+                }
+
                 var artifact = _artifactRepository.Get(pk);
 
                 if (artifact == null)
@@ -80,8 +94,6 @@ namespace D.ArtifactReposiotry.Controllers
                         RepoCode = optItem.RepoCode
                     };
 
-                    var insertRst = _artifactRepository.Insert(artifact);
-
                     _logger.LogWarning($"{identifier} {pk} not exist, auto create");
                 }
 
@@ -89,13 +101,56 @@ namespace D.ArtifactReposiotry.Controllers
 
                 if (fileObj == null)
                 {
+                    fileObj = new ArtifactObjectModel
+                    {
+                        Name = file.FileName
+                    };
+
                     artifact.Objects.Add(fileObj);
                 }
 
-                var updateRst = _artifactRepository.Put(artifact);
-            }
+                // TODO 更新
 
-            return Result.CreateSuccess();
+                var updateRst = _artifactRepository.Put(artifact);
+
+                if (!updateRst)
+                {
+                    return Result.CreateError($"[{pk}] update faile");
+                }
+
+                var uploadRst = await UploadFileToMinoServer(identifier, optItem, file);
+
+                return uploadRst;
+            }
+        }
+
+        private async Task<IResult> UploadFileToMinoServer(string identifier, ArtifactOptBaseModel item, IFormFile file)
+        {
+            try
+            {
+                var bucketExist = await _minioClient.BucketExistsAsync(item.RepoCode);
+
+                if (!bucketExist)
+                {
+                    _logger.LogWarning($"[{item.RepoCode}] bucker not exist, auto create");
+
+                    await _minioClient.MakeBucketAsync(item.RepoCode);
+                }
+
+                await _minioClient.PutObjectAsync(
+                    item.RepoCode
+                    , file.FileName
+                    , file.OpenReadStream()
+                    , file.Length
+                    );
+
+                return Result.CreateSuccess();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{file.FileName}] upload file to minio server error {ex}");
+                return Result.CreateError("upload file erroe");
+            }
         }
     }
 }
