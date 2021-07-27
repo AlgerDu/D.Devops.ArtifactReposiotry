@@ -111,6 +111,8 @@ namespace D.ArtifactReposiotry.Controllers
 
                 // TODO 更新
 
+                fileObj.Attributes["size"] = file.Length.ToString();
+
                 var updateRst = _artifactRepository.Put(artifact);
 
                 if (!updateRst)
@@ -139,7 +141,7 @@ namespace D.ArtifactReposiotry.Controllers
 
                 await _minioClient.PutObjectAsync(
                     item.RepoCode
-                    , file.FileName
+                    , $"{item.ArtifactName}/{item.ArtifactVersion}/{file.FileName}"
                     , file.OpenReadStream()
                     , file.Length
                     );
