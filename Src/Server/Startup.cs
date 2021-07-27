@@ -28,6 +28,7 @@ namespace D.ArtifactReposiotry
             services.AddSingleton<IEntityAtomicProvider, EntityAtomicProvider>();
             services.AddSingleton<ICacheProvider, DCacheProvider>();
             services.AddSingleton<ILiteDB, DLiteDB>();
+            services.AddSingleton<IMinioClientProvider, MinioClientProvider>();
 
             services.Configure<LiteDBOptions>((options) =>
             {
