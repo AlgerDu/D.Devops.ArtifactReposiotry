@@ -12,6 +12,14 @@ namespace D.ArtifactReposiotry
         public int Index { get; set; }
     }
 
+    public static class PageModelExtensions
+    {
+        public static int SkipCount(this PageModel page)
+        {
+            return (page.Index - 1) * page.Size;
+        }
+    }
+
     public class Search
     {
         public PageModel Page { get; set; } = new PageModel();
