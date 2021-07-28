@@ -14,7 +14,7 @@ namespace D.ArtifactReposiotry
         readonly ILogger _logger;
         readonly LiteDBOptions _options;
 
-        ConnectionString _connectStr;
+        LiteRepository _repository;
 
         public DLiteDB(
             ILogger<DLiteDB> logger
@@ -22,30 +22,25 @@ namespace D.ArtifactReposiotry
             )
         {
             _logger = logger;
-
             _options = options.Value;
 
-            InitAsync().ConfigureAwait(false);
+            Init();
         }
 
-        public ILiteDatabase CreateContext()
+        public LiteRepository GetRepository()
         {
-            return new LiteDatabase(_connectStr);
+            return _repository;
         }
 
-        public Task InitAsync()
+        private void Init()
         {
-            return Task.Run(() =>
-            {
-                //TODO 检测数据库结构变更，自动更新结构
+            var filePath = _options.Path;
 
-                var filePath = _options.Path;
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            var connStr = new ConnectionString($"Filename={filePath}");
 
-                _connectStr = new ConnectionString($"Filename={filePath}");
-
-            });
+            _repository = new LiteRepository(connStr);
         }
     }
 }

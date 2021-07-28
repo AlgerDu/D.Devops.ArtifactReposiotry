@@ -11,16 +11,6 @@ namespace D.ArtifactReposiotry
     /// </summary>
     public interface ILiteDB
     {
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <returns></returns>
-        Task InitAsync();
-
-        /// <summary>
-        /// 创建一个 lite db 上下文
-        /// </summary>
-        /// <returns></returns>
-        ILiteDatabase CreateContext();
+        LiteRepository GetRepository();
     }
 }
