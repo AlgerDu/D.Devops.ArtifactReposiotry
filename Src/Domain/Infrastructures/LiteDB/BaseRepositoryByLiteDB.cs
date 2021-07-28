@@ -105,8 +105,14 @@ namespace D.ArtifactReposiotry
             {
                 var db = _liteDB.GetRepository();
 
-                return db.Query<TEntity>()
-                    .Where(predicate)
+                var datas = db.Query<TEntity>();
+
+                if (predicate != null)
+                {
+                    datas = datas.Where(predicate);
+                }
+
+                return datas
                     .ToEnumerable()
                     .AsQueryable();
             }
