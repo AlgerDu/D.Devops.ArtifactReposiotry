@@ -34,12 +34,36 @@ namespace D.ArtifactReposiotry.Controllers
         [HttpPost("api/repositorys/{repoCode}/artifacts/search")]
         public SearchResult<Artifact> Search([FromRoute] string repoCode, [FromBody] Search query)
         {
-            return new SearchResult<Artifact>()
+            var artifaces = _artifactRepository.Query(aa => aa.RepoCode == repoCode);
+
+            artifaces = artifaces.Where(aa =>
+                aa.Name.Contains(query.Condition)
+                || aa.Version.Contains(query.Condition)
+                || aa.Tags.FirstOrDefault(tt => tt.Contains(query.Condition)) != null
+                );
+
+            var searchResult = new SearchResult<Artifact>()
             {
-                Code = 0,
-                TotalCount = 0,
-                Page = new PageModel()
+                TotalCount = artifaces.Count(),
+                Page = new PageModel
+                {
+                    Index = query.Page.Index,
+                    Size = query.Page.Size
+                }
             };
+
+            if (searchResult.TotalCount <= query.Page.SkipCount())
+            {
+                searchResult.Page.Index = 1;
+            }
+
+            searchResult.Page = query.Page;
+            searchResult.Datas = artifaces
+                .Skip(searchResult.Page.SkipCount())
+                .Take(searchResult.Page.Size)
+                .ToArray();
+
+            return searchResult;
         }
 
         [HttpPost("api/repositorys/{repoCode}/artifacts")]
