@@ -33,69 +33,88 @@ namespace D.ArtifactReposiotry
         /// <inheritdoc/>
         public TEntity Get(TPrimaryKey key)
         {
-            using (var db = _liteDB.CreateContext())
+            try
             {
-                var col = db.GetCollection<TEntity>();
+                var db = _liteDB.GetRepository();
 
-                return col.FindOne(LiteDB.Query.EQ("_id", new BsonValue(key)));
+                var entity = db.Query<TEntity>()
+                    .Where("_id = @0", new BsonValue(key))
+                    .SingleOrDefault();
+
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{key} get by key error = {ex}");
+                return null;
             }
         }
 
         /// <inheritdoc/>
         public bool Put(TEntity entity)
         {
-            using (var db = _liteDB.CreateContext())
+            try
             {
-                var col = db.GetCollection<TEntity>();
+                var db = _liteDB.GetRepository();
 
-                var success = col.Update(entity);
-
-                if (!success)
-                {
-                    success = col.Insert(entity);
-                }
-
-                return success;
+                return db.Update<TEntity>(entity);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{entity.PK} update error = {ex}");
+                return false;
             }
         }
 
         /// <inheritdoc/>
         public bool Delete(TPrimaryKey key)
         {
-            using (var db = _liteDB.CreateContext())
+            try
             {
-                var col = db.GetCollection<TEntity>();
+                var db = _liteDB.GetRepository();
 
-                return col.Delete(new BsonValue(key));
+                return db.Delete<TEntity>(new BsonValue(key));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{key} delete by key error = {ex}");
+                return false;
             }
         }
         /// <inheritdoc/>
         public bool Insert(TEntity entity)
         {
-            using (var db = _liteDB.CreateContext())
+            try
             {
-                var col = db.GetCollection<TEntity>();
+                var db = _liteDB.GetRepository();
 
-                var id = col.Insert(entity);
+                db.Insert<TEntity>(entity);
 
-                return !id.IsNull;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{entity.PK} insert error = {ex}");
+                return false;
             }
         }
 
         public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate = null)
         {
-            using (var db = _liteDB.CreateContext())
+            try
             {
-                var col = db.GetCollection<TEntity>();
+                var db = _liteDB.GetRepository();
 
-                var list = col.Query();
+                return db.Query<TEntity>()
+                    .Where(predicate)
+                    .ToEnumerable()
+                    .AsQueryable();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"search error = {ex}");
 
-                if (predicate != null)
-                {
-                    list = list.Where(predicate);
-                }
-
-                return list.ToList().AsQueryable();
+                return new TEntity[0].AsQueryable();
             }
         }
     }
