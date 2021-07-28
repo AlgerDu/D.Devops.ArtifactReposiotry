@@ -24,7 +24,7 @@ namespace D.ArtifactReposiotry
     {
         /// <summary>
         /// 获取实体，进行操作；
-        /// 会独占实体，其它地方不能再继续跟新
+        /// 会独占实体，其它地方不能再继续使用
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
