@@ -71,6 +71,52 @@ namespace D.ArtifactReposiotry.Controllers
             return searchResult;
         }
 
+        [HttpGet("api/repositorys/{repoCode}/artifacts/{artifactName}")]
+        public IResult<Artifact> Detail([FromRoute] ArtifactOptBaseModel item)
+        {
+            return null;
+        }
+
+        [HttpPost("api/repositorys/{repoCode}/artifacts/{artifactName}/versions")]
+        public SearchResult<Artifact> Versions([FromRoute] ArtifactOptBaseModel item, [FromBody] Search query)
+        {
+            var artifaces = _artifactRepository.Query(aa => aa.RepoCode == item.RepoCode && aa.Name == item.ArtifactName);
+
+            if (!string.IsNullOrEmpty(query.Condition))
+            {
+                artifaces = artifaces.Where(aa =>
+                    aa.Version.Contains(query.Condition)
+                    || aa.Tags.FirstOrDefault(tt => tt.Contains(query.Condition)) != null
+                    );
+            }
+
+            artifaces = artifaces
+                .OrderBy(aa => aa.Version);
+
+            var searchResult = new SearchResult<Artifact>()
+            {
+                TotalCount = artifaces.Count(),
+                Page = new PageModel
+                {
+                    Index = query.Page.Index,
+                    Size = query.Page.Size
+                }
+            };
+
+            if (searchResult.TotalCount <= query.Page.SkipCount())
+            {
+                searchResult.Page.Index = 1;
+            }
+
+            searchResult.Page = query.Page;
+            searchResult.Datas = artifaces
+                .Skip(searchResult.Page.SkipCount())
+                .Take(searchResult.Page.Size)
+                .ToArray();
+
+            return searchResult;
+        }
+
         [HttpPost("api/repositorys/{repoCode}/artifacts")]
         public IResult AddItem([FromRoute] string repoCode, [FromBody] Artifact item)
         {
