@@ -36,11 +36,16 @@ namespace D.ArtifactReposiotry.Controllers
         {
             var artifaces = _artifactRepository.Query(aa => aa.RepoCode == repoCode);
 
-            artifaces = artifaces.Where(aa =>
-                aa.Name.Contains(query.Condition)
-                || aa.Version.Contains(query.Condition)
-                || aa.Tags.FirstOrDefault(tt => tt.Contains(query.Condition)) != null
-                );
+            if (!string.IsNullOrEmpty(query.Condition))
+            {
+                artifaces = artifaces.Where(aa =>
+                    aa.Name.Contains(query.Condition)
+                    || aa.Version.Contains(query.Condition)
+                    || aa.Tags.FirstOrDefault(tt => tt.Contains(query.Condition)) != null
+                    );
+            }
+
+            artifaces = artifaces.Distinct(new ArtifactNameComparer());
 
             var searchResult = new SearchResult<Artifact>()
             {
