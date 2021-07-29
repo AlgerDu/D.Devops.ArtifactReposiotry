@@ -1,1 +1,53 @@
-<p>artifact-details works!</p>
+<nz-page-header class="site-page-header">
+
+    <nz-breadcrumb nz-page-header-breadcrumb>
+      <nz-breadcrumb-item>
+        <a>仓库</a>
+      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>
+        {{repo.name}}
+      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>
+        {{artifact.name}}
+      </nz-breadcrumb-item>
+    </nz-breadcrumb>
+  
+    <nz-avatar nz-page-header-avatar nzText="{{artifact.name}}"> </nz-avatar>
+  
+    <nz-page-header-title>{{artifact.name}}</nz-page-header-title>
+  
+    <nz-page-header-extra>
+      <button nz-button nzNoAnimation nz-dropdown [nzDropdownMenu]="menu" style="border: none; padding: 0">
+        <i nz-icon nzType="ellipsis" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></i>
+      </button>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item nzDanger (click)="deleteClick()">删除</li>
+        </ul>
+      </nz-dropdown-menu>
+    </nz-page-header-extra>
+  
+  </nz-page-header>
+
+  <nz-table nzShowSizeChanger [nzData]="table.datas" [nzFrontPagination]="false"
+    [nzLoading]="table.isLoading" [nzTotal]="table.total" [nzPageSize]="table.page.size"
+    [nzPageIndex]="table.page.index" (nzQueryParams)="table.onQueryParamsChange($event)">
+    <thead>
+      <tr>
+        <th>版本号</th>
+        <th>标签</th>
+        <th>最近更新时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of table.datas">
+        <td>{{data.version}}</td>
+        <td></td>
+        <td>{{data.lastUpdateTime}}</td>
+        <td>
+          <a routerLink="/repo/{{repo.code}}/artifacts/{{data.name}}">详情</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
