@@ -30,6 +30,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddArtifactRepoComponent } from './modals/add-artifact-repo/add-artifact-repo.component';
 import { RepoDetailsComponent } from './pages/repo-details/repo-details.component';
+import { ArtifactDetailsComponent } from './pages/artifact-details/artifact-details.component';
 
 registerLocaleData(zh);
 
@@ -37,7 +38,8 @@ registerLocaleData(zh);
   declarations: [
     AppComponent,
     AddArtifactRepoComponent,
-    RepoDetailsComponent
+    RepoDetailsComponent,
+    ArtifactDetailsComponent
   ],
   imports: [
     BrowserModule,
