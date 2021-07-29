@@ -70,8 +70,10 @@ export class RepoDetailsComponent implements TableGetDatable<ArtifactListModel>,
   deleteRepo(): void {
     this.repoService.delete(this.repo.code).subscribe(rst => {
       if (isSuccess(rst)) {
-        this.notification.success("仓库："+this.repo.name+"删除成功","");
+        this.notification.success("仓库："+this.repo.name+" 删除成功","");
         this.eventService.publish({ code: EventCode.ArtifactRepoCountChange, data: null });
+      }else{
+        this.notification.error("仓库："+this.repo.name+" 删除失败",rst.msg??"");
       }
     });
   }
