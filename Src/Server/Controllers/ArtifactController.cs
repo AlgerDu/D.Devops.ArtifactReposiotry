@@ -117,6 +117,21 @@ namespace D.ArtifactReposiotry.Controllers
             return searchResult;
         }
 
+        [HttpGet("api/repositorys/{repoCode}/artifacts/{artifactName}/v/{artifactVersion}")]
+        public IResult<Artifact> VersionDetail([FromRoute] ArtifactOptBaseModel item)
+        {
+            var pk = item.GetPK();
+
+            var artifact = _artifactRepository.Get(pk);
+
+            if (artifact == null)
+            {
+                return Result.CreateError<Artifact>($"[{pk}] artifact is not exist.");
+            }
+
+            return Result.CreateSuccess(artifact);
+        }
+
         [HttpPost("api/repositorys/{repoCode}/artifacts")]
         public IResult AddItem([FromRoute] string repoCode, [FromBody] Artifact item)
         {
