@@ -32,7 +32,7 @@ namespace D.ArtifactReposiotry.Controllers
         }
 
         [HttpPost("api/repositorys/{repoCode}/artifacts/search")]
-        public SearchResult<Artifact> Search([FromRoute] string repoCode, [FromBody] Search query)
+        public SearchResult<ArtifactRepoSearchModel> Search([FromRoute] string repoCode, [FromBody] Search query)
         {
             var artifaces = _artifactRepository.Query(aa => aa.RepoCode == repoCode);
 
@@ -47,25 +47,17 @@ namespace D.ArtifactReposiotry.Controllers
 
             artifaces = artifaces.Distinct(new ArtifactNameComparer());
 
-            var searchResult = new SearchResult<Artifact>()
-            {
-                TotalCount = artifaces.Count(),
-                Page = new PageModel
-                {
-                    Index = query.Page.Index,
-                    Size = query.Page.Size
-                }
-            };
+            var searchResult = new SearchResult<ArtifactRepoSearchModel>(artifaces.Count(), query.Page);
 
-            if (searchResult.TotalCount <= query.Page.SkipCount())
-            {
-                searchResult.Page.Index = 1;
-            }
-
-            searchResult.Page = query.Page;
             searchResult.Datas = artifaces
                 .Skip(searchResult.Page.SkipCount())
                 .Take(searchResult.Page.Size)
+                .Select(aa => new ArtifactRepoSearchModel
+                {
+                    Name = aa.Name,
+                    LatestVersion = aa.Version,
+                    RepoCode = aa.RepoCode
+                })
                 .ToArray();
 
             return searchResult;
@@ -78,7 +70,7 @@ namespace D.ArtifactReposiotry.Controllers
         }
 
         [HttpPost("api/repositorys/{repoCode}/artifacts/{artifactName}/versions")]
-        public SearchResult<Artifact> Versions([FromRoute] ArtifactOptBaseModel item, [FromBody] Search query)
+        public SearchResult<ArtifactSearchModel> Versions([FromRoute] ArtifactOptBaseModel item, [FromBody] Search query)
         {
             var artifaces = _artifactRepository.Query(aa => aa.RepoCode == item.RepoCode && aa.Name == item.ArtifactName);
 
@@ -93,25 +85,20 @@ namespace D.ArtifactReposiotry.Controllers
             artifaces = artifaces
                 .OrderBy(aa => aa.Version);
 
-            var searchResult = new SearchResult<Artifact>()
-            {
-                TotalCount = artifaces.Count(),
-                Page = new PageModel
-                {
-                    Index = query.Page.Index,
-                    Size = query.Page.Size
-                }
-            };
+            var searchResult = new SearchResult<ArtifactSearchModel>(artifaces.Count(), query.Page);
 
-            if (searchResult.TotalCount <= query.Page.SkipCount())
-            {
-                searchResult.Page.Index = 1;
-            }
-
-            searchResult.Page = query.Page;
             searchResult.Datas = artifaces
                 .Skip(searchResult.Page.SkipCount())
                 .Take(searchResult.Page.Size)
+                .Select(aa => new ArtifactSearchModel
+                {
+                    RepoCode = aa.RepoCode,
+                    Name = aa.Name,
+                    Version = aa.Version,
+                    Tags = aa.Tags.ToArray(),
+                    DownloadQuantity = aa.Objects.Sum(oo => oo.DownloadQuantity),
+                    Attributes = aa.Attributes
+                })
                 .ToArray();
 
             return searchResult;
@@ -126,7 +113,7 @@ namespace D.ArtifactReposiotry.Controllers
 
             if (artifact == null)
             {
-                return Result.CreateError<Artifact>($"[{pk}] artifact is not exist.");
+                return Result.CreateError<Artifact>($"[{pk}] artifact version is not exist.");
             }
 
             return Result.CreateSuccess(artifact);

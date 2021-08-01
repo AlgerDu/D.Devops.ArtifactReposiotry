@@ -19,6 +19,6 @@ namespace D.ArtifactReposiotry
 
         public int DownloadQuantity { get; set; }
 
-        public DateTimeOffset LastUpdateTime { get; set; }
+        public DateTimeOffset? LastUpdateTime { get; set; }
     }
 }

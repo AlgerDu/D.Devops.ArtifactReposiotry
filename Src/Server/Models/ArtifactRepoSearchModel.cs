@@ -13,6 +13,6 @@ namespace D.ArtifactReposiotry
 
         public string LatestVersion { get; set; }
 
-        public string LastUpdateTime { get; set; }
+        public DateTimeOffset? LastUpdateTime { get; set; }
     }
 }
