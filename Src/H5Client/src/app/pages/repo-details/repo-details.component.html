@@ -41,7 +41,7 @@
     <tr *ngFor="let data of artifactTable.datas">
       <td>{{data.name}}</td>
       <td>{{data.latestVersion}}</td>
-      <td>{{data.lastUpdateTime??""}}</td>
+      <td>{{data.lastUpdateTime}}</td>
       <td>
         <a routerLink="/repo/{{repo.code}}/artifacts/{{data.name}}">详情</a>
       </td>
