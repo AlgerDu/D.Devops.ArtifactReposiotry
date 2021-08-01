@@ -34,5 +34,22 @@ namespace D.ArtifactReposiotry
         public int TotalCount { get; set; }
 
         public PageModel Page { get; set; } = new PageModel();
+
+        public SearchResult() { }
+
+        public SearchResult(int dotalCount, PageModel page)
+        {
+            TotalCount = TotalCount;
+            Page = new PageModel
+            {
+                Index = page.Index,
+                Size = page.Size
+            };
+
+            if (TotalCount <= Page.SkipCount())
+            {
+                Page.Index = 1;
+            }
+        }
     }
 }
