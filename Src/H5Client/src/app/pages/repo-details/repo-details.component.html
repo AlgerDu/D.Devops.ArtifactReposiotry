@@ -33,15 +33,15 @@
     <tr>
       <th>制品名</th>
       <th>最新版本</th>
-      <th>最近更新时间</th>
+      <th>最近更新</th>
       <th>操作</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let data of artifactTable.datas">
       <td>{{data.name}}</td>
-      <td>{{data.lastVersion}}</td>
-      <td>{{data.lastUpdateTime}}</td>
+      <td>{{data.latestVersion}}</td>
+      <td>{{data.lastUpdateTime??""}}</td>
       <td>
         <a routerLink="/repo/{{repo.code}}/artifacts/{{data.name}}">详情</a>
       </td>

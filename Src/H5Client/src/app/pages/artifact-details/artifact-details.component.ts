@@ -5,7 +5,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Observable } from 'rxjs';
 import { isSuccess, SearchResult, TableGetDatable } from 'src/app/models/base';
 import { ArtifactRepo, ArtifactRepoService } from 'src/app/services/artifact-repo.service';
-import { ArtifactListModel, ArtifactService, ArtifactVersionListModel } from 'src/app/services/artifact.service';
+import { ArtifactSearchModel, ArtifactService, ArtifactVersionListModel } from 'src/app/services/artifact.service';
 import { TableModel } from '../../models/base';
 
 @Component({
@@ -13,12 +13,12 @@ import { TableModel } from '../../models/base';
   templateUrl: './artifact-details.component.html',
   styleUrls: ['./artifact-details.component.less']
 })
-export class ArtifactDetailsComponent implements TableGetDatable<ArtifactVersionListModel>,OnInit {
+export class ArtifactDetailsComponent implements TableGetDatable<ArtifactSearchModel>,OnInit {
 
   repo: ArtifactRepo = { code: "", name: "name" };
-  artifact:ArtifactListModel = {name:"",lastVersion:"",lastUpdateTime:new Date()};
+  artifact:ArtifactVersionListModel = {name:"",version:"",lastUpdateTime:new Date()};
 
-  table:TableModel<ArtifactVersionListModel>;
+  table:TableModel<ArtifactSearchModel>;
 
   constructor(
     private route: ActivatedRoute
@@ -26,10 +26,10 @@ export class ArtifactDetailsComponent implements TableGetDatable<ArtifactVersion
     , private notification: NzNotificationService
     , private repoService: ArtifactRepoService
     , private artifactService: ArtifactService) { 
-      this.table = new TableModel<ArtifactVersionListModel>(this);
+      this.table = new TableModel<ArtifactSearchModel>(this);
     }
 
-  getDate(model: TableModel<ArtifactVersionListModel>): Observable<SearchResult<ArtifactVersionListModel>> {
+  getDate(model: TableModel<ArtifactSearchModel>): Observable<SearchResult<ArtifactSearchModel>> {
     return this.artifactService.getVersions(this.repo.code,this.artifact.name, { page: model.page, condition: model.condition })
   }
 

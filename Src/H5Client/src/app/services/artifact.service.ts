@@ -4,10 +4,21 @@ import { SearchResult, Search, Result, DataResult } from '../models/base';
 import { Observable } from 'rxjs';
 import { ApiUrl } from '../models/urls';
 
-export interface ArtifactListModel {
+export interface ArtifactRepoSearchModel {
+  repoCode:string;
   name: string;
-  lastVersion: string;
-  lastUpdateTime: Date;
+  latestVersion: string;
+  lastUpdateTime?: Date;
+}
+
+export interface ArtifactSearchModel {
+  repoCode:string;
+  name: string;
+  version: string;
+  tags:string[];
+  attributes: { [key: string]: string; } ;
+  downloadQuantity:number;
+  lastUpdateTime?: Date;
 }
 
 export interface ArtifactVersionListModel {
@@ -29,15 +40,15 @@ export class ArtifactService {
     private http: HttpClient
   ) { }
 
-  search(repoCode: string, query: Search): Observable<SearchResult<ArtifactListModel>> {
-    return this.http.post<SearchResult<ArtifactListModel>>(ApiUrl.searchArgifact.replace("{repoCode}", repoCode), query, this.httpOptions);
+  search(repoCode: string, query: Search): Observable<SearchResult<ArtifactRepoSearchModel>> {
+    return this.http.post<SearchResult<ArtifactRepoSearchModel>>(ApiUrl.searchArgifact.replace("{repoCode}", repoCode), query, this.httpOptions);
   }
 
-  getDetail(repoCode: string, artifactName: string): Observable<DataResult<ArtifactListModel>> {
-    return this.http.get<DataResult<ArtifactListModel>>(ApiUrl.argifactDetails.replace("{repoCode}", repoCode).replace("{argifactName}", artifactName), this.httpOptions);
+  getDetail(repoCode: string, artifactName: string): Observable<DataResult<ArtifactVersionListModel>> {
+    return this.http.get<DataResult<ArtifactVersionListModel>>(ApiUrl.argifactDetails.replace("{repoCode}", repoCode).replace("{argifactName}", artifactName), this.httpOptions);
   }
 
-  getVersions(repoCode: string, artifactName: string, query: Search): Observable<SearchResult<ArtifactVersionListModel>> {
-    return this.http.post<SearchResult<ArtifactVersionListModel>>(ApiUrl.argifactVersions.replace("{repoCode}", repoCode).replace("{argifactName}", artifactName), query, this.httpOptions);
+  getVersions(repoCode: string, artifactName: string, query: Search): Observable<SearchResult<ArtifactSearchModel>> {
+    return this.http.post<SearchResult<ArtifactSearchModel>>(ApiUrl.argifactVersions.replace("{repoCode}", repoCode).replace("{argifactName}", artifactName), query, this.httpOptions);
   }
 }

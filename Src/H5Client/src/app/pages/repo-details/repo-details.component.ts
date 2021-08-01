@@ -4,7 +4,7 @@ import { ArtifactRepoService, ArtifactRepo } from '../../services/artifact-repo.
 import { SearchResult, PageModel, TableModel, TableGetDatable, Result, isSuccess } from '../../models/base';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable, observable } from 'rxjs';
-import { ArtifactService, ArtifactListModel } from '../../services/artifact.service';
+import { ArtifactService, ArtifactRepoSearchModel } from '../../services/artifact.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -16,11 +16,11 @@ import { EventCode } from 'src/app/models/events';
   templateUrl: './repo-details.component.html',
   styleUrls: ['./repo-details.component.less']
 })
-export class RepoDetailsComponent implements TableGetDatable<ArtifactListModel>, OnInit {
+export class RepoDetailsComponent implements TableGetDatable<ArtifactRepoSearchModel>, OnInit {
 
   repo: ArtifactRepo = { code: "", name: "" };
 
-  artifactTable: TableModel<ArtifactListModel>;
+  artifactTable: TableModel<ArtifactRepoSearchModel>;
 
   constructor(
     private route: ActivatedRoute
@@ -30,7 +30,7 @@ export class RepoDetailsComponent implements TableGetDatable<ArtifactListModel>,
     , private artifactService: ArtifactService
     , private eventService: DEventService
   ) {
-    this.artifactTable = new TableModel<ArtifactListModel>(this);
+    this.artifactTable = new TableModel<ArtifactRepoSearchModel>(this);
   }
 
   ngOnInit(): void {
@@ -50,7 +50,7 @@ export class RepoDetailsComponent implements TableGetDatable<ArtifactListModel>,
     });
   }
 
-  getDate(model: TableModel<ArtifactListModel>): Observable<SearchResult<ArtifactListModel>> {
+  getDate(model: TableModel<ArtifactRepoSearchModel>): Observable<SearchResult<ArtifactRepoSearchModel>> {
     return this.artifactService.search(this.repo.code, { page: model.page, condition: model.condition });
   }
 

@@ -34,9 +34,10 @@
     [nzPageIndex]="table.page.index" (nzQueryParams)="table.onQueryParamsChange($event)">
     <thead>
       <tr>
-        <th>版本号</th>
+        <th>版本</th>
         <th>标签</th>
-        <th>最近更新时间</th>
+        <th>下载数</th>
+        <th>最近更新</th>
         <th>操作</th>
       </tr>
     </thead>
@@ -44,6 +45,7 @@
       <tr *ngFor="let data of table.datas">
         <td>{{data.version}}</td>
         <td></td>
+        <td>{{data.downloadQuantity}}</td>
         <td>{{data.lastUpdateTime}}</td>
         <td>
           <a routerLink="/repo/{{repo.code}}/artifacts/{{data.name}}">详情</a>
