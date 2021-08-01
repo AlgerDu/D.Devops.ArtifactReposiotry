@@ -39,7 +39,7 @@ namespace D.ArtifactReposiotry
 
         public SearchResult(int dotalCount, PageModel page)
         {
-            TotalCount = TotalCount;
+            TotalCount = dotalCount;
             Page = new PageModel
             {
                 Index = page.Index,
