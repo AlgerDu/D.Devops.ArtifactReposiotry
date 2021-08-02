@@ -31,6 +31,7 @@ import { AppComponent } from './app.component';
 import { AddArtifactRepoComponent } from './modals/add-artifact-repo/add-artifact-repo.component';
 import { RepoDetailsComponent } from './pages/repo-details/repo-details.component';
 import { ArtifactDetailsComponent } from './pages/artifact-details/artifact-details.component';
+import { SearchComponent } from './pages/search/search.component';
 
 registerLocaleData(zh);
 
@@ -39,7 +40,8 @@ registerLocaleData(zh);
     AppComponent,
     AddArtifactRepoComponent,
     RepoDetailsComponent,
-    ArtifactDetailsComponent
+    ArtifactDetailsComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
