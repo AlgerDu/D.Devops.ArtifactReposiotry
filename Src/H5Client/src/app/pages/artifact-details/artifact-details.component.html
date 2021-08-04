@@ -44,7 +44,9 @@
     <tbody>
       <tr *ngFor="let data of table.datas">
         <td>{{data.version}}</td>
-        <td></td>
+        <td>
+          <nz-tag *ngFor="let tag of data.tags">{{tag}}</nz-tag>
+        </td>
         <td>{{data.downloadQuantity}}</td>
         <td>{{data.lastUpdateTime}}</td>
         <td>
