@@ -11,5 +11,22 @@
     "Endpoint": "",
     "AccessKey": "",
     "SecretKey": ""
-  }
+  },
+  "InternalTags": [
+    {
+      "Name": "alpha",
+      "Color": "",
+      "Description": ""
+    },
+    {
+      "Name": "beat",
+      "Color": "",
+      "Description": ""
+    },
+    {
+      "Name": "rc",
+      "Color": "",
+      "Description": ""
+    }
+  ]
 }
