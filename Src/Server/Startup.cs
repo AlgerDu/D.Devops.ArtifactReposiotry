@@ -40,6 +40,7 @@ namespace D.ArtifactReposiotry
             services.AddSingleton<IArtifactRepoRepository, ArtifactRepoRepository>();
             services.AddSingleton<IArtifactRepository, ArtifactRepository>();
             services.AddSingleton<ITagRepository, TagRepository>();
+            services.AddSingleton<Application>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
