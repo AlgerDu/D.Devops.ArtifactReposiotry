@@ -11,12 +11,21 @@ namespace D.ArtifactReposiotry.Controllers
     public class TagController : ControllerBase
     {
         readonly ILogger _logger;
+        readonly ITagRepository _tagRepo;
 
         public TagController(
             ILogger<TagController> logger
+            , ITagRepository tagRepo
             )
         {
             _logger = logger;
+            _tagRepo = tagRepo;
+        }
+
+        [HttpGet("api/tags")]
+        public Tag[] GetList()
+        {
+            return _tagRepo.Query().ToArray();
         }
     }
 }
