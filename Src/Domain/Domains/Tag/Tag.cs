@@ -29,5 +29,10 @@ namespace D.ArtifactReposiotry
         /// 是否内置（不可更改）
         /// </summary>
         public bool Internal { get; set; }
+
+        /// <summary>
+        /// 对于一个制品来说，只有一个
+        /// </summary>
+        public bool Single { get; set; }
     }
 }
