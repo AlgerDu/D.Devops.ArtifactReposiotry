@@ -12,10 +12,10 @@
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="false">
       <li nz-menu-item nzMatchRouter>
-        <i nz-icon [nzType]="'setting'"></i>
+        <i nz-icon [nzType]="'search'"></i>
         <span><a routerLink="/search">搜索</a></span>
       </li>
-      <li nz-submenu nzTitle="仓库" nzIcon="appstore">
+      <li [nzOpen]="true" nz-submenu nzTitle="仓库" nzIcon="appstore">
         <ul>
           <li nz-menu-item nzMatchRouter *ngFor="let repo of artifactRepos">
             <a routerLink="/repo/{{repo.code}}">{{repo.name}}</a>
