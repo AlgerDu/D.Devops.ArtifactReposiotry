@@ -33,6 +33,7 @@ import { AddArtifactRepoComponent } from './modals/add-artifact-repo/add-artifac
 import { RepoDetailsComponent } from './pages/repo-details/repo-details.component';
 import { ArtifactDetailsComponent } from './pages/artifact-details/artifact-details.component';
 import { SearchComponent } from './pages/search/search.component';
+import { DTagComponent } from './components/d-tag/d-tag.component';
 
 registerLocaleData(zh);
 
@@ -42,7 +43,8 @@ registerLocaleData(zh);
     AddArtifactRepoComponent,
     RepoDetailsComponent,
     ArtifactDetailsComponent,
-    SearchComponent
+    SearchComponent,
+    DTagComponent
   ],
   imports: [
     BrowserModule,
