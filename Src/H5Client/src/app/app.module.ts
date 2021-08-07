@@ -34,6 +34,7 @@ import { RepoDetailsComponent } from './pages/repo-details/repo-details.componen
 import { ArtifactDetailsComponent } from './pages/artifact-details/artifact-details.component';
 import { SearchComponent } from './pages/search/search.component';
 import { DTagComponent } from './components/d-tag/d-tag.component';
+import { ArtifactVersionComponent } from './pages/artifact-version/artifact-version.component';
 
 registerLocaleData(zh);
 
@@ -43,6 +44,7 @@ registerLocaleData(zh);
     AddArtifactRepoComponent,
     RepoDetailsComponent,
     ArtifactDetailsComponent,
+    ArtifactVersionComponent,
     SearchComponent,
     DTagComponent
   ],
