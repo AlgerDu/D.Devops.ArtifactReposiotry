@@ -26,6 +26,9 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -60,7 +63,7 @@ registerLocaleData(zh);
     NzModalModule,
     NzFormModule,
     NzGridModule, NzNotificationModule,
-    NzButtonModule ,NzInputModule,NzPageHeaderModule,NzBreadCrumbModule,NzAvatarModule,NzTagModule,
+    NzButtonModule ,NzInputModule,NzPageHeaderModule,NzBreadCrumbModule,NzAvatarModule,NzTagModule,NzTabsModule,NzDescriptionsModule,NzStatisticModule,
     NzDropDownModule,NzTableModule,NzSkeletonModule,NzPopconfirmModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
