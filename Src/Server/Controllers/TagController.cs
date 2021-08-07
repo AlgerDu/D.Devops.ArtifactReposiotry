@@ -27,5 +27,18 @@ namespace D.ArtifactReposiotry.Controllers
         {
             return _tagRepo.Query().ToArray();
         }
+
+        [HttpGet("api/tags/{tagName}")]
+        public ActionResult<Tag> Get([FromRoute] string tagName)
+        {
+            var tag = _tagRepo.Get(tagName);
+
+            if (tag == null)
+            {
+                return NoContent();
+            }
+
+            return tag;
+        }
     }
 }
