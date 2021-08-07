@@ -5,4 +5,5 @@ export class ApiUrl{
     static searchArgifact = "api/repositorys/{repoCode}/artifacts/search";
     static argifactDetails = "api/repositorys/{repoCode}/artifacts/{argifactName}";
     static argifactVersions = "api/repositorys/{repoCode}/artifacts/{argifactName}/versions";
+    static getTag = "api/tags/{name}";
 }
