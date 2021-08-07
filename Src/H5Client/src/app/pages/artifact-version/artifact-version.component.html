@@ -1,1 +1,67 @@
-<p>artifact-version works!</p>
+<nz-page-header class="site-page-header">
+
+    <nz-breadcrumb nz-page-header-breadcrumb>
+      <nz-breadcrumb-item>
+        <a>仓库</a>
+      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>
+        {{artifact.repoCode}}
+      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>
+        {{artifact.name}}
+      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>
+        {{artifact.version}}
+      </nz-breadcrumb-item>
+    </nz-breadcrumb>
+  
+    <nz-avatar nz-page-header-avatar nzText="{{artifact.name}}"> </nz-avatar>
+  
+    <nz-page-header-title>{{artifact.name+'_v'+artifact.version}}</nz-page-header-title>
+  
+    <nz-page-header-tags>
+        <app-d-tag *ngFor="let tag of artifact.tags" [tag]="tag" ></app-d-tag>
+      </nz-page-header-tags>
+
+    <nz-page-header-extra>
+      <button nz-button nzNoAnimation nz-dropdown [nzDropdownMenu]="menu" style="border: none; padding: 0">
+        <i nz-icon nzType="ellipsis" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></i>
+      </button>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item nzDanger (click)="deleteClick()">删除</li>
+        </ul>
+      </nz-dropdown-menu>
+    </nz-page-header-extra>
+
+    <nz-page-header-content>
+        <div class="content">
+          <div class="main">
+            <nz-descriptions nzSize="small" [nzColumn]="2">
+              <nz-descriptions-item nzTitle="Created" [nzSpan]="1">Lili Qu</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Association" [nzSpan]="1"><a>421421</a></nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">2017-01-10</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Effective Time" [nzSpan]="1">2017-10-10</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Remarks" [nzSpan]="2">
+                Gonghu Road, Xihu District, Hangzhou, Zhejiang, China
+              </nz-descriptions-item>
+            </nz-descriptions>
+          </div>
+          <div class="extra">
+            <div>
+              <nz-statistic nzTitle="Status" nzValue="Pending"></nz-statistic>
+              <nz-statistic nzTitle="Price" [nzValue]="568.08" nzPrefix="$" style="margin: 0 32px"></nz-statistic>
+            </div>
+          </div>
+        </div>
+      </nz-page-header-content>
+  
+    <nz-page-header-footer>
+        <nz-tabset [nzSelectedIndex]="0">
+          <nz-tab nzTitle="更新日志"></nz-tab>
+          <nz-tab nzTitle="依赖项"></nz-tab>
+          <nz-tab nzTitle="文件"></nz-tab>
+        </nz-tabset>
+      </nz-page-header-footer>
+
+  </nz-page-header>
