@@ -57,7 +57,9 @@ namespace D.ArtifactReposiotry
             {
                 var db = _liteDB.GetRepository();
 
-                return db.Upsert<TEntity>(entity);
+                db.Upsert<TEntity>(entity);
+
+                return true;
             }
             catch (Exception ex)
             {
