@@ -12,6 +12,8 @@ import { ArtifactSearchModel, ArtifactService } from 'src/app/services/artifact.
 })
 export class ArtifactVersionComponent implements OnInit {
 
+  text:string="#sdfsdfdf";
+
   artifact: ArtifactSearchModel = {
     attributes: {},
     downloadQuantity: 0,
