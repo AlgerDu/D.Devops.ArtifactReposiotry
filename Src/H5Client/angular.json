@@ -37,15 +37,15 @@
             ],
             "styles": [
               "src/styles.less",
-              "src/assets/editor.md/editormd.css"
+              "node_modules/editor.md/css/editormd.css"
             ],
             "scripts": [
-              "src/assets/editor.md/jquery.js",
+              "node_modules/jquery/dist/jquery.js",
               "src/assets/editor.md/editormd.js",
-              "src/assets/editor.md/marked.min.js",
-              "src/assets/editor.md/prettify.min.js",
-              "src/assets/editor.md/raphael.min.js",
-              "src/assets/editor.md/underscore.min.js"
+              "src/assets/editor.md/lib/marked.min.js",
+              "src/assets/editor.md/lib/prettify.min.js",
+              "src/assets/editor.md/lib/raphael.min.js",
+              "src/assets/editor.md/lib/underscore.min.js"
             ]
           },
           "configurations": {
