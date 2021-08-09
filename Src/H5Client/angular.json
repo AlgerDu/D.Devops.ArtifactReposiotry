@@ -37,17 +37,14 @@
             ],
             "styles": [
               "src/styles.less",
-              "src/assets/editor.md/editormd.min.css"
+              "src/assets/editor.md/editormd.css"
             ],
             "scripts": [
-              "src/assets/editor.md/jquery.min.js",
-              "src/assets/editor.md/editormd.min.js",
-              "src/assets/editor.md/flowchart.min.js",
-              "src/assets/editor.md/jquery.flowchart.min.js",
+              "src/assets/editor.md/jquery.js",
+              "src/assets/editor.md/editormd.js",
               "src/assets/editor.md/marked.min.js",
               "src/assets/editor.md/prettify.min.js",
               "src/assets/editor.md/raphael.min.js",
-              "src/assets/editor.md/sequence-diagram.min.js",
               "src/assets/editor.md/underscore.min.js"
             ]
           },
