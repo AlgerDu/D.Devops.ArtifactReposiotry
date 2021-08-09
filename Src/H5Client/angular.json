@@ -36,9 +36,20 @@
               }
             ],
             "styles": [
-              "src/styles.less"
+              "src/styles.less",
+              "src/assets/editor.md/editormd.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/editor.md/jquery.min.js",
+              "src/assets/editor.md/editormd.min.js",
+              "src/assets/editor.md/flowchart.min.js",
+              "src/assets/editor.md/jquery.flowchart.min.js",
+              "src/assets/editor.md/marked.min.js",
+              "src/assets/editor.md/prettify.min.js",
+              "src/assets/editor.md/raphael.min.js",
+              "src/assets/editor.md/sequence-diagram.min.js",
+              "src/assets/editor.md/underscore.min.js"
+            ]
           },
           "configurations": {
             "production": {
