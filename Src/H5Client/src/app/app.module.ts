@@ -38,6 +38,7 @@ import { ArtifactDetailsComponent } from './pages/artifact-details/artifact-deta
 import { SearchComponent } from './pages/search/search.component';
 import { DTagComponent } from './components/d-tag/d-tag.component';
 import { ArtifactVersionComponent } from './pages/artifact-version/artifact-version.component';
+import { MarkdownEditorComponent } from './components/markdown-editor/markdown-editor.component';
 
 registerLocaleData(zh);
 
@@ -49,7 +50,8 @@ registerLocaleData(zh);
     ArtifactDetailsComponent,
     ArtifactVersionComponent,
     SearchComponent,
-    DTagComponent
+    DTagComponent,
+    MarkdownEditorComponent
   ],
   imports: [
     BrowserModule,
