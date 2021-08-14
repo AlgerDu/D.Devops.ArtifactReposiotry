@@ -61,6 +61,6 @@
 
   </nz-page-header>
 
-  <p>sfsdfdf</p>
+  <textarea [(ngModel)]="text" (ngModelChange)="modelChange($event)"></textarea>
 
-  <app-markdown-editor ngDefaultControl [(ngModel)]="text"></app-markdown-editor>
+  <app-markdown ngDefaultControl [name]="text"  [(ngModel)]="text"></app-markdown>

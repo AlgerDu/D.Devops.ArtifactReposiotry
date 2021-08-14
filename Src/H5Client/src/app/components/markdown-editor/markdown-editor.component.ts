@@ -93,7 +93,7 @@ export class MarkdownEditorComponent implements OnInit, ControlValueAccessor {
     "toolbarAutoFixed": true,
     "toolbarIcons": "full",
     "toolbarTitles": {}
-};
+  };
 
   private onChange = (_: any) => { };
   private onTouched = () => { };

@@ -45,4 +45,9 @@ export class ArtifactVersionComponent implements OnInit {
   deleteClick(){
 
   }
+
+  modelChange(e:any):void{
+    console.log(e);
+    
+  }
 }
