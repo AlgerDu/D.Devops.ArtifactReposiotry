@@ -36,16 +36,9 @@
               }
             ],
             "styles": [
-              "src/styles.less",
-              "node_modules/editor.md/css/editormd.css"
+              "src/styles.less"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.js",
-              "src/assets/editor.md/editormd.js",
-              "src/assets/editor.md/lib/marked.min.js",
-              "src/assets/editor.md/lib/prettify.min.js",
-              "src/assets/editor.md/lib/raphael.min.js",
-              "src/assets/editor.md/lib/underscore.min.js"
             ]
           },
           "configurations": {
