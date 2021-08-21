@@ -39,6 +39,7 @@
               "src/styles.less"
             ],
             "scripts": [
+              "node_modules/marked/lib/marked.js"
             ]
           },
           "configurations": {
