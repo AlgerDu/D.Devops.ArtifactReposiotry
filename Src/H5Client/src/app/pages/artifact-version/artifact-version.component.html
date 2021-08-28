@@ -1,66 +1,70 @@
 <nz-page-header class="site-page-header">
 
-    <nz-breadcrumb nz-page-header-breadcrumb>
-      <nz-breadcrumb-item>
-        <a>仓库</a>
-      </nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        {{artifact.repoCode}}
-      </nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        {{artifact.name}}
-      </nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        {{artifact.version}}
-      </nz-breadcrumb-item>
-    </nz-breadcrumb>
-  
-    <nz-avatar nz-page-header-avatar nzText="{{artifact.name}}"> </nz-avatar>
-  
-    <nz-page-header-title>{{artifact.name+'_v'+artifact.version}}</nz-page-header-title>
-  
-    <nz-page-header-tags>
-        <app-d-tag *ngFor="let tag of artifact.tags" [tag]="tag" ></app-d-tag>
-      </nz-page-header-tags>
+  <nz-breadcrumb nz-page-header-breadcrumb>
+    <nz-breadcrumb-item>
+      <a>仓库</a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      {{artifact.repoCode}}
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      {{artifact.name}}
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      {{artifact.version}}
+    </nz-breadcrumb-item>
+  </nz-breadcrumb>
 
-    <nz-page-header-extra>
-      <button nz-button nzNoAnimation nz-dropdown [nzDropdownMenu]="menu" style="border: none; padding: 0">
-        <i nz-icon nzType="ellipsis" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></i>
-      </button>
-      <nz-dropdown-menu #menu="nzDropdownMenu">
-        <ul nz-menu>
-          <li nz-menu-item nzDanger (click)="deleteClick()">删除</li>
-        </ul>
-      </nz-dropdown-menu>
-    </nz-page-header-extra>
+  <nz-avatar nz-page-header-avatar nzText="{{artifact.name}}"> </nz-avatar>
 
-    <nz-page-header-content>
-        <div class="content">
-          <div class="main">
-            <nz-descriptions nzSize="small" [nzColumn]="2">
-              <nz-descriptions-item nzTitle="上一个版本" [nzSpan]="2">v0.3.0.0808</nz-descriptions-item>
-              <nz-descriptions-item nzTitle="自动化测试" [nzSpan]="2">通过<a>（查看报告）</a></nz-descriptions-item>
-            </nz-descriptions>
-          </div>
-          <div class="extra">
-            <div>
-              <nz-statistic nzTitle="下载数" [nzValue]="5" style="margin: 0 32px"></nz-statistic>
-            </div>
-          </div>
+  <nz-page-header-title>{{artifact.name+'_v'+artifact.version}}</nz-page-header-title>
+
+  <nz-page-header-tags>
+    <app-d-tag *ngFor="let tag of artifact.tags" [tag]="tag"></app-d-tag>
+  </nz-page-header-tags>
+
+  <nz-page-header-extra>
+    <button nz-button nzNoAnimation nz-dropdown [nzDropdownMenu]="menu" style="border: none; padding: 0">
+      <i nz-icon nzType="ellipsis" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></i>
+    </button>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item nzDanger (click)="deleteClick()">删除</li>
+      </ul>
+    </nz-dropdown-menu>
+  </nz-page-header-extra>
+
+  <nz-page-header-content>
+    <div class="content">
+      <div class="main">
+        <nz-descriptions nzSize="small" [nzColumn]="2">
+          <nz-descriptions-item nzTitle="上一个版本" [nzSpan]="2">v0.3.0.0808</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="自动化测试" [nzSpan]="2">通过<a>（查看报告）</a></nz-descriptions-item>
+        </nz-descriptions>
+      </div>
+      <div class="extra">
+        <div>
+          <nz-statistic nzTitle="下载数" [nzValue]="5" style="margin: 0 32px"></nz-statistic>
         </div>
-      </nz-page-header-content>
-  
-    <nz-page-header-footer>
-        <nz-tabset [nzSelectedIndex]="0">
-          <nz-tab nzTitle="更新日志">
-          </nz-tab>
-          <nz-tab nzTitle="依赖项"></nz-tab>
-          <nz-tab nzTitle="文件"></nz-tab>
-        </nz-tabset>
-      </nz-page-header-footer>
+      </div>
+    </div>
+  </nz-page-header-content>
+</nz-page-header>
 
-  </nz-page-header>
+<nz-tabset>
 
-  <textarea [(ngModel)]="text"></textarea>
+  <nz-tab nzTitle="更新日志">
 
-  <markdown [data]="text"></markdown>
+    <textarea [(ngModel)]="text"></textarea>
+    <markdown [data]="text"></markdown>
+    
+  </nz-tab>
+
+  <nz-tab nzTitle="依赖项">
+
+  </nz-tab>
+
+  <nz-tab nzTitle="文件">
+
+  </nz-tab>
+</nz-tabset>
