@@ -62,3 +62,5 @@
   </nz-page-header>
 
   <textarea [(ngModel)]="text" (ngModelChange)="modelChange($event)"></textarea>
+
+  <markdown [data]="text"></markdown>

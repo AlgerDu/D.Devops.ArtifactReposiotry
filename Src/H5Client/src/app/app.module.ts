@@ -39,6 +39,8 @@ import { SearchComponent } from './pages/search/search.component';
 import { DTagComponent } from './components/d-tag/d-tag.component';
 import { ArtifactVersionComponent } from './pages/artifact-version/artifact-version.component';
 
+import { MarkdownModule } from 'ngx-markdown';
+
 registerLocaleData(zh);
 
 @NgModule({
@@ -64,7 +66,8 @@ registerLocaleData(zh);
     NzFormModule,
     NzGridModule, NzNotificationModule,
     NzButtonModule ,NzInputModule,NzPageHeaderModule,NzBreadCrumbModule,NzAvatarModule,NzTagModule,NzTabsModule,NzDescriptionsModule,NzStatisticModule,
-    NzDropDownModule,NzTableModule,NzSkeletonModule,NzPopconfirmModule
+    NzDropDownModule,NzTableModule,NzSkeletonModule,NzPopconfirmModule,
+    MarkdownModule.forRoot()
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]
