@@ -4,20 +4,42 @@ import { SearchResult, Search, Result, DataResult } from '../models/base';
 import { Observable } from 'rxjs';
 import { ApiUrl } from '../models/urls';
 
+export interface ArtifactBaseModel {
+  repoCode: string;
+  name: string;
+  lastUpdateTime?: Date;
+}
+
+export interface ArtifactStaticModel extends ArtifactBaseModel {
+  latestVersion: string;
+}
+
+export interface ArtifactListModel extends ArtifactBaseModel {
+  version: string;
+  tags: string[];
+  downloadQuantity: number;
+}
+
+export interface ArtifactModel extends ArtifactBaseModel {
+  tags: string[];
+  attributes: { [key: string]: string; };
+  downloadQuantity: number;
+}
+
 export interface ArtifactRepoSearchModel {
-  repoCode:string;
+  repoCode: string;
   name: string;
   latestVersion: string;
   lastUpdateTime?: Date;
 }
 
 export interface ArtifactSearchModel {
-  repoCode:string;
+  repoCode: string;
   name: string;
   version: string;
-  tags:string[];
-  attributes: { [key: string]: string; } ;
-  downloadQuantity:number;
+  tags: string[];
+  attributes: { [key: string]: string; };
+  downloadQuantity: number;
   lastUpdateTime?: Date;
 }
 
