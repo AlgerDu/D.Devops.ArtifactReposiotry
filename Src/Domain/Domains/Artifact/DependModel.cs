@@ -6,7 +6,7 @@ namespace D.ArtifactReposiotry
 {
     public class DependModel
     {
-        public Dictionary<string, string> Conditions { get; set; }
+        public string Condition { get; set; }
 
         public DependArtifactModel[] Artifacts { get; set; }
     }
