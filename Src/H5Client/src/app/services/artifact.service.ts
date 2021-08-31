@@ -20,10 +20,22 @@ export interface ArtifactListModel extends ArtifactBaseModel {
   downloadQuantity: number;
 }
 
+export interface DependArtifactModel {
+  name: string;
+  version: string;
+}
+
+export interface DependModel {
+  condition: string;
+  artifacts: DependArtifactModel[];
+}
+
 export interface ArtifactModel extends ArtifactBaseModel {
+  version: string;
   tags: string[];
   attributes: { [key: string]: string; };
   downloadQuantity: number;
+  depends: DependModel[];
 }
 
 export interface ArtifactRepoSearchModel {
