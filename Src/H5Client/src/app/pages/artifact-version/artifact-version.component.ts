@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { ArtifactRepoService } from 'src/app/services/artifact-repo.service';
-import { ArtifactSearchModel, ArtifactService } from 'src/app/services/artifact.service';
+import { ArtifactModel, ArtifactSearchModel, ArtifactService } from 'src/app/services/artifact.service';
 
 @Component({
   selector: 'app-artifact-version',
@@ -12,15 +12,31 @@ import { ArtifactSearchModel, ArtifactService } from 'src/app/services/artifact.
 })
 export class ArtifactVersionComponent implements OnInit {
 
-  text:string="#sdfsdfdf";
-
-  artifact: ArtifactSearchModel = {
-    attributes: {},
-    downloadQuantity: 0,
+  artifact: ArtifactModel = {
+    attributes: {
+      doc:"# readme"
+    },
+    downloadQuantity: 4,
     name: "",
     repoCode: "",
     tags: [],
-    version: ""
+    version: "",
+    depends:[{
+      condition:"runtime",
+      artifacts:[{
+        name:"asp.net core runtime",
+        version:"net5.0"
+      }]
+    },{
+      condition:"bse",
+      artifacts:[{
+        name:"spider.core",
+        version:"v0.1.0"
+      },{
+        name:"spider.ui",
+        version:"v0.1.1"
+      }]
+    }]
   }
 
   constructor(

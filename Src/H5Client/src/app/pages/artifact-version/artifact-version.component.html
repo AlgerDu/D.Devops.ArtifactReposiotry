@@ -44,7 +44,7 @@
       </div>
       <div class="extra">
         <div>
-          <nz-statistic nzTitle="下载数" [nzValue]="5" style="margin: 0 32px"></nz-statistic>
+          <nz-statistic nzTitle="下载数" [nzValue]="artifact.downloadQuantity" style="margin: 0 32px"></nz-statistic>
         </div>
       </div>
     </div>
@@ -54,14 +54,31 @@
 <nz-tabset>
 
   <nz-tab nzTitle="更新日志">
+    <markdown [data]="artifact.attributes['doc']"></markdown>
 
-    <textarea [(ngModel)]="text"></textarea>
-    <markdown [data]="text"></markdown>
-    
   </nz-tab>
 
   <nz-tab nzTitle="依赖项">
-
+    <nz-table #colSpanTable [nzData]="artifact.depends" nzBordered>
+      <thead>
+        <tr>
+          <th>条件</th>
+          <th>依赖项</th>
+          <th>版本</th>
+        </tr>
+      </thead>
+    </nz-table>
+    <tbody>
+      <ng-container *ngFor="let depend of colSpanTable.data">
+        <tr *ngFor="let artifact of depend.artifacts; index as i">
+          <ng-container *ngIf="i == 0">
+            <td rowspan="depend.artifacts.length">{{ depend.condition }}</td>
+            <td>{{ artifact.name }}</td>
+            <td>{{ artifact.version }}</td>
+          </ng-container>
+        </tr>
+      </ng-container>
+    </tbody>
   </nz-tab>
 
   <nz-tab nzTitle="文件">
