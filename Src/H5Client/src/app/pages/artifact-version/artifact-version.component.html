@@ -59,7 +59,7 @@
   </nz-tab>
 
   <nz-tab nzTitle="依赖项">
-    <nz-table #colSpanTable [nzData]="artifact.depends" nzBordered>
+    <nz-table #colSpanTable [nzData]="artifact.depends" nzBordered [nzShowPagination]="false">
       <thead>
         <tr>
           <th>条件</th>
@@ -67,18 +67,22 @@
           <th>版本</th>
         </tr>
       </thead>
+      <tbody>
+        <ng-container *ngFor="let depend of colSpanTable.data">
+          <tr *ngFor="let artifact of depend.artifacts; index as i">
+            <ng-container *ngIf="i == 0">
+              <td [attr.rowspan]="depend.artifacts.length">{{ depend.condition }}</td>
+              <td>{{ artifact.name }}</td>
+              <td>{{ artifact.version }}</td>
+            </ng-container>
+            <ng-container *ngIf="i != 0">
+              <td>{{ artifact.name }}</td>
+              <td>{{ artifact.version }}</td>
+            </ng-container>
+          </tr>
+        </ng-container>
+      </tbody>
     </nz-table>
-    <tbody>
-      <ng-container *ngFor="let depend of colSpanTable.data">
-        <tr *ngFor="let artifact of depend.artifacts; index as i">
-          <ng-container *ngIf="i == 0">
-            <td rowspan="depend.artifacts.length">{{ depend.condition }}</td>
-            <td>{{ artifact.name }}</td>
-            <td>{{ artifact.version }}</td>
-          </ng-container>
-        </tr>
-      </ng-container>
-    </tbody>
   </nz-tab>
 
   <nz-tab nzTitle="文件">
