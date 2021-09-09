@@ -86,6 +86,25 @@
   </nz-tab>
 
   <nz-tab nzTitle="文件">
-
+    <nz-table #obejctTable [nzData]="artifact.obejcts" nzBordered [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th>文件名</th>
+          <th>标签</th>
+          <th>下载数量</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let oobject of obejctTable.data">
+          <td>{{ oobject.name }}</td>
+          <td>
+            <app-d-tag *ngFor="let tag of oobject.tags" [tag]="tag" ></app-d-tag>
+          </td>
+          <td>{{ oobject.downloadQuantity }}</td>
+          <td>下载</td>
+      </tr>
+      </tbody>
+    </nz-table>
   </nz-tab>
 </nz-tabset>

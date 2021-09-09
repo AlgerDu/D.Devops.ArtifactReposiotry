@@ -30,12 +30,20 @@ export interface DependModel {
   artifacts: DependArtifactModel[];
 }
 
+export interface ArtifactObjectModel {
+  name: string;
+  downloadQuantity:number;
+  tags: string[];
+  attributes: { [key: string]: string; };
+}
+
 export interface ArtifactModel extends ArtifactBaseModel {
   version: string;
   tags: string[];
   attributes: { [key: string]: string; };
   downloadQuantity: number;
   depends: DependModel[];
+  obejcts:ArtifactObjectModel[];
 }
 
 export interface ArtifactRepoSearchModel {

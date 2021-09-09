@@ -14,29 +14,39 @@ export class ArtifactVersionComponent implements OnInit {
 
   artifact: ArtifactModel = {
     attributes: {
-      doc:"# readme"
+      doc: "# readme"
     },
     downloadQuantity: 4,
-    name: "",
+    name: "spider",
     repoCode: "",
     tags: [],
-    version: "",
-    depends:[{
-      condition:"runtime",
-      artifacts:[{
-        name:"asp.net core runtime",
-        version:"net5.0"
+    version: "v0.1.1",
+    depends: [{
+      condition: "runtime",
+      artifacts: [{
+        name: "asp.net core runtime",
+        version: "net5.0"
       }]
-    },{
-      condition:"bse",
-      artifacts:[{
-        name:"spider.core",
-        version:"v0.1.0"
-      },{
-        name:"spider.ui",
-        version:"v0.1.1"
+    }, {
+      condition: "base",
+      artifacts: [{
+        name: "spider.core",
+        version: "v0.1.0"
+      }, {
+        name: "spider.ui",
+        version: "v0.1.1"
       }]
-    }]
+    }],
+    obejcts: [
+      {
+        name: "spider_v0.1.1_linux",
+        downloadQuantity: 10,
+        tags: ["beat","bug"],
+        attributes: {
+          "size": "1024"
+        }
+      }
+    ]
   }
 
   constructor(
@@ -54,16 +64,16 @@ export class ArtifactVersionComponent implements OnInit {
       this.artifact.name = params['artifactName'];
       this.artifact.version = params['version'];
 
-      this.artifact.tags = ["beat","lite"];
+      this.artifact.tags = ["beat", "lite"];
     });
   }
 
-  deleteClick(){
+  deleteClick() {
 
   }
 
-  modelChange(e:any):void{
+  modelChange(e: any): void {
     console.log(e);
-    
+
   }
 }
