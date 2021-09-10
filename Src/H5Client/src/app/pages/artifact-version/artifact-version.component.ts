@@ -39,11 +39,12 @@ export class ArtifactVersionComponent implements OnInit {
     }],
     obejcts: [
       {
-        name: "spider_v0.1.1_linux",
+        name: "spider_v0.1.1.080901_linux",
         downloadQuantity: 10,
         tags: ["beat","bug"],
         attributes: {
-          "size": "1024"
+          "size": "1024",
+          "buildNum":"080901"
         }
       }
     ]
