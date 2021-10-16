@@ -1,6 +1,6 @@
 namespace D.ArtifactReposiotry.V1
 {
-    public class ArtifactRepoModel
+    public class ArtifactRepoDTO
     {
         public string Code { get; set; }
 

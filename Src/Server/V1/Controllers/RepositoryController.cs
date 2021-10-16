@@ -41,14 +41,14 @@ namespace D.ArtifactReposiotry.V1
         /// </summary>
         /// <returns></returns>
         [HttpGet("repositorys")]
-        public ArtifactRepoModel[] GetAll()
+        public ArtifactRepoDTO[] GetAll()
         {
             var datas = _artifactRepoRepository.Query().ToArray();
 
             return (from data in datas
-                    select new ArtifactRepoModel
+                    select new ArtifactRepoDTO
                     {
-                        Code = data.Name,
+                        Code = data.Code,
                         Type = data.Type,
                         Descritpion = ""
                     }).ToArray();
@@ -57,14 +57,12 @@ namespace D.ArtifactReposiotry.V1
         /// <summary>
         /// 新建一个仓库
         /// </summary>
-        /// <param name="artifactRepo"></param>
+        /// <param name="item"></param>
         /// <returns></returns>
         [HttpPost("repositorys")]
-        public IResult AddItem(ArtifactRepoModel artifactRepo)
+        public IResult AddItem(ArtifactRepoDTO item)
         {
-            artifactRepo.Code = artifactRepo.Code.ToLower();
-
-            var pk = artifactRepo.PK;
+            var pk = item.Code.ToLower();
 
             using (var a = _entityAtomic.Get(pk))
             {
@@ -73,9 +71,9 @@ namespace D.ArtifactReposiotry.V1
                     return a.CreateOtherOpertingRst();
                 }
 
-                var exist = _artifactRepoRepository.Query(ii => ii.PK == pk || ii.Name == artifactRepo.Name).Count() > 0;
+                var exist = _artifactRepoRepository.Get(pk);
 
-                if (exist)
+                if (exist != null)
                 {
                     return Result.CreateError($"[{pk}] repo is aleardy exist.");
                 }
