@@ -78,28 +78,18 @@ namespace D.ArtifactReposiotry.V1
                     return Result.CreateError($"[{pk}] repo is aleardy exist.");
                 }
 
-                var ok = _artifactRepoRepository.Insert(artifactRepo);
+                var ok = _artifactRepoRepository.Insert(new ArtifactRepo
+                {
+                    Code = item.Code,
+                    Name = "",
+                    Type = item.Type
+                });
 
                 return ok ? Result.CreateSuccess() : Result.CreateError("insert faild");
             }
         }
 
-        [HttpGet("api/repositorys/{repoCode}")]
-        public IResult<ArtifactRepo> GetDetail([FromRoute] string repoCode)
-        {
-            var pk = repoCode.ToLower();
-
-            var repo = _artifactRepoRepository.Get(pk);
-
-            if (repo == null)
-            {
-                return Result.CreateError<ArtifactRepo>($"[{pk}] repo is not exist.");
-            }
-
-            return Result.CreateSuccess(repo);
-        }
-
-        [HttpDelete("api/repositorys/{repoCode}")]
+        [HttpDelete("repositorys/{repoCode}")]
         public IResult Delete([FromRoute] string repoCode)
         {
             var pk = repoCode.ToLower();
