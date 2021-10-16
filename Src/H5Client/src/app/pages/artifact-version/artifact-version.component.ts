@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -12,13 +13,17 @@ import { ArtifactModel, ArtifactSearchModel, ArtifactService } from 'src/app/ser
 })
 export class ArtifactVersionComponent implements OnInit {
 
+  editModalIsVisible = false;
+  validateEditForm!: FormGroup;
+
   artifact: ArtifactModel = {
     attributes: {
-      doc: "# readme"
+      doc: "# readme",
+      base: "v0.1.0"
     },
     downloadQuantity: 4,
     name: "spider",
-    repoCode: "",
+    repoCode: "001",
     tags: [],
     version: "v0.1.1",
     depends: [{
@@ -41,21 +46,30 @@ export class ArtifactVersionComponent implements OnInit {
       {
         name: "spider_v0.1.1.080901_linux",
         downloadQuantity: 10,
-        tags: ["beat","bug"],
+        tags: ["beat", "bug"],
         attributes: {
           "size": "1024",
-          "buildNum":"080901"
+          "buildNum": "080901"
         }
       }
     ]
   }
 
+  artifactForEdit?: ArtifactModel;
+
   constructor(
     private route: ActivatedRoute
     , private modal: NzModalService
+    , private fb: FormBuilder
     , private notification: NzNotificationService
     , private repoService: ArtifactRepoService
     , private artifactService: ArtifactService) {
+
+
+    this.validateEditForm = this.fb.group({
+      name: [null, [Validators.required]],
+      code: [null, [Validators.required]]
+    });
 
   }
 
@@ -76,5 +90,9 @@ export class ArtifactVersionComponent implements OnInit {
   modelChange(e: any): void {
     console.log(e);
 
+  }
+
+  showOrHideEditModal(): void {
+    this.editModalIsVisible = !this.editModalIsVisible;
   }
 }

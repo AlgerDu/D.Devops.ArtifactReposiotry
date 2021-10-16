@@ -29,6 +29,8 @@
     </button>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
+        <li nz-menu-item (click)="showOrHideEditModal()">编辑</li>
+        <li nz-menu-item (click)="deleteClick()">修改标签</li>
         <li nz-menu-item nzDanger (click)="deleteClick()">删除</li>
       </ul>
     </nz-dropdown-menu>
@@ -38,8 +40,7 @@
     <div class="content">
       <div class="main">
         <nz-descriptions nzSize="small" [nzColumn]="2">
-          <nz-descriptions-item nzTitle="上一个版本" [nzSpan]="2">v0.3.0.0808</nz-descriptions-item>
-          <nz-descriptions-item nzTitle="自动化测试" [nzSpan]="2">通过<a>（查看报告）</a></nz-descriptions-item>
+          <nz-descriptions-item nzTitle="上一个版本" [nzSpan]="2">{{artifact.attributes["base"]}}</nz-descriptions-item>
         </nz-descriptions>
       </div>
       <div class="extra">
@@ -94,6 +95,7 @@
           <th>标签</th>
           <th>下载数量</th>
           <th>大小</th>
+          <th>测试报告</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -106,9 +108,23 @@
           </td>
           <td>{{ oobject.downloadQuantity }}</td>
           <td>{{ oobject.attributes["size"] }}</td>
+          <td>url</td>
           <td>下载</td>
         </tr>
       </tbody>
     </nz-table>
   </nz-tab>
 </nz-tabset>
+
+<nz-modal [(nzVisible)]="editModalIsVisible" nzTitle="编辑" (nzOnCancel)="showOrHideEditModal()" (nzOnOk)="deleteClick()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="validateEditForm">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="">上一個版本</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="不能为空">
+          <input nz-input formControlName="code" id="code" [(ngModel)]="artifact.attributes['base']" />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
