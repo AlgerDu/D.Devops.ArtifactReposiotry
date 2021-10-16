@@ -89,10 +89,10 @@ namespace D.ArtifactReposiotry.V1
             }
         }
 
-        [HttpDelete("repositorys/{repoCode}")]
-        public IResult Delete([FromRoute] string repoCode)
+        [HttpDelete("repositorys/{code}")]
+        public IResult Delete([FromRoute] string code)
         {
-            var pk = repoCode.ToLower();
+            var pk = code.ToLower();
 
             using (var a = _entityAtomic.Get(pk))
             {
@@ -112,12 +112,12 @@ namespace D.ArtifactReposiotry.V1
 
                 if (hasArtifacts)
                 {
-                    return Result.CreateError($"[{pk}] delete all artifacts belong this repo first");
+                    return Result.CreateError($"[{pk}] delete all artifacts first");
                 }
 
                 var ok = _artifactRepoRepository.Delete(pk);
 
-                return ok ? Result.CreateSuccess() : Result.CreateError("delete faild");
+                return ok ? Result.CreateSuccess() : Result.CreateError("[{pk}] delete faild");
             }
         }
     }
