@@ -89,10 +89,10 @@ namespace D.ArtifactReposiotry.V1
             }
         }
 
-        [HttpDelete("repositorys/{code}")]
-        public IResult Delete([FromRoute] string code)
+        [HttpDelete("repositorys/{repoCode}")]
+        public IResult Delete([FromRoute] string repoCode)
         {
-            var pk = code.ToLower();
+            var pk = repoCode.ToLower();
 
             using (var a = _entityAtomic.Get(pk))
             {
