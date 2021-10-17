@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace D.ArtifactReposiotry.V1
 {
     [ApiController]
-    [Route("api/v1")]
+    [Route("api/v1/repositorys/{repoCode}/artifacts")]
     public class ArtifactController : ControllerBase
     {
         readonly ILogger _logger;
@@ -38,7 +38,7 @@ namespace D.ArtifactReposiotry.V1
         /// <param name="repoCode"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        [HttpPost("repositorys/{repoCode}/artifacts/search")]
+        [HttpPost("search")]
         public SearchResult<ArtifactSearchDTO> Search([FromRoute] string repoCode, [FromBody] Search query)
         {
             var artifaces = _artifactRepository.Query(aa => aa.RepoCode == repoCode);
@@ -70,14 +70,17 @@ namespace D.ArtifactReposiotry.V1
             return searchResult;
         }
 
-        [HttpGet("api/repositorys/{repoCode}/artifacts/{artifactName}")]
-        public IResult<Artifact> Detail([FromRoute] ArtifactOptBaseModel item)
-        {
-            return null;
-        }
-
-        [HttpPost("api/repositorys/{repoCode}/artifacts/{artifactName}/versions")]
-        public SearchResult<ArtifactSearchModel> Versions([FromRoute] ArtifactOptBaseModel item, [FromBody] Search query)
+        /// <summary>
+        /// 获取制品版本列表
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpPost("repositorys/{repoCode}/artifacts/{artifactName}/versions")]
+        public SearchResult<ArtifactListDTO> Versions(
+            [FromRoute] ArtifactOptBaseDTO item
+            , [FromBody] Search query
+            )
         {
             var artifaces = _artifactRepository.Query(aa => aa.RepoCode == item.RepoCode && aa.Name == item.ArtifactName);
 
@@ -92,12 +95,12 @@ namespace D.ArtifactReposiotry.V1
             artifaces = artifaces
                 .OrderBy(aa => aa.Version);
 
-            var searchResult = new SearchResult<ArtifactSearchModel>(artifaces.Count(), query.Page);
+            var searchResult = new SearchResult<ArtifactListDTO>(artifaces.Count(), query.Page);
 
             searchResult.Datas = artifaces
                 .Skip(searchResult.Page.SkipCount())
                 .Take(searchResult.Page.Size)
-                .Select(aa => new ArtifactSearchModel
+                .Select(aa => new ArtifactListDTO
                 {
                     RepoCode = aa.RepoCode,
                     Name = aa.Name,
@@ -111,8 +114,8 @@ namespace D.ArtifactReposiotry.V1
             return searchResult;
         }
 
-        [HttpGet("api/repositorys/{repoCode}/artifacts/{artifactName}/v/{artifactVersion}")]
-        public IResult<Artifact> VersionDetail([FromRoute] ArtifactOptBaseModel item)
+        [HttpGet("repositorys/{repoCode}/artifacts/{artifactName}/v/{artifactVersion}")]
+        public IResult<Artifact> Get([FromRoute] ArtifactOptBaseDTO item)
         {
             var pk = item.GetPK();
 
@@ -164,7 +167,7 @@ namespace D.ArtifactReposiotry.V1
 
         [HttpPost("api/repositorys/{repoCode}/artifacts/{artifactName}/v/{artifactVersion}/tags/{tag}")]
         public IResult AddTags(
-            [FromRoute] ArtifactOptBaseModel item
+            [FromRoute] ArtifactOptBaseDTO item
             , [FromRoute] string tag
             )
         {
@@ -201,7 +204,7 @@ namespace D.ArtifactReposiotry.V1
 
         [HttpDelete("api/repositorys/{repoCode}/artifacts/{artifactName}/v/{artifactVersion}/tags/{tag}")]
         public IResult DeleteTags(
-            [FromRoute] ArtifactOptBaseModel item
+            [FromRoute] ArtifactOptBaseDTO item
             , [FromRoute] string tag
             )
         {
