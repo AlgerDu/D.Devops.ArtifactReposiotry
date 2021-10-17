@@ -163,6 +163,7 @@ namespace D.ArtifactReposiotry.V1
                 }
 
                 item.PK = pk;
+                item.RepoCode = repoCode;
 
                 var ok = _artifactRepository.Insert(item);
 
