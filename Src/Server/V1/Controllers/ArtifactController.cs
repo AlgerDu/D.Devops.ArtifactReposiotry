@@ -76,7 +76,7 @@ namespace D.ArtifactReposiotry.V1
         /// <param name="item"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        [HttpPost("repositorys/{repoCode}/artifacts/{artifactName}/versions")]
+        [HttpPost("{artifactName}/versions")]
         public SearchResult<ArtifactListDTO> Versions(
             [FromRoute] ArtifactOptBaseDTO item
             , [FromBody] Search query
@@ -114,7 +114,7 @@ namespace D.ArtifactReposiotry.V1
             return searchResult;
         }
 
-        [HttpGet("repositorys/{repoCode}/artifacts/{artifactName}/v/{artifactVersion}")]
+        [HttpGet("{artifactName}/v/{artifactVersion}")]
         public IResult<Artifact> Get([FromRoute] ArtifactOptBaseDTO item)
         {
             var pk = item.GetPK();
@@ -129,7 +129,7 @@ namespace D.ArtifactReposiotry.V1
             return Result.CreateSuccess(artifact);
         }
 
-        [HttpPost("api/repositorys/{repoCode}/artifacts")]
+        [HttpPost]
         public IResult AddItem([FromRoute] string repoCode, [FromBody] Artifact item)
         {
             repoCode = repoCode.ToLower();
@@ -165,7 +165,7 @@ namespace D.ArtifactReposiotry.V1
             }
         }
 
-        [HttpPost("api/repositorys/{repoCode}/artifacts/{artifactName}/v/{artifactVersion}/tags/{tag}")]
+        [HttpPost("{artifactName}/v/{artifactVersion}/tags/{tag}")]
         public IResult AddTags(
             [FromRoute] ArtifactOptBaseDTO item
             , [FromRoute] string tag
@@ -202,7 +202,7 @@ namespace D.ArtifactReposiotry.V1
             }
         }
 
-        [HttpDelete("api/repositorys/{repoCode}/artifacts/{artifactName}/v/{artifactVersion}/tags/{tag}")]
+        [HttpDelete("{artifactName}/v/{artifactVersion}/tags/{tag}")]
         public IResult DeleteTags(
             [FromRoute] ArtifactOptBaseDTO item
             , [FromRoute] string tag
