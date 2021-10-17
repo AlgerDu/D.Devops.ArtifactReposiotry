@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace D.ArtifactReposiotry.Controllers
+namespace D.ArtifactReposiotry.V1
 {
     [ApiController]
     public class UploadController : ControllerBase
@@ -61,7 +61,7 @@ namespace D.ArtifactReposiotry.Controllers
                 return Result.CreateError($"cant anaylse [{name}]");
             }
 
-            var optItem = new ArtifactOptBaseModel
+            var optItem = new ArtifactOptBaseDTO
             {
                 RepoCode = repoCode,
                 ArtifactName = anaylseRst[0],
@@ -126,7 +126,7 @@ namespace D.ArtifactReposiotry.Controllers
             }
         }
 
-        private async Task<IResult> UploadFileToMinoServer(string identifier, ArtifactOptBaseModel item, IFormFile file)
+        private async Task<IResult> UploadFileToMinoServer(string identifier, ArtifactOptBaseDTO item, IFormFile file)
         {
             try
             {
