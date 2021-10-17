@@ -114,6 +114,11 @@ namespace D.ArtifactReposiotry.V1
             return searchResult;
         }
 
+        /// <summary>
+        /// 获取制品具体版本的详细信息
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         [HttpGet("{artifactName}/v/{artifactVersion}")]
         public IResult<Artifact> Get([FromRoute] ArtifactOptBaseDTO item)
         {
