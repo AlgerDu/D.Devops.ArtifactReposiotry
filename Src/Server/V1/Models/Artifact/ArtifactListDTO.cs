@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace D.ArtifactReposiotry
+namespace D.ArtifactReposiotry.V1
 {
-    public class ArtifactSearchModel
+    public class ArtifactListDTO
     {
         public string RepoCode { get; set; }
 
