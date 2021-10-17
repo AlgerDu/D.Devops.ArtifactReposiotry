@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace D.ArtifactReposiotry.V1
 {
     [ApiController]
+    [Route("api/v1")]
     public class ArtifactController : ControllerBase
     {
         readonly ILogger _logger;
@@ -31,8 +32,14 @@ namespace D.ArtifactReposiotry.V1
             _artifactRepository = artifactRepository;
         }
 
-        [HttpPost("api/repositorys/{repoCode}/artifacts/search")]
-        public SearchResult<ArtifactRepoSearchModel> Search([FromRoute] string repoCode, [FromBody] Search query)
+        /// <summary>
+        /// 搜索某个仓库下的制品
+        /// </summary>
+        /// <param name="repoCode"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpPost("repositorys/{repoCode}/artifacts/search")]
+        public SearchResult<ArtifactSearchDTO> Search([FromRoute] string repoCode, [FromBody] Search query)
         {
             var artifaces = _artifactRepository.Query(aa => aa.RepoCode == repoCode);
 
@@ -47,12 +54,12 @@ namespace D.ArtifactReposiotry.V1
 
             artifaces = artifaces.Distinct(new ArtifactNameComparer());
 
-            var searchResult = new SearchResult<ArtifactRepoSearchModel>(artifaces.Count(), query.Page);
+            var searchResult = new SearchResult<ArtifactSearchDTO>(artifaces.Count(), query.Page);
 
             searchResult.Datas = artifaces
                 .Skip(searchResult.Page.SkipCount())
                 .Take(searchResult.Page.Size)
-                .Select(aa => new ArtifactRepoSearchModel
+                .Select(aa => new ArtifactSearchDTO
                 {
                     Name = aa.Name,
                     LatestVersion = aa.Version,
