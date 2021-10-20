@@ -171,10 +171,16 @@ namespace D.ArtifactReposiotry.V1
             }
         }
 
-        [HttpPost("{artifactName}/v/{artifactVersion}/tags/{tag}")]
+        /// <summary>
+        /// 给制品添加标签
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="tags">要添加的标签列表</param>
+        /// <returns></returns>
+        [HttpPost("{artifactName}/v/{artifactVersion}/tags")]
         public IResult AddTags(
             [FromRoute] ArtifactOptBaseDTO item
-            , [FromRoute] string tag
+            , [FromBody] string[] tags
             )
         {
             var pk = item.GetPK();
@@ -193,25 +199,18 @@ namespace D.ArtifactReposiotry.V1
                     return Result.CreateError($"[{pk}] artifact is not exist.");
                 }
 
-                var tagExist = artifact.Tags.Contains(tag);
-
-                if (tagExist)
-                {
-                    return Result.CreateError($"[{pk}] artifact aleardy has exist tag = {tag}.");
-                }
-
-                artifact.Tags.Add(tag);
+                artifact.Tags = artifact.Tags.Union(tags).ToList();
 
                 var ok = _artifactRepository.Put(artifact);
 
-                return ok ? Result.CreateSuccess() : Result.CreateError("update faild");
+                return ok ? Result.CreateSuccess() : Result.CreateError($"[{pk}] update faild");
             }
         }
 
-        [HttpDelete("{artifactName}/v/{artifactVersion}/tags/{tag}")]
+        [HttpDelete("{artifactName}/v/{artifactVersion}/tags")]
         public IResult DeleteTags(
             [FromRoute] ArtifactOptBaseDTO item
-            , [FromRoute] string tag
+            , [FromBody] string[] tags
             )
         {
             var pk = item.GetPK();
@@ -230,18 +229,11 @@ namespace D.ArtifactReposiotry.V1
                     return Result.CreateError($"[{pk}] artifact is not exist.");
                 }
 
-                var tagExist = artifact.Tags.Contains(tag);
-
-                if (!tagExist)
-                {
-                    return Result.CreateError($"[{pk}] artifact has not tag = {tag}.");
-                }
-
-                artifact.Tags.Remove(tag);
+                artifact.Tags = artifact.Tags.Except(tags).ToList();
 
                 var ok = _artifactRepository.Put(artifact);
 
-                return ok ? Result.CreateSuccess() : Result.CreateError("update faild");
+                return ok ? Result.CreateSuccess() : Result.CreateError($"[{pk}] update faild");
             }
         }
     }
