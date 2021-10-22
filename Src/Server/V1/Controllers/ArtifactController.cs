@@ -171,6 +171,41 @@ namespace D.ArtifactReposiotry.V1
             }
         }
 
+        [HttpPut("{artifactName}/v/{artifactVersion}")]
+        public IResult UpdateItem(
+            [FromRoute] ArtifactOptBaseDTO item
+            , [FromBody] ArtifactUpdateDTO data)
+        {
+            var pk = item.GetPK();
+
+            using (var a = _entityAtomic.Get(pk))
+            {
+                if (a.IsOprting)
+                {
+                    return Result.CreateSuccess($"[{pk}] it is operating by others.");
+                }
+
+                var artifact = _artifactRepository.Get(pk);
+
+                if (artifact == null)
+                {
+                    return Result.CreateError($"[{pk}] artifact is not exist.");
+                }
+
+                if (data.Tags != null && data.Tags.Count > 0)
+                {
+                    artifact.Tags = data.Tags;
+                }
+
+                artifact.Depends = data.Depends;
+                artifact.Attributes = data.Attributes;
+
+                var ok = _artifactRepository.Put(artifact);
+
+                return ok ? Result.CreateSuccess() : Result.CreateError($"[{pk}] update faild");
+            }
+        }
+
         /// <summary>
         /// 给制品添加标签
         /// </summary>
@@ -229,7 +264,7 @@ namespace D.ArtifactReposiotry.V1
                     return Result.CreateError($"[{pk}] artifact is not exist.");
                 }
 
-                artifact.Tags = artifact.Tags.Except(tags).ToList();
+                artifact.Tags = artifact.Tags.Union(tags).ToList();
 
                 var ok = _artifactRepository.Put(artifact);
 
