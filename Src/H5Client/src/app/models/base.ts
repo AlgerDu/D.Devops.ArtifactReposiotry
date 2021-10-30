@@ -10,7 +10,7 @@ export interface Result {
     isSuccess(): boolean;
 }
 
-export function isSuccess (rst:Result) {
+export function isSuccess(rst: Result) {
     return rst.code != 1;
 }
 
@@ -97,4 +97,12 @@ export class TableModel<DataType> {
             this.isLoading = false;
         });
     }
+}
+
+/**
+ *  面包屑导航 item 的模型，用来绑定，后续可以抽象为一个组件
+ */
+export interface BreadcrumbItem {
+    displayName: string;
+    link?: string;
 }
