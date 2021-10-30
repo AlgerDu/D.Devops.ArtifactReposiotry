@@ -41,7 +41,7 @@ namespace D.ArtifactReposiotry.V1
         [HttpPost("search")]
         public SearchResult<ArtifactSearchDTO> Search([FromRoute] string repoCode, [FromBody] Search query)
         {
-            var artifaces = _artifactRepository.Query(aa => aa.RepoCode == repoCode);
+            var artifaces = _artifactRepository.Query(aa => aa.RepoCode == repoCode && aa.Name != null);
 
             if (!string.IsNullOrEmpty(query.Condition))
             {
