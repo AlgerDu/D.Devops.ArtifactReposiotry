@@ -91,8 +91,8 @@ export class ArtifactService {
     private http: HttpClient
   ) { }
 
-  search(repoCode: string, query: Search): Observable<SearchResult<ArtifactRepoSearchModel>> {
-    return this.http.post<SearchResult<ArtifactRepoSearchModel>>(this.baseUrl.replace("{repoCode}", repoCode), query, this.httpOptions);
+  search(repoCode: string, query: Search): Observable<SearchResult<ArtifactSearchModel>> {
+    return this.http.post<SearchResult<ArtifactSearchModel>>(this.baseUrl.replace("{repoCode}", repoCode) + "/search", query, this.httpOptions);
   }
 
   getDetail(repoCode: string, artifactName: string): Observable<DataResult<ArtifactVersionListModel>> {
