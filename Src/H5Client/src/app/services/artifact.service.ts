@@ -10,6 +10,13 @@ export interface ArtifactBaseModel {
   lastUpdateTime?: Date;
 }
 
+/**
+ * 制品搜索
+ */
+export interface ArtifactSearchModel extends ArtifactBaseModel {
+  latestVersion: string;
+}
+
 export interface ArtifactStaticModel extends ArtifactBaseModel {
   latestVersion: string;
 }
@@ -32,7 +39,7 @@ export interface DependModel {
 
 export interface ArtifactObjectModel {
   name: string;
-  downloadQuantity:number;
+  downloadQuantity: number;
   tags: string[];
   attributes: { [key: string]: string; };
 }
@@ -43,7 +50,7 @@ export interface ArtifactModel extends ArtifactBaseModel {
   attributes: { [key: string]: string; };
   downloadQuantity: number;
   depends: DependModel[];
-  obejcts:ArtifactObjectModel[];
+  obejcts: ArtifactObjectModel[];
 }
 
 export interface ArtifactRepoSearchModel {
@@ -74,6 +81,8 @@ export interface ArtifactVersionListModel {
 })
 export class ArtifactService {
 
+  baseUrl = ApiUrl.base + "/repositorys/{repoCode}/artifacts";
+
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -83,7 +92,7 @@ export class ArtifactService {
   ) { }
 
   search(repoCode: string, query: Search): Observable<SearchResult<ArtifactRepoSearchModel>> {
-    return this.http.post<SearchResult<ArtifactRepoSearchModel>>(ApiUrl.searchArgifact.replace("{repoCode}", repoCode), query, this.httpOptions);
+    return this.http.post<SearchResult<ArtifactRepoSearchModel>>(this.baseUrl.replace("{repoCode}", repoCode), query, this.httpOptions);
   }
 
   getDetail(repoCode: string, artifactName: string): Observable<DataResult<ArtifactVersionListModel>> {
