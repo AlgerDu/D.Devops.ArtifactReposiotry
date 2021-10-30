@@ -14,6 +14,8 @@ export interface ArtifactRepo {
 })
 export class ArtifactRepoService {
 
+  baseUrl = ApiUrl.base + "/repositorys";
+
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -23,14 +25,14 @@ export class ArtifactRepoService {
   ) { }
 
   getAll(): Observable<ArtifactRepo[]> {
-    return this.http.get<ArtifactRepo[]>(ApiUrl.getRepos);
+    return this.http.get<ArtifactRepo[]>(this.baseUrl);
   }
 
   add(item: ArtifactRepo): Observable<Result> {
 
     item.code = item.code.toLowerCase();
 
-    return this.http.post<Result>(ApiUrl.addRepos, item, this.httpOptions);
+    return this.http.post<Result>(this.baseUrl, item, this.httpOptions);
   }
 
   getDetail(repoCode: string): Observable<DataResult<ArtifactRepo>> {
@@ -38,6 +40,6 @@ export class ArtifactRepoService {
   }
 
   delete(repoCode: string): Observable<Result> {
-    return this.http.delete<Result>(ApiUrl.reposBase+"/"+repoCode.toLowerCase(),this.httpOptions);
+    return this.http.delete<Result>(ApiUrl.reposBase + "/" + repoCode.toLowerCase(), this.httpOptions);
   }
 }

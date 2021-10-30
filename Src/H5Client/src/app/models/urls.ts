@@ -1,5 +1,6 @@
-export class ApiUrl{
-    static getRepos = "/api/repositorys";
+export class ApiUrl {
+    static base = "/api/v1";
+    static getRepos = "/api/v1/repositorys";
     static addRepos = "/api/repositorys";
     static reposBase = "/api/repositorys";
     static searchArgifact = "api/repositorys/{repoCode}/artifacts/search";
