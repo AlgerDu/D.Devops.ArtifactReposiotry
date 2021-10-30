@@ -1,9 +1,5 @@
 <nz-layout class="app-layout">
-  <nz-sider class="menu-sidebar"
-            nzCollapsible
-            nzWidth="256px"
-            nzBreakpoint="md"
-            [nzTrigger]="null">
+  <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [nzTrigger]="null">
     <div class="sidebar-logo">
       <a target="_blank">
         <i nz-icon nzType="inbox" nzTheme="outline" style="font-size: 30;"></i>
@@ -18,7 +14,7 @@
       <li [nzOpen]="true" nz-submenu nzTitle="仓库" nzIcon="appstore">
         <ul>
           <li nz-menu-item nzMatchRouter *ngFor="let repo of artifactRepos">
-            <a routerLink="/repo/{{repo.code}}">{{repo.name}}</a>
+            <a routerLink="/repo/{{repo.code}}">{{repo.code}}</a>
           </li>
         </ul>
       </li>
@@ -32,7 +28,7 @@
     <nz-header>
       <div class="app-header">
         <span class="header-trigger" (click)="showAddArtifactRepoModal()">
-            <i nz-icon nzType="appstore-add" nzTheme="outline"></i>
+          <i nz-icon nzType="appstore-add" nzTheme="outline"></i>
         </span>
         <span class="header-trigger">
           <i nz-icon nzType="upload" nzTheme="outline"></i>
