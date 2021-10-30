@@ -40,6 +40,7 @@ import { DTagComponent } from './components/d-tag/d-tag.component';
 import { ArtifactVersionComponent } from './pages/artifact-version/artifact-version.component';
 
 import { MarkdownModule } from 'ngx-markdown';
+import { RepoArtifactsComponent } from './pages/repo-artifacts/repo-artifacts.component';
 
 registerLocaleData(zh);
 
@@ -50,13 +51,14 @@ registerLocaleData(zh);
     RepoDetailsComponent,
     ArtifactDetailsComponent,
     ArtifactVersionComponent,
+    RepoArtifactsComponent,
     SearchComponent,
     DTagComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,ReactiveFormsModule,
+    FormsModule, ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     IconsProviderModule,
@@ -65,8 +67,8 @@ registerLocaleData(zh);
     NzModalModule,
     NzFormModule,
     NzGridModule, NzNotificationModule,
-    NzButtonModule ,NzInputModule,NzPageHeaderModule,NzBreadCrumbModule,NzAvatarModule,NzTagModule,NzTabsModule,NzDescriptionsModule,NzStatisticModule,
-    NzDropDownModule,NzTableModule,NzSkeletonModule,NzPopconfirmModule,
+    NzButtonModule, NzInputModule, NzPageHeaderModule, NzBreadCrumbModule, NzAvatarModule, NzTagModule, NzTabsModule, NzDescriptionsModule, NzStatisticModule,
+    NzDropDownModule, NzTableModule, NzSkeletonModule, NzPopconfirmModule,
     MarkdownModule.forRoot()
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
