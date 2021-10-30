@@ -5,13 +5,13 @@
       <a>仓库</a>
     </nz-breadcrumb-item>
     <nz-breadcrumb-item>
-      {{repo.name}}
+      {{repo.code}}
     </nz-breadcrumb-item>
   </nz-breadcrumb>
 
   <nz-avatar nz-page-header-avatar nzText="{{repo.code}}"> </nz-avatar>
 
-  <nz-page-header-title>{{repo.name}}</nz-page-header-title>
+  <nz-page-header-title>{{repo.code}}</nz-page-header-title>
 
   <nz-page-header-extra>
     <button nz-button nzNoAnimation nz-dropdown [nzDropdownMenu]="menu" style="border: none; padding: 0">

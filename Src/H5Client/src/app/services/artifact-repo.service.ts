@@ -6,6 +6,7 @@ import { ApiUrl } from '../models/urls';
 
 export interface ArtifactRepo {
   code: string;
+  name: string;
 }
 
 @Injectable({
