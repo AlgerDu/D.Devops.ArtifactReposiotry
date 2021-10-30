@@ -1,1 +1,32 @@
-<p>repo-artifacts works!</p>
+<nz-page-header class="site-page-header">
+
+    <nz-breadcrumb nz-page-header-breadcrumb>
+        <nz-breadcrumb-item *ngFor="let item of breadcrumbItems">
+            {{item.displayName}}
+        </nz-breadcrumb-item>
+    </nz-breadcrumb>
+
+</nz-page-header>
+
+<nz-table nzShowSizeChanger [nzData]="talbe.datas" [nzFrontPagination]="false" [nzLoading]="talbe.isLoading"
+    [nzTotal]="talbe.total" [nzPageSize]="talbe.page.size" [nzPageIndex]="talbe.page.index"
+    (nzQueryParams)="talbe.onQueryParamsChange($event)">
+    <thead>
+        <tr>
+            <th>制品名</th>
+            <th>最新版本</th>
+            <th>最近更新</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of talbe.datas">
+            <td>{{data.name}}</td>
+            <td>{{data.latestVersion}}</td>
+            <td>{{data.lastUpdateTime}}</td>
+            <td>
+                <a routerLink="/repo/{{repoCode}}/artifacts/{{data.name}}">详情</a>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
