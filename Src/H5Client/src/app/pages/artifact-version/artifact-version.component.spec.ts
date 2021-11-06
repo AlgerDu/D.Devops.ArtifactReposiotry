@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ArtifactVersionComponent } from './artifact-version.component';
+import { ArtifactDetailsComponent } from './artifact-details.component';
 
-describe('ArtifactVersionComponent', () => {
-  let component: ArtifactVersionComponent;
-  let fixture: ComponentFixture<ArtifactVersionComponent>;
+describe('ArtifactDetailsComponent', () => {
+  let component: ArtifactDetailsComponent;
+  let fixture: ComponentFixture<ArtifactDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ArtifactVersionComponent ]
+      declarations: [ArtifactDetailsComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ArtifactVersionComponent);
+    fixture = TestBed.createComponent(ArtifactDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
