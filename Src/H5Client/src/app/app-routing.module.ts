@@ -10,8 +10,8 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/search' },
   { path: 'search', component: SearchComponent },
   { path: 'repo/:code', component: RepoArtifactsComponent },
-  { path: 'repo/:code/artifacts/:artifactName', component: ArtifactDetailsComponent },
-  { path: 'repo/:code/artifacts/:artifactName/v/:version', component: ArtifactVersionComponent }
+  { path: 'repo/:code/artifacts/:artifactName', component: ArtifactVersionComponent },
+  { path: 'repo/:code/artifacts/:artifactName/v/:version', component: ArtifactDetailsComponent }
 ];
 
 @NgModule({
