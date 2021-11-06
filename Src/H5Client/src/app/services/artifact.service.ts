@@ -96,10 +96,10 @@ export class ArtifactService {
   }
 
   getDetail(repoCode: string, artifactName: string): Observable<DataResult<ArtifactVersionListModel>> {
-    return this.http.get<DataResult<ArtifactVersionListModel>>(ApiUrl.argifactDetails.replace("{repoCode}", repoCode).replace("{argifactName}", artifactName), this.httpOptions);
+    return this.http.get<DataResult<ArtifactVersionListModel>>(this.baseUrl.replace("{repoCode}", repoCode).replace("{argifactName}", artifactName), this.httpOptions);
   }
 
   getVersions(repoCode: string, artifactName: string, query: Search): Observable<SearchResult<ArtifactSearchModel>> {
-    return this.http.post<SearchResult<ArtifactSearchModel>>(ApiUrl.argifactVersions.replace("{repoCode}", repoCode).replace("{argifactName}", artifactName), query, this.httpOptions);
+    return this.http.post<SearchResult<ArtifactSearchModel>>(this.baseUrl.replace("{repoCode}", repoCode) + "/" + artifactName + "/versions", query, this.httpOptions);
   }
 }
