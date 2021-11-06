@@ -1,98 +1,63 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { ArtifactRepoService } from 'src/app/services/artifact-repo.service';
-import { ArtifactModel, ArtifactSearchModel, ArtifactService } from 'src/app/services/artifact.service';
+import { Observable } from 'rxjs';
+import { BreadcrumbItem, isSuccess, SearchResult, TableGetDatable } from 'src/app/models/base';
+import { ArtifactRepo, ArtifactRepoService } from 'src/app/services/artifact-repo.service';
+import { ArtifactSearchModel, ArtifactService, ArtifactVersionListModel } from 'src/app/services/artifact.service';
+import { TableModel } from '../../models/base';
 
 @Component({
   selector: 'app-artifact-version',
   templateUrl: './artifact-version.component.html',
   styleUrls: ['./artifact-version.component.less']
 })
-export class ArtifactVersionComponent implements OnInit {
+export class ArtifactVersionComponent implements TableGetDatable<ArtifactSearchModel>, OnInit {
 
-  editModalIsVisible = false;
-  validateEditForm!: FormGroup;
+  breadcrumbItems: BreadcrumbItem[] = [];
+  repoCode: string = "";
+  artifactName: string = "";
 
-  artifact: ArtifactModel = {
-    attributes: {
-      doc: "# readme",
-      base: "v0.1.0"
-    },
-    downloadQuantity: 4,
-    name: "spider",
-    repoCode: "001",
-    tags: [],
-    version: "v0.1.1",
-    depends: [{
-      condition: "runtime",
-      artifacts: [{
-        name: "asp.net core runtime",
-        version: "net5.0"
-      }]
-    }, {
-      condition: "base",
-      artifacts: [{
-        name: "spider.core",
-        version: "v0.1.0"
-      }, {
-        name: "spider.ui",
-        version: "v0.1.1"
-      }]
-    }],
-    obejcts: [
-      {
-        name: "spider_v0.1.1.080901_linux",
-        downloadQuantity: 10,
-        tags: ["beat", "bug"],
-        attributes: {
-          "size": "1024",
-          "buildNum": "080901"
-        }
-      }
-    ]
-  }
-
-  artifactForEdit?: ArtifactModel;
+  table: TableModel<ArtifactSearchModel>;
 
   constructor(
     private route: ActivatedRoute
     , private modal: NzModalService
-    , private fb: FormBuilder
     , private notification: NzNotificationService
     , private repoService: ArtifactRepoService
     , private artifactService: ArtifactService) {
-
-
-    this.validateEditForm = this.fb.group({
-      name: [null, [Validators.required]],
-      code: [null, [Validators.required]]
-    });
-
+    this.table = new TableModel<ArtifactSearchModel>(this);
   }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.artifact.repoCode = params['code'];
-      this.artifact.name = params['artifactName'];
-      this.artifact.version = params['version'];
+      this.repoCode = params['code'];
+      this.artifactName = params['artifactName'];
 
-      this.artifact.tags = ["beat", "lite"];
+
+      this.breadcrumbItems.push({ displayName: "仓库" });
+      this.breadcrumbItems.push({ displayName: this.repoCode, link: "/repo/" + this.repoCode });
+      this.breadcrumbItems.push({ displayName: "制品" });
+      this.breadcrumbItems.push({ displayName: this.artifactName });
+
     });
   }
 
-  deleteClick() {
-
+  getDate(model: TableModel<ArtifactSearchModel>): Observable<SearchResult<ArtifactSearchModel>> {
+    return this.artifactService.getVersions(this.repoCode, this.artifactName, { page: model.page, condition: model.condition })
   }
 
-  modelChange(e: any): void {
-    console.log(e);
-
-  }
-
-  showOrHideEditModal(): void {
-    this.editModalIsVisible = !this.editModalIsVisible;
+  deleteClick(): void {
+    this.modal.confirm({
+      nzTitle: '确定要删除仓库？',
+      nzContent: '<b style="color: red;">删除之后，不可恢复</b>',
+      nzOkText: '确认',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () => "",
+      nzCancelText: '取消',
+      nzOnCancel: () => console.log('Cancel')
+    });
   }
 }
