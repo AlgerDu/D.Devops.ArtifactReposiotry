@@ -41,6 +41,7 @@ import { ArtifactVersionComponent } from './pages/artifact-version/artifact-vers
 
 import { MarkdownModule } from 'ngx-markdown';
 import { RepoArtifactsComponent } from './pages/repo-artifacts/repo-artifacts.component';
+import { BreadcrumbComponent } from './common/breadcrumb/breadcrumb.component';
 
 registerLocaleData(zh);
 
@@ -53,7 +54,8 @@ registerLocaleData(zh);
     ArtifactVersionComponent,
     RepoArtifactsComponent,
     SearchComponent,
-    DTagComponent
+    DTagComponent,
+    BreadcrumbComponent
   ],
   imports: [
     BrowserModule,
