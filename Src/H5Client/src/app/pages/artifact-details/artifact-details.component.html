@@ -1,17 +1,14 @@
 <nz-page-header class="site-page-header">
 
   <nz-breadcrumb nz-page-header-breadcrumb>
-    <nz-breadcrumb-item>
-      <a>仓库</a>
-    </nz-breadcrumb-item>
-    <nz-breadcrumb-item>
-      {{artifact.repoCode}}
-    </nz-breadcrumb-item>
-    <nz-breadcrumb-item>
-      {{artifact.name}}
-    </nz-breadcrumb-item>
-    <nz-breadcrumb-item>
-      {{artifact.version}}
+    <nz-breadcrumb-item *ngFor="let item of breadcrumbItems">
+      <div *ngIf="item.link == null" style="display: inline;">
+        {{item.displayName}}
+      </div>
+
+      <a *ngIf="item.link != null" routerLink="{{item.link}}">
+        {{item.displayName}}
+      </a>
     </nz-breadcrumb-item>
   </nz-breadcrumb>
 

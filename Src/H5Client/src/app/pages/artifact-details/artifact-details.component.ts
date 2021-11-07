@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { BreadcrumbItem } from 'src/app/models/base';
 import { ArtifactRepoService } from 'src/app/services/artifact-repo.service';
 import { ArtifactModel, ArtifactSearchModel, ArtifactService } from 'src/app/services/artifact.service';
 
@@ -12,6 +13,8 @@ import { ArtifactModel, ArtifactSearchModel, ArtifactService } from 'src/app/ser
   styleUrls: ['./artifact-details.component.less']
 })
 export class ArtifactDetailsComponent implements OnInit {
+
+  breadcrumbItems: BreadcrumbItem[] = [];
 
   editModalIsVisible = false;
   validateEditForm!: FormGroup;
@@ -80,6 +83,13 @@ export class ArtifactDetailsComponent implements OnInit {
       this.artifact.version = params['version'];
 
       this.artifact.tags = ["beat", "lite"];
+
+      //repo/:code/artifacts/:artifactName/v/:version
+
+      this.breadcrumbItems.push({ displayName: "仓库" });
+      this.breadcrumbItems.push({ displayName: this.artifact.repoCode, link: "/repo/" + this.artifact.repoCode });
+      this.breadcrumbItems.push({ displayName: this.artifact.name, link: "/repo/" + this.artifact.repoCode + "/artifacts/" + this.artifact.name });
+      this.breadcrumbItems.push({ displayName: "v" + this.artifact.version });
     });
   }
 
