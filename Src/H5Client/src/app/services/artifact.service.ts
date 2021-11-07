@@ -95,8 +95,9 @@ export class ArtifactService {
     return this.http.post<SearchResult<ArtifactSearchModel>>(this.baseUrl.replace("{repoCode}", repoCode) + "/search", query, this.httpOptions);
   }
 
-  getDetail(repoCode: string, artifactName: string): Observable<DataResult<ArtifactVersionListModel>> {
-    return this.http.get<DataResult<ArtifactVersionListModel>>(this.baseUrl.replace("{repoCode}", repoCode).replace("{argifactName}", artifactName), this.httpOptions);
+  getDetail(repoCode: string, artifactName: string, artifactVersion: string): Observable<DataResult<ArtifactModel>> {
+    var url = this.baseUrl.replace("{repoCode}", repoCode) + "/" + artifactName + "/v/" + artifactVersion;
+    return this.http.get<DataResult<ArtifactModel>>(url, this.httpOptions);
   }
 
   getVersions(repoCode: string, artifactName: string, query: Search): Observable<SearchResult<ArtifactSearchModel>> {
