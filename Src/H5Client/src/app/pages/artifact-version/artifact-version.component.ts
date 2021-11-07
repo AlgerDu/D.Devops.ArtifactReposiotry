@@ -38,7 +38,6 @@ export class ArtifactVersionComponent implements TableGetDatable<ArtifactSearchM
 
       this.breadcrumbItems.push({ displayName: "仓库" });
       this.breadcrumbItems.push({ displayName: this.repoCode, link: "/repo/" + this.repoCode });
-      this.breadcrumbItems.push({ displayName: "制品" });
       this.breadcrumbItems.push({ displayName: this.artifactName });
 
     });
@@ -46,18 +45,5 @@ export class ArtifactVersionComponent implements TableGetDatable<ArtifactSearchM
 
   getDate(model: TableModel<ArtifactSearchModel>): Observable<SearchResult<ArtifactSearchModel>> {
     return this.artifactService.getVersions(this.repoCode, this.artifactName, { page: model.page, condition: model.condition })
-  }
-
-  deleteClick(): void {
-    this.modal.confirm({
-      nzTitle: '确定要删除仓库？',
-      nzContent: '<b style="color: red;">删除之后，不可恢复</b>',
-      nzOkText: '确认',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => "",
-      nzCancelText: '取消',
-      nzOnCancel: () => console.log('Cancel')
-    });
   }
 }
