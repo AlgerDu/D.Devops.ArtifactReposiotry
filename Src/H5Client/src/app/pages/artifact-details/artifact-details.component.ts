@@ -6,6 +6,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { BreadcrumbItem } from 'src/app/models/base';
 import { ArtifactRepoService } from 'src/app/services/artifact-repo.service';
 import { ArtifactModel, ArtifactSearchModel, ArtifactService } from 'src/app/services/artifact.service';
+import { isSuccess } from '../../models/base';
 
 @Component({
   selector: 'app-artifact-details',
@@ -84,12 +85,18 @@ export class ArtifactDetailsComponent implements OnInit {
 
       this.artifact.tags = ["beat", "lite"];
 
-      //repo/:code/artifacts/:artifactName/v/:version
-
       this.breadcrumbItems.push({ displayName: "仓库" });
       this.breadcrumbItems.push({ displayName: this.artifact.repoCode, link: "/repo/" + this.artifact.repoCode });
       this.breadcrumbItems.push({ displayName: this.artifact.name, link: "/repo/" + this.artifact.repoCode + "/artifacts/" + this.artifact.name });
       this.breadcrumbItems.push({ displayName: "v" + this.artifact.version });
+
+      this.artifactService.getDetail(this.artifact.repoCode, this.artifact.name, this.artifact.version).subscribe((rst) => {
+
+        if (isSuccess(rst) && rst.data != null) {
+
+          this.artifact = rst.data;
+        }
+      });
     });
   }
 
