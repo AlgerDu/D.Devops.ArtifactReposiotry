@@ -1,62 +1,98 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { Observable } from 'rxjs';
-import { isSuccess, SearchResult, TableGetDatable } from 'src/app/models/base';
-import { ArtifactRepo, ArtifactRepoService } from 'src/app/services/artifact-repo.service';
-import { ArtifactSearchModel, ArtifactService, ArtifactVersionListModel } from 'src/app/services/artifact.service';
-import { TableModel } from '../../models/base';
+import { ArtifactRepoService } from 'src/app/services/artifact-repo.service';
+import { ArtifactModel, ArtifactSearchModel, ArtifactService } from 'src/app/services/artifact.service';
 
 @Component({
   selector: 'app-artifact-details',
   templateUrl: './artifact-details.component.html',
   styleUrls: ['./artifact-details.component.less']
 })
-export class ArtifactDetailsComponent implements TableGetDatable<ArtifactSearchModel>,OnInit {
+export class ArtifactDetailsComponent implements OnInit {
 
-  repo: ArtifactRepo = { code: "", name: "name" };
-  artifact:ArtifactVersionListModel = {name:"",version:"",lastUpdateTime:new Date()};
+  editModalIsVisible = false;
+  validateEditForm!: FormGroup;
 
-  table:TableModel<ArtifactSearchModel>;
+  artifact: ArtifactModel = {
+    attributes: {
+      doc: "# readme",
+      base: "v0.1.0"
+    },
+    downloadQuantity: 4,
+    name: "spider",
+    repoCode: "001",
+    tags: [],
+    version: "v0.1.1",
+    depends: [{
+      condition: "runtime",
+      artifacts: [{
+        name: "asp.net core runtime",
+        version: "net5.0"
+      }]
+    }, {
+      condition: "base",
+      artifacts: [{
+        name: "spider.core",
+        version: "v0.1.0"
+      }, {
+        name: "spider.ui",
+        version: "v0.1.1"
+      }]
+    }],
+    obejcts: [
+      {
+        name: "spider_v0.1.1.080901_linux",
+        downloadQuantity: 10,
+        tags: ["beat", "bug"],
+        attributes: {
+          "size": "1024",
+          "buildNum": "080901"
+        }
+      }
+    ]
+  }
+
+  artifactForEdit?: ArtifactModel;
 
   constructor(
     private route: ActivatedRoute
     , private modal: NzModalService
+    , private fb: FormBuilder
     , private notification: NzNotificationService
     , private repoService: ArtifactRepoService
-    , private artifactService: ArtifactService) { 
-      this.table = new TableModel<ArtifactSearchModel>(this);
-    }
+    , private artifactService: ArtifactService) {
 
-  getDate(model: TableModel<ArtifactSearchModel>): Observable<SearchResult<ArtifactSearchModel>> {
-    return this.artifactService.getVersions(this.repo.code,this.artifact.name, { page: model.page, condition: model.condition })
+
+    this.validateEditForm = this.fb.group({
+      name: [null, [Validators.required]],
+      code: [null, [Validators.required]]
+    });
+
   }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.repo.code = params['code'];
+      this.artifact.repoCode = params['code'];
       this.artifact.name = params['artifactName'];
+      this.artifact.version = params['version'];
 
-      this.repoService.getDetail(this.repo.code).subscribe((rst) => {
-        if (isSuccess(rst)) {
-          this.repo.name = rst.data?.name ?? "";
-        }
-      })
-
+      this.artifact.tags = ["beat", "lite"];
     });
   }
-  
-  deleteClick(): void {
-    this.modal.confirm({
-      nzTitle: '确定要删除仓库？',
-      nzContent: '<b style="color: red;">删除之后，不可恢复</b>',
-      nzOkText: '确认',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => "",
-      nzCancelText: '取消',
-      nzOnCancel: () => console.log('Cancel')
-    });
+
+  deleteClick() {
+
+  }
+
+  modelChange(e: any): void {
+    console.log(e);
+
+  }
+
+  showOrHideEditModal(): void {
+    this.editModalIsVisible = !this.editModalIsVisible;
   }
 }
