@@ -17,10 +17,6 @@ export interface ArtifactSearchModel extends ArtifactBaseModel {
   latestVersion: string;
 }
 
-export interface ArtifactStaticModel extends ArtifactBaseModel {
-  latestVersion: string;
-}
-
 export interface ArtifactListModel extends ArtifactBaseModel {
   version: string;
   tags: string[];
@@ -53,35 +49,12 @@ export interface ArtifactModel extends ArtifactBaseModel {
   obejcts: ArtifactObjectModel[];
 }
 
-export interface ArtifactRepoSearchModel {
-  repoCode: string;
-  name: string;
-  latestVersion: string;
-  lastUpdateTime?: Date;
-}
-
-export interface ArtifactSearchModel {
-  repoCode: string;
-  name: string;
-  version: string;
-  tags: string[];
-  attributes: { [key: string]: string; };
-  downloadQuantity: number;
-  lastUpdateTime?: Date;
-}
-
-export interface ArtifactVersionListModel {
-  name: string;
-  version: string;
-  lastUpdateTime: Date;
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class ArtifactService {
 
-  baseUrl = ApiUrl.base + "/repositorys/{repoCode}/artifacts";
+  baseUrl = ApiUrl.base + "/repositorys";
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -91,16 +64,21 @@ export class ArtifactService {
     private http: HttpClient
   ) { }
 
-  search(repoCode: string, query: Search): Observable<SearchResult<ArtifactSearchModel>> {
-    return this.http.post<SearchResult<ArtifactSearchModel>>(this.baseUrl.replace("{repoCode}", repoCode) + "/search", query, this.httpOptions);
+  search(repoCode: string, query: Search)
+    : Observable<SearchResult<ArtifactSearchModel>> {
+    var url = `${this.baseUrl}/${repoCode}/search`;
+    return this.http.post<SearchResult<ArtifactSearchModel>>(url, query, this.httpOptions);
   }
 
-  getDetail(repoCode: string, artifactName: string, artifactVersion: string): Observable<DataResult<ArtifactModel>> {
-    var url = this.baseUrl.replace("{repoCode}", repoCode) + "/" + artifactName + "/v/" + artifactVersion;
+  getVersions(repoCode: string, artifactName: string, query: Search)
+    : Observable<SearchResult<ArtifactListModel>> {
+    var url = `${this.baseUrl}/${repoCode}/artifacts/${artifactName}/versions`;
+    return this.http.post<SearchResult<ArtifactListModel>>(url, query, this.httpOptions);
+  }
+
+  getDetail(repoCode: string, artifactName: string, artifactVersion: string)
+    : Observable<DataResult<ArtifactModel>> {
+    var url = `${this.baseUrl}/${repoCode}/artifacts/${artifactName}/v/${artifactVersion}`;
     return this.http.get<DataResult<ArtifactModel>>(url, this.httpOptions);
-  }
-
-  getVersions(repoCode: string, artifactName: string, query: Search): Observable<SearchResult<ArtifactSearchModel>> {
-    return this.http.post<SearchResult<ArtifactSearchModel>>(this.baseUrl.replace("{repoCode}", repoCode) + "/" + artifactName + "/versions", query, this.httpOptions);
   }
 }
