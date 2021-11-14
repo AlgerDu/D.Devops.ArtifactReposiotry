@@ -11,6 +11,15 @@ export interface ArtifactBaseModel {
 }
 
 /**
+ * 制品的唯一标识；用于制品的删除、修改等等
+ */
+export interface ArtifactSymbol {
+  repoCode: string;
+  name: string;
+  version: string;
+}
+
+/**
  * 制品搜索
  */
 export interface ArtifactSearchModel extends ArtifactBaseModel {
@@ -40,19 +49,14 @@ export interface ArtifactObjectModel {
   attributes: { [key: string]: string; };
 }
 
-export interface ArtifactModel extends ArtifactBaseModel {
+export interface ArtifactModel extends ArtifactSymbol {
   version: string;
   tags: string[];
   attributes: { [key: string]: string; };
   downloadQuantity: number;
   depends: DependModel[];
   obejcts: ArtifactObjectModel[];
-}
-
-export interface ArtifactOptDTO {
-  repoCode: string;
-  name: string;
-  version: string;
+  lastUpdateTime?: Date;
 }
 
 export interface ArtifactUpdateDTO {
@@ -120,7 +124,7 @@ export class ArtifactService {
    * @param data 
    * @returns 
    */
-  update(artifact: ArtifactOptDTO, data: ArtifactUpdateDTO)
+  update(artifact: ArtifactSymbol, data: ArtifactUpdateDTO)
     : Observable<Result> {
     var url = `${this.baseUrl}/${artifact.repoCode}/artifacts/${artifact.name}/v/${artifact.version}`;
     return this.http.put<Result>(url, data, this.httpOptions);
