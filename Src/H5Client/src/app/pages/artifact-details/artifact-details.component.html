@@ -26,7 +26,7 @@
     </button>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
-        <li nz-menu-item (click)="showOrHideEditModal()">编辑</li>
+        <li nz-menu-item (click)="edit()">编辑</li>
         <li nz-menu-item (click)="deleteClick()">修改标签</li>
         <li nz-menu-item nzDanger (click)="deleteClick()">删除</li>
       </ul>
@@ -112,16 +112,3 @@
     </nz-table>
   </nz-tab>
 </nz-tabset>
-
-<nz-modal [(nzVisible)]="editModalIsVisible" nzTitle="编辑" (nzOnCancel)="showOrHideEditModal()" (nzOnOk)="deleteClick()">
-  <ng-container *nzModalContent>
-    <form nz-form [formGroup]="validateEditForm">
-      <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="">上一個版本</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="不能为空">
-          <input nz-input formControlName="code" id="code" [(ngModel)]="artifact.attributes['base']" />
-        </nz-form-control>
-      </nz-form-item>
-    </form>
-  </ng-container>
-</nz-modal>
