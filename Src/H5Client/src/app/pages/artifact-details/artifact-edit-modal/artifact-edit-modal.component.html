@@ -1,9 +1,19 @@
+<div *nzModalTitle>
+    编辑 {{artifact.name}}_v{{artifact.version}}
+</div>
+
 <div>
     <form nz-form [formGroup]="validateForm">
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="">编号</nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="不能为空">
-                <input nz-input formControlName="code" id="code" [(ngModel)]="artifact.name" />
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="">标签</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <nz-tag *ngFor="let tag of data.tags;" [nzMode]="'closeable'" (nzOnClose)="removeTag(tag)">
+                    {{ tag}}
+                </nz-tag>
+                <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showTagInput()">
+                    <i nz-icon nzType="plus"></i>
+                    Add
+                </nz-tag>
             </nz-form-control>
         </nz-form-item>
     </form>

@@ -37,6 +37,10 @@ export class ArtifactEditModalComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.validateForm = this.fb.group({
+      tags: [null, []],
+    });
+
   }
 
   confrime() {
@@ -44,7 +48,17 @@ export class ArtifactEditModalComponent implements OnInit {
   }
 
   destroyModal() {
+    this.modal.destroy();
+  }
 
+  removeTag(removedTag: {}) {
+    this.data.tags = this.data.tags.filter(tag => tag !== removedTag);
+  }
+
+  inputVisible: boolean = false;
+
+  showTagInput() {
+    this.inputVisible = !this.inputVisible;
   }
 
 }
