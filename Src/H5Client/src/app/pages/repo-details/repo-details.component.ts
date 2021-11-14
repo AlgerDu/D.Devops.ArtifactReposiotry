@@ -4,7 +4,7 @@ import { ArtifactRepoService, ArtifactRepo } from '../../services/artifact-repo.
 import { SearchResult, PageModel, TableModel, TableGetDatable, Result, isSuccess } from '../../models/base';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable, observable } from 'rxjs';
-import { ArtifactService, ArtifactRepoSearchModel } from '../../services/artifact.service';
+import { ArtifactService, ArtifactSearchModel } from '../../services/artifact.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -16,11 +16,11 @@ import { EventCode } from 'src/app/models/events';
   templateUrl: './repo-details.component.html',
   styleUrls: ['./repo-details.component.less']
 })
-export class RepoDetailsComponent implements TableGetDatable<ArtifactRepoSearchModel>, OnInit {
+export class RepoDetailsComponent implements TableGetDatable<ArtifactSearchModel>, OnInit {
 
   repo: ArtifactRepo = { code: "", name: "" };
 
-  artifactTable: TableModel<ArtifactRepoSearchModel>;
+  artifactTable: TableModel<ArtifactSearchModel>;
 
   constructor(
     private route: ActivatedRoute
@@ -30,7 +30,7 @@ export class RepoDetailsComponent implements TableGetDatable<ArtifactRepoSearchM
     , private artifactService: ArtifactService
     , private eventService: DEventService
   ) {
-    this.artifactTable = new TableModel<ArtifactRepoSearchModel>(this);
+    this.artifactTable = new TableModel<ArtifactSearchModel>(this);
   }
 
   ngOnInit(): void {
@@ -50,7 +50,7 @@ export class RepoDetailsComponent implements TableGetDatable<ArtifactRepoSearchM
     });
   }
 
-  getDate(model: TableModel<ArtifactRepoSearchModel>): Observable<SearchResult<ArtifactRepoSearchModel>> {
+  getDate(model: TableModel<ArtifactSearchModel>): Observable<SearchResult<ArtifactSearchModel>> {
     return this.artifactService.search(this.repo.code, { page: model.page, condition: model.condition });
   }
 

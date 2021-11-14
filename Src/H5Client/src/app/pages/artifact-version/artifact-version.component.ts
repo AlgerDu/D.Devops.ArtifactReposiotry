@@ -5,7 +5,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Observable } from 'rxjs';
 import { BreadcrumbItem, isSuccess, SearchResult, TableGetDatable } from 'src/app/models/base';
 import { ArtifactRepo, ArtifactRepoService } from 'src/app/services/artifact-repo.service';
-import { ArtifactSearchModel, ArtifactService, ArtifactVersionListModel } from 'src/app/services/artifact.service';
+import { ArtifactListModel, ArtifactSearchModel, ArtifactService } from 'src/app/services/artifact.service';
 import { TableModel } from '../../models/base';
 
 @Component({
@@ -13,21 +13,22 @@ import { TableModel } from '../../models/base';
   templateUrl: './artifact-version.component.html',
   styleUrls: ['./artifact-version.component.less']
 })
-export class ArtifactVersionComponent implements TableGetDatable<ArtifactSearchModel>, OnInit {
+export class ArtifactVersionComponent implements TableGetDatable<ArtifactListModel>, OnInit {
 
   breadcrumbItems: BreadcrumbItem[] = [];
   repoCode: string = "";
   artifactName: string = "";
 
-  table: TableModel<ArtifactSearchModel>;
+  table: TableModel<ArtifactListModel>;
 
   constructor(
     private route: ActivatedRoute
     , private modal: NzModalService
     , private notification: NzNotificationService
     , private repoService: ArtifactRepoService
-    , private artifactService: ArtifactService) {
-    this.table = new TableModel<ArtifactSearchModel>(this);
+    , private artifactService: ArtifactService
+  ) {
+    this.table = new TableModel<ArtifactListModel>(this);
   }
 
   ngOnInit(): void {
@@ -43,7 +44,7 @@ export class ArtifactVersionComponent implements TableGetDatable<ArtifactSearchM
     });
   }
 
-  getDate(model: TableModel<ArtifactSearchModel>): Observable<SearchResult<ArtifactSearchModel>> {
+  getDate(model: TableModel<ArtifactListModel>): Observable<SearchResult<ArtifactListModel>> {
     return this.artifactService.getVersions(this.repoCode, this.artifactName, { page: model.page, condition: model.condition })
   }
 }
