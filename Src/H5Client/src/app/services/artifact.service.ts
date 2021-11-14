@@ -88,7 +88,7 @@ export class ArtifactService {
    */
   search(repoCode: string, query: Search)
     : Observable<SearchResult<ArtifactSearchModel>> {
-    var url = `${this.baseUrl}/${repoCode}/search`;
+    var url = `${this.baseUrl}/${repoCode}/artifacts/search`;
     return this.http.post<SearchResult<ArtifactSearchModel>>(url, query, this.httpOptions);
   }
 
