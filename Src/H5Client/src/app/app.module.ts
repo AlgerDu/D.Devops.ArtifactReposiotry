@@ -44,6 +44,7 @@ import { RepoArtifactsComponent } from './pages/repo-artifacts/repo-artifacts.co
 import { BreadcrumbComponent } from './common/breadcrumb/breadcrumb.component';
 import { ArtifactEditModalComponent } from './pages/artifact-details/artifact-edit-modal/artifact-edit-modal.component';
 import { ArtifactEditComponent } from './pages/artifact-edit/artifact-edit.component';
+import { TagsComponent } from './common/tags/tags.component';
 
 registerLocaleData(zh);
 
@@ -59,7 +60,8 @@ registerLocaleData(zh);
     DTagComponent,
     BreadcrumbComponent,
     ArtifactEditModalComponent,
-    ArtifactEditComponent
+    ArtifactEditComponent,
+    TagsComponent
   ],
   imports: [
     BrowserModule,
