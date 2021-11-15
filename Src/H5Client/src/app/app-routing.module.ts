@@ -5,13 +5,15 @@ import { ArtifactDetailsComponent } from './pages/artifact-details/artifact-deta
 import { SearchComponent } from './pages/search/search.component';
 import { ArtifactVersionComponent } from './pages/artifact-version/artifact-version.component';
 import { RepoArtifactsComponent } from './pages/repo-artifacts/repo-artifacts.component';
+import { ArtifactEditComponent } from './pages/artifact-edit/artifact-edit.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/search' },
   { path: 'search', component: SearchComponent },
   { path: 'repo/:code', component: RepoArtifactsComponent },
   { path: 'repo/:code/artifacts/:artifactName', component: ArtifactVersionComponent },
-  { path: 'repo/:code/artifacts/:artifactName/v/:version', component: ArtifactDetailsComponent }
+  { path: 'repo/:code/artifacts/:artifactName/v/:version', component: ArtifactDetailsComponent },
+  { path: 'repo/:code/artifacts/:artifactName/v/:version/edit', component: ArtifactEditComponent }
 ];
 
 @NgModule({
