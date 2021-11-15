@@ -26,7 +26,7 @@
     </button>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
-        <li nz-menu-item (click)="edit()">编辑</li>
+        <li nz-menu-item><a routerLink="edit">编辑</a></li>
         <li nz-menu-item (click)="deleteClick()">修改标签</li>
         <li nz-menu-item nzDanger (click)="deleteClick()">删除</li>
       </ul>
