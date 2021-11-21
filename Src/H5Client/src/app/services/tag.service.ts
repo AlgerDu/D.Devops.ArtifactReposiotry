@@ -36,7 +36,7 @@ export class TagService {
                 tap(
                     tag => {
 
-                        if (tag == null){
+                        if (tag == null) {
                             tag = {
                                 color: "default",
                                 name: name,
@@ -46,6 +46,11 @@ export class TagService {
                         }
 
                         this.caches[name] = tag;
+                    }
+                ),
+                map(
+                    tag => {
+                        return this.caches[name];
                     }
                 )
             );
