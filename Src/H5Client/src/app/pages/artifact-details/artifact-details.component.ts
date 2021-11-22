@@ -7,7 +7,6 @@ import { BreadcrumbItem } from 'src/app/models/base';
 import { ArtifactRepoService } from 'src/app/services/artifact-repo.service';
 import { ArtifactModel, ArtifactSearchModel, ArtifactService } from 'src/app/services/artifact.service';
 import { isSuccess } from '../../models/base';
-import { ArtifactEditModalComponent } from './artifact-edit-modal/artifact-edit-modal.component';
 
 @Component({
   selector: 'app-artifact-details',
@@ -103,15 +102,6 @@ export class ArtifactDetailsComponent implements OnInit {
 
   deleteClick() {
 
-  }
-
-  edit() {
-    this.modal.create({
-      nzContent: ArtifactEditModalComponent,
-      nzComponentParams: {
-        "model": this.artifact
-      }
-    });
   }
 
 }
