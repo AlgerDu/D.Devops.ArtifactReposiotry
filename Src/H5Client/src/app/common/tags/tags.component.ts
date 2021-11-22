@@ -1,21 +1,23 @@
-import { Component, OnInit, Input, ElementRef, ViewChild, Output } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { TagService } from 'src/app/services/tag.service';
 import { isSuccess } from '../../models/base';
+import { Tag } from '../../services/tag.service';
 
 @Component({
   selector: 'app-tags',
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.less']
 })
-export class TagsComponent implements OnInit {
+export class TagsComponent implements OnInit, OnChanges {
 
-  @Input("data") tags: string[] = [];
+  @Input() tags: string[] = [];
+  @Output() tagsChange = new EventEmitter<string[]>();
   @Input("editable") editable: boolean = false;
 
   inputVisible = false;
   inputValue = '';
 
-  tagColors: Map<string, string> = new Map<string, string>();
+  datas: Tag[] = [];
 
   @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
 
@@ -23,15 +25,20 @@ export class TagsComponent implements OnInit {
     private tagService: TagService
   ) { }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.datas = [];
+    this.tags.forEach(tagName => {
+      this.getTagAndCache(tagName);
+    });
+  }
+
   ngOnInit(): void {
-    this.tags.forEach(tag => {
-      this.getTagColorAndCache(tag);
-    })
   }
 
   handleClose(removedTag: string): void {
     this.tags = this.tags.filter(tag => tag !== removedTag);
-    this.tagColors.delete(removedTag);
+    this.datas = this.datas.filter(tag => tag.name == removedTag);
+    this.tagsChange.emit(this.tags);
   }
 
   showInput(): void {
@@ -44,21 +51,17 @@ export class TagsComponent implements OnInit {
   handleInputConfirm(): void {
     if (this.inputValue && this.tags.indexOf(this.inputValue) === -1) {
       this.tags = [...this.tags, this.inputValue];
-      this.getTagColorAndCache(this.inputValue);
+      this.getTagAndCache(this.inputValue);
+      this.tagsChange.emit(this.tags);
     }
     this.inputValue = '';
     this.inputVisible = false;
   }
 
-  getTagColorAndCache(tag: string) {
-
-    if (this.tagColors.has(tag)) {
-      return;
-    }
-
-    this.tagService.getTag(tag).subscribe((data) => {
-      this.tagColors.set(tag, data.color)
-    });
+  getTagAndCache(tagName: string) {
+    this.tagService.getTag(tagName)
+      .subscribe((data) => {
+        this.datas.push(data);
+      });
   }
-
 }
