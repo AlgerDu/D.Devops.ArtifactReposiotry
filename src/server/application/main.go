@@ -1,16 +1,23 @@
 package main
 
 import (
-	"fmt"
-
-	di "github.com/AlgerDu/go-di/src"
+	"app/src/server/application/graphql"
+	defaultbuilder "app/src/server/infra/default-builder"
+	"os"
 )
 
 func main() {
-	container := di.New()
-	app, err := di.Provider_GetService[string](container)
+
+	builder := defaultbuilder.
+		New(os.Environ()...).
+		ConfigService(
+			graphql.IoC,
+		)
+
+	app, err := builder.Build()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Print(app)
+
+	app.Run()
 }
