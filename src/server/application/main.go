@@ -11,6 +11,7 @@ func main() {
 	builder := defaultbuilder.
 		New(os.Environ()...).
 		ConfigService(
+			IoC_Infra,
 			graphql.IoC,
 		)
 
