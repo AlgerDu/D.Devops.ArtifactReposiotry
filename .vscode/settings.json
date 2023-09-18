@@ -1,3 +1,5 @@
 {
-    "github.gitAuthentication": false
+    "github.gitAuthentication": false,
+    "sql-formatter.dialect": "pl/sql",
+    "sql-formatter.uppercase": true
 }

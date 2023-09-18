@@ -12,6 +12,7 @@ func main() {
 		New(os.Environ()...).
 		ConfigService(
 			IoC_Infra,
+			IoC_App,
 			graphql.IoC,
 		)
 
