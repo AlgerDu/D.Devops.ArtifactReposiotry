@@ -8,7 +8,7 @@ type (
 		Build() (App, error)
 	}
 
-	SubApp interface {
+	MicroService interface {
 		Run() error
 	}
 

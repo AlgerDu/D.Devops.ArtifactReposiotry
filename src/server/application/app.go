@@ -4,23 +4,23 @@ import "app/src/server/infra"
 
 type (
 	App struct {
-		subApps    []infra.SubApp
+		services   []infra.MicroService
 		httpServer *infra.HttpServer
 	}
 )
 
 func NewApp(
-	subApps []infra.SubApp,
+	services []infra.MicroService,
 	httpServer *infra.HttpServer,
 ) *App {
 	return &App{
-		subApps:    subApps,
+		services:   services,
 		httpServer: httpServer,
 	}
 }
 
 func (app *App) Run() error {
-	for _, subApp := range app.subApps {
+	for _, subApp := range app.services {
 		err := subApp.Run()
 		if err != nil {
 			return err
