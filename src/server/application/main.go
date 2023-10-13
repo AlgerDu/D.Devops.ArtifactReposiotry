@@ -1,7 +1,7 @@
 package main
 
 import (
-	"app/src/server/application/graphql"
+	appgraphlql "app/src/server/application/graphql"
 	defaultbuilder "app/src/server/infra/default-builder"
 	"os"
 )
@@ -13,7 +13,7 @@ func main() {
 		ConfigService(
 			IoC_Infra,
 			IoC_App,
-			graphql.IoC,
+			appgraphlql.IoC,
 		)
 
 	app, err := builder.Build()

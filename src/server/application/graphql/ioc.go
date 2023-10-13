@@ -1,4 +1,4 @@
-package graphql
+package appgraphlql
 
 import di "github.com/AlgerDu/go-di/src"
 
