@@ -1,6 +1,7 @@
 package appgraphlql
 
 import (
+	"app/src/server/domain"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,12 +10,8 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-type WithData struct {
-	Data map[string]any
-}
-
 type Artifact struct {
-	*WithData
+	*domain.DataBox
 	Name string
 }
 
@@ -23,24 +20,13 @@ var ArtifactType = graphql.NewObject(graphql.ObjectConfig{
 	Fields: graphql.Fields{
 		"name": &graphql.Field{Type: graphql.String},
 		"type": &graphql.Field{
-			Type: graphql.String,
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				fmt.Println(p.Source)
-				fmt.Println(p.Info.FieldName)
-
-				artifact, ok := p.Source.(*WithData)
-				if !ok {
-					fmt.Println("a")
-					return "unknown", nil
-				}
-
-				value, ok := artifact.Data["type"]
-				if !ok {
-					return "unknown", nil
-				}
-
-				return value, nil
-			}},
+			Type:    graphql.String,
+			Resolve: Resolver_FromDataBox,
+		},
+		"class": &graphql.Field{
+			Type:    graphql.String,
+			Resolve: Resolver_FromDataBox,
+		},
 	},
 })
 
@@ -53,7 +39,14 @@ var QueryType = graphql.NewObject(graphql.ObjectConfig{
 		"artifacct": &graphql.Field{
 			Type: ArtifactType,
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				var foo = Artifact{Name: "test", WithData: &WithData{Data: map[string]any{"type": "docker"}}}
+				var foo = Artifact{
+					DataBox: &domain.DataBox{
+						Data: map[string]any{
+							"type": "docker",
+						},
+					},
+					Name: "test",
+				}
 
 				return func() (interface{}, error) {
 					return &foo, nil
@@ -75,6 +68,7 @@ func TestGraphql_Main(t *testing.T) {
 			artifacct {
 				name
 				type
+				class
 			}
 		}
 	`
