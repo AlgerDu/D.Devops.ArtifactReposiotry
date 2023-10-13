@@ -8,6 +8,7 @@ require (
 )
 
 require (
+	github.com/graphql-go/graphql v0.8.1
 	github.com/labstack/gommon v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
