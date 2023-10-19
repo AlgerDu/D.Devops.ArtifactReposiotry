@@ -1,8 +1,8 @@
 package appgraphlql
 
 import (
+	"app/src/server/infra"
 	"context"
-	"fmt"
 
 	"github.com/graphql-go/graphql"
 	"github.com/labstack/echo/v4"
@@ -16,11 +16,13 @@ type (
 	}
 
 	GraphqlController struct {
+		logger infra.Logger
 		schmea graphql.Schema
 	}
 )
 
 func NewGraphqlController(
+	logger infra.Logger,
 	schemaBuilder *SchemaBuilder,
 ) *GraphqlController {
 
@@ -30,6 +32,7 @@ func NewGraphqlController(
 	}
 
 	return &GraphqlController{
+		logger: logger,
 		schmea: schema,
 	}
 }
@@ -41,7 +44,8 @@ func (controller *GraphqlController) Query(c echo.Context) error {
 		return err
 	}
 
-	fmt.Println(p.Query)
+	controller.logger.Info(p.Query)
+
 	result := graphql.Do(graphql.Params{
 		Context:        context.Background(),
 		Schema:         controller.schmea,

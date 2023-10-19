@@ -2,11 +2,14 @@ package main
 
 import (
 	"app/src/server/infra"
+	"app/src/server/infra/logrus"
 
 	di "github.com/AlgerDu/go-di/src"
 )
 
 func IoC_Infra(services di.ServiceCollector) error {
+	di.AddSingleton(services, logrus.NewDefaultOptions)
+	di.AddSingleton(services, logrus.NewLogger)
 
 	di.AddSingleton(services, infra.NewHttpServer)
 
