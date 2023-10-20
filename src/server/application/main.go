@@ -2,6 +2,7 @@ package main
 
 import (
 	appgraphlql "app/src/server/application/graphql"
+	"app/src/server/domain"
 	defaultbuilder "app/src/server/infra/default-builder"
 	"os"
 )
@@ -13,6 +14,7 @@ func main() {
 		SetConfigFile("config.yml").
 		ConfigService(
 			IoC_Infra,
+			domain.IoC,
 			IoC_App,
 			appgraphlql.IoC,
 		)
