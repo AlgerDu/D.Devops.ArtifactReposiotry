@@ -19,3 +19,29 @@ func Resolver_FromDataBox(p graphql.ResolveParams) (interface{}, error) {
 
 	return value, nil
 }
+
+func ConvertToGraphqlType(typeName string) graphql.Output {
+	switch typeName {
+	case "string":
+		return graphql.String
+	default:
+		return graphql.String
+	}
+}
+
+func ConvertToGraphqlFields(schema *domain.Schema) graphql.Fields {
+	fields := graphql.Fields{}
+
+	for _, field := range schema.Fields {
+		graphqlField := &graphql.Field{}
+		graphqlField.Type = ConvertToGraphqlType(field.Type)
+
+		if field.ValueFromExtData {
+			graphqlField.Resolve = Resolver_FromDataBox
+		}
+
+		fields[field.Name] = graphqlField
+	}
+
+	return fields
+}

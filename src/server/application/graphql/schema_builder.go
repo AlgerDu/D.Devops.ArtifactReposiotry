@@ -1,23 +1,21 @@
 package appgraphlql
 
 import (
-	"app/src/server/domain"
-
 	"github.com/graphql-go/graphql"
 )
 
 type (
 	SchemaBuilder struct {
-	}
-
-	Model struct {
-		*domain.DataBox
-		Name string
+		product *ProductSchemaBuilder
 	}
 )
 
-func NewSchemaBuilder() *SchemaBuilder {
-	return &SchemaBuilder{}
+func NewSchemaBuilder(
+	product *ProductSchemaBuilder,
+) *SchemaBuilder {
+	return &SchemaBuilder{
+		product: product,
+	}
 }
 
 func (builder *SchemaBuilder) Build() (graphql.Schema, error) {
@@ -30,37 +28,29 @@ func (builder *SchemaBuilder) Build() (graphql.Schema, error) {
 }
 
 func (builder *SchemaBuilder) query() *graphql.Object {
+
+	product := builder.product.Build()
+
 	return graphql.NewObject(graphql.ObjectConfig{
 		Name: "Query",
 		Fields: graphql.Fields{
 			"product": &graphql.Field{
-				Type: productType,
+				Type: product.Query,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					var foo = Model{
-						DataBox: &domain.DataBox{
-							Data: map[string]any{
-								"type": "docker",
-							},
-						},
-						Name: "test",
-					}
+					// var foo = Model{
+					// 	DataBox: &domain.DataBox{
+					// 		Data: map[string]any{
+					// 			"type": "docker",
+					// 		},
+					// 	},
+					// 	Name: "test",
+					// }
 
 					return func() (interface{}, error) {
-						return &foo, nil
+						return nil, nil
 					}, nil
 				},
 			},
 		},
 	})
 }
-
-var productType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Product",
-	Fields: graphql.Fields{
-		"name": &graphql.Field{Type: graphql.String},
-		"type": &graphql.Field{
-			Type:    graphql.String,
-			Resolve: Resolver_FromDataBox,
-		},
-	},
-})
