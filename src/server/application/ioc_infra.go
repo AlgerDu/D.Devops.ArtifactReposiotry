@@ -17,6 +17,7 @@ func IoC_Infra(services di.ServiceCollector) error {
 }
 
 func IoC_App(services di.ServiceCollector) error {
+	infra.DI_ConfigOptions(services, "app", &AppOptions{})
 	di.AddSingletonFor[infra.App](services, NewApp)
 	return nil
 }

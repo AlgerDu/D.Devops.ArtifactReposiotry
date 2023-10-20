@@ -2,6 +2,7 @@ package defaultbuilder
 
 import (
 	"app/src/server/infra"
+	"app/src/server/infra/gookit"
 
 	di "github.com/AlgerDu/go-di/src"
 )
@@ -24,6 +25,10 @@ func New(
 }
 
 func (builder *DefaultAppBuilder) SetConfigFile(filePath string) *DefaultAppBuilder {
+
+	config := gookit.NewConfig(filePath)
+	di.AddInstance[*gookit.ConfigShell, infra.Config](builder.container, config)
+
 	return builder
 }
 

@@ -10,6 +10,7 @@ func main() {
 
 	builder := defaultbuilder.
 		New(os.Environ()...).
+		SetConfigFile("config.yml").
 		ConfigService(
 			IoC_Infra,
 			IoC_App,
