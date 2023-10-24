@@ -17,7 +17,12 @@ func (repo *SchemaRepository) Get(name string) *Schema {
 	return &Schema{
 		Fields: []*SchemaField{
 			{
-				Name: "name",
+				Name:        "name",
+				Type:        "string",
+				Description: "产品名称",
+			},
+			{
+				Name: "description",
 				Type: "string",
 			},
 		},

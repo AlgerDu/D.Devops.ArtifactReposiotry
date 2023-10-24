@@ -4,6 +4,7 @@ type (
 	SchemaField struct {
 		Name             string
 		Type             string
+		Description      string
 		ValueFromExtData bool
 	}
 

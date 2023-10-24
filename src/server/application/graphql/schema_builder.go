@@ -36,6 +36,11 @@ func (builder *SchemaBuilder) query() *graphql.Object {
 		Fields: graphql.Fields{
 			"product": &graphql.Field{
 				Type: product.Query,
+				Args: graphql.FieldConfigArgument{
+					"name": &graphql.ArgumentConfig{
+						Type: graphql.String,
+					},
+				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					// var foo = Model{
 					// 	DataBox: &domain.DataBox{

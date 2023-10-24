@@ -1,3 +1,14 @@
+CREATE TABLE schema (
+    id BIGSERIAL,
+    "name" TEXT NOT NULL,
+    "descript" TEXT NOT NULL,
+    "data" JSONB NOT NULL,
+    create_at TIMESTAMPTZ NOT NULL,
+    update_at TIMESTAMPTZ NOT NULL,
+    is_delete BOOLEAN NOT NULL,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE product (
     id BIGSERIAL,
     "name" TEXT NOT NULL,

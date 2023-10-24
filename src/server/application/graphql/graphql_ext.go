@@ -35,6 +35,7 @@ func ConvertToGraphqlFields(schema *domain.Schema) graphql.Fields {
 	for _, field := range schema.Fields {
 		graphqlField := &graphql.Field{}
 		graphqlField.Type = ConvertToGraphqlType(field.Type)
+		graphqlField.Description = field.Description
 
 		if field.ValueFromExtData {
 			graphqlField.Resolve = Resolver_FromDataBox
