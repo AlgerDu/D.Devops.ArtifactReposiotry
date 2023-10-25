@@ -1,10 +1,13 @@
 CREATE TABLE schema (
     id BIGSERIAL,
+    parent_id BIGINT,
     "name" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
     "descript" TEXT NOT NULL,
     "data" JSONB NOT NULL,
     create_at TIMESTAMPTZ NOT NULL,
     update_at TIMESTAMPTZ NOT NULL,
+    is_enable BOOLEAN NOT NULL,
     is_delete BOOLEAN NOT NULL,
     PRIMARY KEY (id)
 );
