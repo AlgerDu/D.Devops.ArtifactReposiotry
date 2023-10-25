@@ -3,8 +3,6 @@ package infra
 import "github.com/sirupsen/logrus"
 
 type (
-	LogFields map[string]interface{}
-
 	Logger interface {
 		WithField(key string, value interface{}) *logrus.Entry
 		WithFields(fields logrus.Fields) *logrus.Entry
@@ -40,4 +38,9 @@ type (
 		Fatalln(args ...interface{})
 		Panicln(args ...interface{})
 	}
+)
+
+var (
+	LF_Source string = "Source"
+	LF_Track  string = "Track"
 )
