@@ -23,24 +23,38 @@ func NewSchemaRepository(
 	}
 }
 
-func (repo *SchemaRepository) Get(name string) *Schema {
+func (repo *SchemaRepository) Get(path string) *Schema {
 
-	logger := repo.logger.WithField(infra.LF_Track, name)
+	logger := repo.logger.WithField(infra.LF_Track, path)
+	schema := &Schema{
+		Fields: []*SchemaField{},
+	}
+
+	sqlStr := `
+	WITH RECURSIVE tree AS (
+        SELECT id, name AS path
+        FROM schema
+        WHERE parent_id = 0
+     UNION ALL
+        SELECT origin.id, tree.path || '.' || origin.name
+        FROM tree JOIN schema origin
+             ON origin.parent_id = tree.id
+	)
+	SELECT id FROM tree WHERE path = ?;
+	`
+
+	var ids []int64
+	sqlRst := repo.db.Raw(sqlStr, path).Find(&ids)
+	if sqlRst.Error != nil || len(ids) != 1 {
+		logger.WithError(sqlRst.Error).WithField("count", len(ids)).Error("db record error")
+		return schema
+	}
 
 	var pos []po.Schema
-	sqlRst := repo.db.Where("is_delete = ?", false).Find(&pos)
+	sqlRst = repo.db.Where("parent_id = ? AND is_delete = ?", ids[0], false).Find(&pos)
 	if sqlRst.Error != nil {
 		logger.WithError(sqlRst.Error).Error("search from pg err")
 		return nil
-	}
-
-	if len(pos) < 1 {
-		logger.Warn("no record")
-		return nil
-	}
-
-	schema := &Schema{
-		Fields: []*SchemaField{},
 	}
 
 	for _, po := range pos {

@@ -1,5 +1,5 @@
 CREATE TABLE schema (
-    id BIGSERIAL,
+    id BIGINT,
     parent_id BIGINT,
     "name" TEXT NOT NULL,
     "type" TEXT NOT NULL,
