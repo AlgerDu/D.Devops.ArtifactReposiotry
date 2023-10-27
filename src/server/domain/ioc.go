@@ -7,6 +7,7 @@ import (
 func IoC(services di.ServiceCollector) error {
 
 	di.AddSingleton(services, NewSchemaRepository)
+	di.AddSingleton(services, NewProductRepository)
 
 	return nil
 }
