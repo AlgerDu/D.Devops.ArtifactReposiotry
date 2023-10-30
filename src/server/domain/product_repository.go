@@ -4,6 +4,7 @@ import (
 	"app/src/server/infra"
 	"app/src/server/po"
 	"encoding/json"
+	"errors"
 )
 
 type (
@@ -44,4 +45,28 @@ func (repo *ProductRepository) Get(name string) *Product {
 	product.Name = po.Name
 
 	return product
+}
+
+func (repo *ProductRepository) Create(data *Product) (*Product, error) {
+	logger := repo.logger.WithField(infra.LF_Track, data.Name)
+
+	product := repo.Get(data.Name)
+	if product != nil {
+		logger.Error("product exist")
+		return product, errors.New("product exist")
+	}
+
+	poData := &po.Product{
+		Name: data.Name,
+	}
+	tmp, _ := json.Marshal(data.Data)
+	poData.Data = string(tmp)
+
+	sqlRet := repo.db.Create(poData)
+	if sqlRet.Error != nil {
+		logger.Error("product create error")
+		return product, errors.New("product create error")
+	}
+
+	return repo.Get(data.Name), nil
 }
