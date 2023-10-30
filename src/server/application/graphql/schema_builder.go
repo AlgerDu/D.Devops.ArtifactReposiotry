@@ -20,21 +20,22 @@ func NewSchemaBuilder(
 
 func (builder *SchemaBuilder) Build() (graphql.Schema, error) {
 
+	product := builder.product.Build()
+
 	schema, err := graphql.NewSchema(graphql.SchemaConfig{
-		Query: builder.query(),
+		Query: graphql.NewObject(graphql.ObjectConfig{
+			Name: "Query",
+			Fields: graphql.Fields{
+				"product": product.QueryField,
+			},
+		}),
+		Mutation: graphql.NewObject(graphql.ObjectConfig{
+			Name: "Mutation",
+			Fields: graphql.Fields{
+				"createProduct": product.CreateField,
+			},
+		}),
 	})
 
 	return schema, err
-}
-
-func (builder *SchemaBuilder) query() *graphql.Object {
-
-	product := builder.product.Build()
-
-	return graphql.NewObject(graphql.ObjectConfig{
-		Name: "Query",
-		Fields: graphql.Fields{
-			"product": product.QueryField,
-		},
-	})
 }

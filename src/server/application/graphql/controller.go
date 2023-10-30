@@ -44,8 +44,6 @@ func (controller *GraphqlController) Query(c echo.Context) error {
 		return err
 	}
 
-	controller.logger.Info(p.Query)
-
 	result := graphql.Do(graphql.Params{
 		Context:        context.Background(),
 		Schema:         controller.schmea,

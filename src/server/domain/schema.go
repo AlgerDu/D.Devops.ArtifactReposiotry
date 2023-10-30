@@ -6,6 +6,8 @@ type (
 		Type        string
 		Description string
 		IsExt       bool
+		Editable    bool
+		IsKey       bool
 	}
 
 	Schema struct {
