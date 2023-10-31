@@ -3,8 +3,7 @@ package domain
 import (
 	"app/src/server/infra"
 	"app/src/server/po"
-	"encoding/json"
-	"errors"
+	"fmt"
 )
 
 type (
@@ -24,49 +23,55 @@ func NewProductRepository(
 	}
 }
 
-func (repo *ProductRepository) Get(name string) *Product {
-
+func (repo *ProductRepository) Get(name string) (*Product, error) {
 	logger := repo.logger.WithField(infra.LF_Track, name)
 
-	var po po.Product
-	sqlRst := repo.db.Where("name = ? AND is_delete = ?", name, false).First(&po)
+	var poData po.Product
+	sqlRst := repo.db.Where("name = ? AND is_delete = ?", name, false).First(&poData)
 	if sqlRst.Error != nil {
 		logger.WithError(sqlRst.Error).Error("get product err")
-		return nil
+		return nil, ErrNoRecord
 	}
 
-	product := &Product{
-		DataBox: &DataBox{
-			Data: map[string]any{},
-		},
-	}
+	product := Product_FromPO(&poData)
 
-	json.Unmarshal([]byte(po.Data), &product.Data)
-	product.Name = po.Name
-
-	return product
+	return product, nil
 }
 
 func (repo *ProductRepository) Create(data *Product) (*Product, error) {
 	logger := repo.logger.WithField(infra.LF_Track, data.Name)
 
-	product := repo.Get(data.Name)
+	product, _ := repo.Get(data.Name)
 	if product != nil {
-		logger.Error("product exist")
-		return product, errors.New("product exist")
+		logger.WithError(ErrRecordExist).Error("product")
+		return product, ErrRecordExist
 	}
 
-	poData := &po.Product{
-		Name: data.Name,
-	}
-	tmp, _ := json.Marshal(data.Data)
-	poData.Data = string(tmp)
+	poData := product.ToPo()
 
 	sqlRet := repo.db.Create(poData)
 	if sqlRet.Error != nil {
-		logger.Error("product create error")
-		return product, errors.New("product create error")
+		logger.WithError(ErrCreateRecord).Error("product")
+		return nil, ErrCreateRecord
 	}
 
-	return repo.Get(data.Name), nil
+	return repo.Get(data.Name)
+}
+
+func (repo *ProductRepository) List(test string) ([]*Product, error) {
+	logger := repo.logger
+
+	var pos []po.Product
+	sqlRst := repo.db.Where("name like ?", fmt.Sprintf("%%%s%%", test)).Find(&pos)
+	if sqlRst.Error != nil {
+		logger.WithError(sqlRst.Error).Error("get product list error")
+		return nil, sqlRst.Error
+	}
+
+	produces := []*Product{}
+	for _, poData := range pos {
+		produces = append(produces, Product_FromPO(&poData))
+	}
+
+	return produces, nil
 }

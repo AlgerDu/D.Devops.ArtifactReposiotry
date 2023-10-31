@@ -69,3 +69,20 @@ func ConvertToCreateArgs(schema *domain.Schema) graphql.FieldConfigArgument {
 
 	return ca
 }
+
+func ConvertToKeyArgs(schema *domain.Schema) graphql.FieldConfigArgument {
+	ca := graphql.FieldConfigArgument{}
+
+	for _, field := range schema.Fields {
+		if field.IsKey {
+			arg := &graphql.ArgumentConfig{
+				Description: field.Description,
+			}
+			arg.Type = ConvertToGraphqlType(field.Type)
+			arg.Type = graphql.NewNonNull(arg.Type)
+			ca[field.Name] = arg
+		}
+	}
+
+	return ca
+}

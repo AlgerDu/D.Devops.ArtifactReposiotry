@@ -26,7 +26,8 @@ func (builder *SchemaBuilder) Build() (graphql.Schema, error) {
 		Query: graphql.NewObject(graphql.ObjectConfig{
 			Name: "Query",
 			Fields: graphql.Fields{
-				"product": product.QueryField,
+				"product":  product.QueryField,
+				"products": product.ListField,
 			},
 		}),
 		Mutation: graphql.NewObject(graphql.ObjectConfig{

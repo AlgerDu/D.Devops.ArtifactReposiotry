@@ -10,10 +10,10 @@ import (
 
 type (
 	ProductSchema struct {
-		Query       *graphql.Object
+		ObjectType  *graphql.Object
 		QueryField  *graphql.Field
-		CreateArgs  graphql.FieldConfigArgument
 		CreateField *graphql.Field
+		ListField   *graphql.Field
 	}
 
 	ProductSchemaBuilder struct {
@@ -29,7 +29,7 @@ func NewProductSchemaBuilder(
 	productRepo *domain.ProductRepository,
 ) *ProductSchemaBuilder {
 	return &ProductSchemaBuilder{
-		logger:      logger,
+		logger:      logger.WithField(infra.LF_Source, "ProductSchemaBuilder"),
 		schemaRepo:  schemaRepo,
 		productRepo: productRepo,
 	}
@@ -38,48 +38,48 @@ func NewProductSchemaBuilder(
 func (builder *ProductSchemaBuilder) Build() *ProductSchema {
 
 	domainSchema := builder.schemaRepo.Get("product")
-	productType := builder.createQuery(domainSchema)
 
-	return &ProductSchema{
-		Query: productType,
-		QueryField: &graphql.Field{
-			Type: productType,
-			Args: graphql.FieldConfigArgument{
-				"name": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-			},
-			Resolve: builder.nameResolve,
-		},
-		CreateArgs: ConvertToCreateArgs(domainSchema),
-		CreateField: &graphql.Field{
-			Type:    productType,
-			Args:    ConvertToCreateArgs(domainSchema),
-			Resolve: builder.createResolve,
-		},
-	}
-}
-
-func (builder *ProductSchemaBuilder) createQuery(domainSchema *domain.Schema) *graphql.Object {
-
-	return graphql.NewObject(graphql.ObjectConfig{
+	productType := graphql.NewObject(graphql.ObjectConfig{
 		Name:   "Product",
 		Fields: ConvertToGraphqlFields(domainSchema),
 	})
+
+	return &ProductSchema{
+		ObjectType: productType,
+		QueryField: &graphql.Field{
+			Type:    productType,
+			Args:    ConvertToKeyArgs(domainSchema),
+			Resolve: builder.resolveName,
+		},
+		CreateField: &graphql.Field{
+			Type:    productType,
+			Args:    ConvertToCreateArgs(domainSchema),
+			Resolve: builder.resolveCreate,
+		},
+		ListField: &graphql.Field{
+			Type: graphql.NewList(productType),
+			Args: graphql.FieldConfigArgument{
+				"text": &graphql.ArgumentConfig{
+					Type:        graphql.String,
+					Description: "",
+				},
+			},
+			Resolve: builder.resolveList,
+		},
+	}
 }
 
-func (builder *ProductSchemaBuilder) nameResolve(p graphql.ResolveParams) (interface{}, error) {
+func (builder *ProductSchemaBuilder) resolveName(p graphql.ResolveParams) (interface{}, error) {
 	name, ok := p.Args["name"].(string)
 	if !ok {
 		builder.logger.WithField("name", p.Args["name"]).Error("type error")
-		return nil, errors.New("param type error")
+		return nil, errors.New("param error")
 	}
 
-	product := builder.productRepo.Get(name)
-	return product, nil
+	return builder.productRepo.Get(name)
 }
 
-func (builder *ProductSchemaBuilder) createResolve(p graphql.ResolveParams) (interface{}, error) {
+func (builder *ProductSchemaBuilder) resolveCreate(p graphql.ResolveParams) (interface{}, error) {
 	name, ok := p.Args["name"].(string)
 	if !ok {
 		builder.logger.WithField("name", p.Args["name"]).Error("type error")
@@ -98,4 +98,21 @@ func (builder *ProductSchemaBuilder) createResolve(p graphql.ResolveParams) (int
 	}
 
 	return builder.productRepo.Create(data)
+}
+
+func (builder *ProductSchemaBuilder) resolveList(p graphql.ResolveParams) (interface{}, error) {
+
+	text := ""
+
+	value, exist := p.Args["text"]
+	if exist {
+		tmp, ok := value.(string)
+		if !ok {
+			builder.logger.WithField("text", p.Args["text"]).Error("type error")
+			return nil, errors.New("param type error")
+		}
+		text = tmp
+	}
+
+	return builder.productRepo.List(text)
 }
