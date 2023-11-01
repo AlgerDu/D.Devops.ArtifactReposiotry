@@ -34,6 +34,7 @@ func (builder *SchemaBuilder) Build() (graphql.Schema, error) {
 			Name: "Mutation",
 			Fields: graphql.Fields{
 				"createProduct": product.CreateField,
+				"updateProduct": product.UpdateField,
 			},
 		}),
 	})

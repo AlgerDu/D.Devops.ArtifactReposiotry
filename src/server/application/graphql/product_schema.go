@@ -14,6 +14,7 @@ type (
 		QueryField  *graphql.Field
 		CreateField *graphql.Field
 		ListField   *graphql.Field
+		UpdateField *graphql.Field
 	}
 
 	ProductSchemaBuilder struct {
@@ -66,6 +67,11 @@ func (builder *ProductSchemaBuilder) Build() *ProductSchema {
 			},
 			Resolve: builder.resolveList,
 		},
+		UpdateField: &graphql.Field{
+			Type:    productType,
+			Args:    ConvertToCreateArgs(domainSchema),
+			Resolve: builder.resolveUpdate,
+		},
 	}
 }
 
@@ -115,4 +121,19 @@ func (builder *ProductSchemaBuilder) resolveList(p graphql.ResolveParams) (inter
 	}
 
 	return builder.productRepo.List(text)
+}
+
+func (builder *ProductSchemaBuilder) resolveUpdate(p graphql.ResolveParams) (interface{}, error) {
+	_, ok := p.Args["name"].(string)
+	if !ok {
+		builder.logger.WithField("name", p.Args["name"]).Error("type error")
+		return nil, errors.New("param type error")
+	}
+
+	data, err := domain.Product_FromMap(p.Args)
+	if err != nil {
+		return nil, err
+	}
+
+	return builder.productRepo.Update(data)
 }

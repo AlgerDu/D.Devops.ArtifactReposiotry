@@ -4,6 +4,8 @@ import (
 	"app/src/server/infra"
 	"app/src/server/po"
 	"fmt"
+
+	"gorm.io/gorm"
 )
 
 type (
@@ -74,4 +76,21 @@ func (repo *ProductRepository) List(test string) ([]*Product, error) {
 	}
 
 	return produces, nil
+}
+
+func (repo *ProductRepository) Update(data *Product) (*Product, error) {
+	logger := repo.logger.WithField(infra.LF_Track, data.Name)
+
+	poData := data.ToPo()
+	sqlRst := repo.db.
+		Model(poData).
+		Where("name = ? AND is_delete = ?", data.Name, false).
+		Update("data", gorm.Expr("data || ?", poData.Data))
+
+	if sqlRst.Error != nil {
+		logger.WithError(sqlRst.Error).Error("product update error")
+		return nil, sqlRst.Error
+	}
+
+	return repo.Get(data.Name)
 }
