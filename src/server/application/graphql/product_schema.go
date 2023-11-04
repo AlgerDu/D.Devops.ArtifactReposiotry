@@ -40,10 +40,7 @@ func (builder *ProductSchemaBuilder) Build() *ProductSchema {
 
 	domainSchema := builder.schemaRepo.Get("product")
 
-	productType := graphql.NewObject(graphql.ObjectConfig{
-		Name:   "Product",
-		Fields: ConvertToGraphqlFields(domainSchema),
-	})
+	productType := builder.buildType(domainSchema)
 
 	return &ProductSchema{
 		ObjectType: productType,
@@ -73,6 +70,39 @@ func (builder *ProductSchemaBuilder) Build() *ProductSchema {
 			Resolve: builder.resolveUpdate,
 		},
 	}
+}
+
+func (builder *ProductSchemaBuilder) buildType(domainSchema *domain.Schema) *graphql.Object {
+
+	fields := ConvertToGraphqlFields(domainSchema)
+
+	fields["version"] = &graphql.Field{
+		Type: graphql.NewObject(graphql.ObjectConfig{
+			Name: "Version",
+			Fields: graphql.Fields{
+				"version": &graphql.Field{
+					Type: graphql.String,
+				},
+			},
+		}),
+		Args: graphql.FieldConfigArgument{
+			"version": &graphql.ArgumentConfig{
+				Type:        graphql.String,
+				Description: "",
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+			builder.logger.Infof("%v", p.Source)
+			return map[string]string{"version": "123"}, nil
+		},
+	}
+
+	productType := graphql.NewObject(graphql.ObjectConfig{
+		Name:   "Product",
+		Fields: fields,
+	})
+
+	return productType
 }
 
 func (builder *ProductSchemaBuilder) resolveName(p graphql.ResolveParams) (interface{}, error) {
