@@ -8,7 +8,9 @@ import (
 
 func IoC(services di.ServiceCollector) error {
 
-	di.AddSingleton(services, NewProductSchemaBuilder)
+	di.AddSingletonFor[Resolver](services, NewVersionResolver)
+	di.AddSingletonFor[Resolver](services, NewProductResolver)
+
 	di.AddSingleton(services, NewSchemaBuilder)
 	di.AddSingleton(services, NewGraphqlController)
 	di.AddSingletonFor[infra.MicroService](services, NewGraphqlService)

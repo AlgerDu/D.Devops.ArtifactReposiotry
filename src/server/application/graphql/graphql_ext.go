@@ -33,6 +33,10 @@ func ConvertToGraphqlFields(schema *domain.Schema) graphql.Fields {
 	fields := graphql.Fields{}
 
 	for _, field := range schema.Fields {
+		if field.ExtCreate {
+			continue
+		}
+
 		graphqlField := &graphql.Field{}
 		graphqlField.Type = ConvertToGraphqlType(field.Type)
 		graphqlField.Description = field.Description
