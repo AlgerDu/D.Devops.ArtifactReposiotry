@@ -43,48 +43,48 @@ func (repo *VersionRepository) Get(productID int64, version string) (*Version, e
 func (repo *VersionRepository) Create(data *Version) (*Version, error) {
 	logger := repo.logger.WithField(infra.LF_Track, fmt.Sprintf("%d:%s", data.ProductID, data.Version))
 
-	Version, _ := repo.Get(data.Name)
-	if Version != nil {
-		logger.WithError(ErrRecordExist).Error("Version")
-		return Version, ErrRecordExist
+	version, _ := repo.Get(data.ProductID, data.Version)
+	if version != nil {
+		logger.WithError(ErrRecordExist).Error("version")
+		return version, ErrRecordExist
 	}
 
-	poData := Version.ToPo()
+	poData := version.ToPo()
 
 	sqlRet := repo.db.Create(poData)
 	if sqlRet.Error != nil {
-		logger.WithError(ErrCreateRecord).Error("Version")
+		logger.WithError(ErrCreateRecord).Error("version")
 		return nil, ErrCreateRecord
 	}
 
-	return repo.Get(data.Name)
+	return repo.Get(data.ProductID, data.Version)
 }
 
-func (repo *VersionRepository) List(test string) ([]*Version, error) {
+func (repo *VersionRepository) List(productID int64) ([]*Version, error) {
 	logger := repo.logger
 
 	var pos []po.Version
-	sqlRst := repo.db.Where("name like ?", fmt.Sprintf("%%%s%%", test)).Find(&pos)
+	sqlRst := repo.db.Where("product_id = ?", productID).Find(&pos)
 	if sqlRst.Error != nil {
 		logger.WithError(sqlRst.Error).Error("get Version list error")
 		return nil, sqlRst.Error
 	}
 
-	produces := []*Version{}
+	versions := []*Version{}
 	for _, poData := range pos {
-		produces = append(produces, Version_FromPO(&poData))
+		versions = append(versions, Version_FromPO(&poData))
 	}
 
-	return produces, nil
+	return versions, nil
 }
 
 func (repo *VersionRepository) Update(data *Version) (*Version, error) {
-	logger := repo.logger.WithField(infra.LF_Track, data.Name)
+	logger := repo.logger.WithField(infra.LF_Track, fmt.Sprintf("%d:%s", data.ProductID, data.Version))
 
 	poData := data.ToPo()
 	sqlRst := repo.db.
 		Model(poData).
-		Where("name = ? AND is_delete = ?", data.Name, false).
+		Where("product_id = ? AND name = ? AND is_delete = ?", data.ProductID, data.Version, false).
 		Update("data", gorm.Expr("data || ?", poData.Data))
 
 	if sqlRst.Error != nil {
@@ -92,5 +92,5 @@ func (repo *VersionRepository) Update(data *Version) (*Version, error) {
 		return nil, sqlRst.Error
 	}
 
-	return repo.Get(data.Name)
+	return repo.Get(data.ProductID, data.Version)
 }

@@ -7,6 +7,7 @@ type (
 		Description string
 		IsExt       bool
 		Editable    bool
+		ExtCreate   bool
 		IsKey       bool
 	}
 
