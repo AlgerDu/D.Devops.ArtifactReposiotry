@@ -32,7 +32,6 @@ func NewLogger(
 
 	logger.SetOutput(os.Stdout)
 	logger.SetLevel(options.MinLevel)
-	logger.SetReportCaller(true)
 
 	logger.SetFormatter(&logrus.TextFormatter{
 		DisableColors:   true,
