@@ -29,7 +29,7 @@ func (repo *VersionRepository) Get(productID int64, version string) (*Version, e
 	logger := repo.logger.WithField(infra.LF_Track, fmt.Sprintf("%d:%s", productID, version))
 
 	var poData po.Version
-	sqlRst := repo.db.Where("product_id = ? AND name = ? AND is_delete = ?", productID, version, false).First(&poData)
+	sqlRst := repo.db.Where("product_id = ? AND version = ? AND is_delete = ?", productID, version, false).First(&poData)
 	if sqlRst.Error != nil {
 		logger.WithError(sqlRst.Error).Error("get Version err")
 		return nil, ErrNoRecord
@@ -84,7 +84,7 @@ func (repo *VersionRepository) Update(data *Version) (*Version, error) {
 	poData := data.ToPo()
 	sqlRst := repo.db.
 		Model(poData).
-		Where("product_id = ? AND name = ? AND is_delete = ?", data.ProductID, data.Version, false).
+		Where("product_id = ? AND version = ? AND is_delete = ?", data.ProductID, data.Version, false).
 		Update("data", gorm.Expr("data || ?", poData.Data))
 
 	if sqlRst.Error != nil {
