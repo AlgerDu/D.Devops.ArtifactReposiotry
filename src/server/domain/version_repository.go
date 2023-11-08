@@ -49,7 +49,7 @@ func (repo *VersionRepository) Create(data *Version) (*Version, error) {
 		return version, ErrRecordExist
 	}
 
-	poData := version.ToPo()
+	poData := data.ToPo()
 
 	sqlRet := repo.db.Create(poData)
 	if sqlRet.Error != nil {
