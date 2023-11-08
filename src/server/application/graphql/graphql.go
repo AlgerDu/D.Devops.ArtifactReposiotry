@@ -1,27 +1,25 @@
 package appgraphlql
 
-import "app/src/server/infra"
+import (
+	"github.com/graphql-go/graphql"
+)
 
 type (
-	GraphqlService struct {
-		httpServer *infra.HttpServer
-		controller *GraphqlController
+	ObjectTypeName string
+
+	BuildContext struct {
+		Types          map[ObjectTypeName]*graphql.Object
+		QueryFields    graphql.Fields
+		MutationFields graphql.Fields
+	}
+
+	Resolver interface {
+		DependOnTypes() []ObjectTypeName
+		Resolve(context *BuildContext) error
 	}
 )
 
-func NewGraphqlService(
-	httpServer *infra.HttpServer,
-	controller *GraphqlController,
-) *GraphqlService {
-	return &GraphqlService{
-		httpServer: httpServer,
-		controller: controller,
-	}
-}
-
-func (service *GraphqlService) Run() error {
-
-	service.httpServer.POST("/graphql", service.controller.Query)
-
-	return nil
-}
+var (
+	OTN_Version ObjectTypeName = "Version"
+	OTN_Product ObjectTypeName = "Product"
+)
