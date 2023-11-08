@@ -46,11 +46,15 @@ func (resolver *ProductResolver) Resolve(context *BuildContext) error {
 		Type: versionType,
 		Args: graphql.FieldConfigArgument{
 			"version": &graphql.ArgumentConfig{
-				Type:        graphql.String,
+				Type:        graphql.NewNonNull(graphql.String),
 				Description: "",
 			},
 		},
 		Resolve: resolver.resolveVersion,
+	}
+	fields["versions"] = &graphql.Field{
+		Type:    graphql.NewList(versionType),
+		Resolve: resolver.resolveVersions,
 	}
 
 	objectType := graphql.NewObject(graphql.ObjectConfig{
@@ -168,4 +172,15 @@ func (resolver *ProductResolver) resolveVersion(p graphql.ResolveParams) (interf
 	}
 
 	return resolver.versionRepo.Get(product.ID, version)
+}
+
+func (resolver *ProductResolver) resolveVersions(p graphql.ResolveParams) (interface{}, error) {
+
+	product, ok := p.Source.(*domain.Product)
+	if !ok {
+		resolver.logger.Error("source is not domain.Product")
+		return nil, errors.New("param error")
+	}
+
+	return resolver.versionRepo.List(product.ID)
 }

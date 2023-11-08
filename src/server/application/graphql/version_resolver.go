@@ -55,6 +55,11 @@ func (resolver *VersionResolver) Resolve(context *BuildContext) error {
 		Args:    ConvertToCreateArgs(domainSchema),
 		Resolve: resolver.resolveCreate,
 	}
+	context.MutationFields["updateVersion"] = &graphql.Field{
+		Type:    objectType,
+		Args:    ConvertToCreateArgs(domainSchema),
+		Resolve: resolver.resolveUpdate,
+	}
 
 	return nil
 }
@@ -79,4 +84,26 @@ func (resolver *VersionResolver) resolveCreate(p graphql.ResolveParams) (interfa
 	version.ProductID = product.ID
 
 	return resolver.versionRepo.Create(version)
+}
+
+func (resolver *VersionResolver) resolveUpdate(p graphql.ResolveParams) (interface{}, error) {
+
+	var args VersionCreateExtArgs
+	if err := mapstructure.Decode(p.Args, &args); err != nil {
+		return nil, err
+	}
+
+	product, err := resolver.productRepo.Get(args.ProductName)
+	if err != nil {
+		return nil, err
+	}
+
+	version, err := domain.Version_FromMap(p.Args)
+	if err != nil {
+		return nil, err
+	}
+
+	version.ProductID = product.ID
+
+	return resolver.versionRepo.Update(version)
 }

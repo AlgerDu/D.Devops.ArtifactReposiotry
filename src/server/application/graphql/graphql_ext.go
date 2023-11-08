@@ -64,7 +64,7 @@ func ConvertToCreateArgs(schema *domain.Schema) graphql.FieldConfigArgument {
 		}
 
 		arg.Type = ConvertToGraphqlType(field.Type)
-		if field.IsKey {
+		if field.IsKey || field.ExtCreate {
 			arg.Type = graphql.NewNonNull(arg.Type)
 		}
 
