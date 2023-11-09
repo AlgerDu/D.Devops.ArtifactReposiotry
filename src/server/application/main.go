@@ -1,6 +1,7 @@
 package main
 
 import (
+	appdocker "app/src/server/application/docker"
 	appgraphlql "app/src/server/application/graphql"
 	"app/src/server/domain"
 	defaultbuilder "app/src/server/infra/default-builder"
@@ -17,6 +18,7 @@ func main() {
 			domain.IoC,
 			IoC_App,
 			appgraphlql.IoC,
+			appdocker.IoC,
 		)
 
 	app, err := builder.Build()
