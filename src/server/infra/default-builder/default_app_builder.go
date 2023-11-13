@@ -27,7 +27,7 @@ func New(
 func (builder *DefaultAppBuilder) SetConfigFile(filePath string) *DefaultAppBuilder {
 
 	config := gookit.NewConfig(filePath)
-	di.AddInstance[*gookit.ConfigShell, infra.Config](builder.container, config)
+	di.AddInstanceFor[*gookit.ConfigShell, infra.Config](builder.container, config)
 
 	return builder
 }

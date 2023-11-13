@@ -16,7 +16,7 @@ type (
 
 func NewDefaultOptions() *LoggerOptions {
 	return &LoggerOptions{
-		MinLevel: logrus.DebugLevel,
+		MinLevel: logrus.TraceLevel,
 	}
 }
 
