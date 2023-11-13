@@ -10,6 +10,8 @@ func IoC(services di.ServiceCollector) error {
 
 	di.AddSingleton(services, NewController)
 
+	di.AddSingleton(services, NewNameMiddleware)
+
 	di.AddSingletonFor[infra.MicroService](services, NewDockerApp)
 
 	return nil

@@ -8,4 +8,9 @@ type (
 		Message string    `json:"message"`
 		Detail  any       `json:"detail"`
 	}
+
+	Tmp struct {
+		Name      string `param:"name"`
+		Reference string `param:"reference"`
+	}
 )

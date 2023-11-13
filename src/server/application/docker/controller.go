@@ -23,3 +23,13 @@ func NewController(
 func (controller *Controller) VersionCheck(c echo.Context) error {
 	return nil
 }
+
+func (controller *Controller) PullingManifest(c echo.Context) error {
+	test := &Tmp{}
+	c.Bind(test)
+
+	controller.logger.Info(test.Name)
+	controller.logger.Info(test.Reference)
+
+	return nil
+}
