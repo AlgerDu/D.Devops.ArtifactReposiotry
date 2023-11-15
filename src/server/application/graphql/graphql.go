@@ -20,6 +20,7 @@ type (
 )
 
 var (
-	OTN_Version ObjectTypeName = "Version"
-	OTN_Product ObjectTypeName = "Product"
+	OTN_Version  ObjectTypeName = "Version"
+	OTN_Product  ObjectTypeName = "Product"
+	OTN_Artifact ObjectTypeName = "Artifact"
 )

@@ -3,6 +3,7 @@ package appgraphlql
 import (
 	"app/src/server/domain"
 	"app/src/server/infra"
+	"errors"
 
 	"github.com/graphql-go/graphql"
 	"github.com/mitchellh/mapstructure"
@@ -16,8 +17,9 @@ type (
 	VersionResolver struct {
 		*BaseResolver
 
-		versionRepo *domain.VersionRepository
-		productRepo *domain.ProductRepository
+		versionRepo  *domain.VersionRepository
+		productRepo  *domain.ProductRepository
+		artifactRepo *domain.ArtifactRepository
 	}
 )
 
@@ -26,23 +28,33 @@ func NewVersionResolver(
 	schemaRepo *domain.SchemaRepository,
 	versionRepo *domain.VersionRepository,
 	productRepo *domain.ProductRepository,
+	artifactRepo *domain.ArtifactRepository,
 ) *VersionResolver {
 	return &VersionResolver{
 		BaseResolver: NewBaseResolver(
 			logger.WithField(infra.LF_Source, "VersionResolver"),
-			[]ObjectTypeName{},
+			[]ObjectTypeName{
+				OTN_Artifact,
+			},
 			schemaRepo,
 		),
-		versionRepo: versionRepo,
-		productRepo: productRepo,
+		versionRepo:  versionRepo,
+		productRepo:  productRepo,
+		artifactRepo: artifactRepo,
 	}
 }
 
 func (resolver *VersionResolver) Resolve(context *BuildContext) error {
 
 	domainSchema := resolver.schemaRepo.Get("version")
+	artifactType := context.Types[OTN_Artifact]
 
 	fields := ConvertToGraphqlFields(domainSchema)
+	fields["artifacts"] = &graphql.Field{
+		Type:    artifactType,
+		Resolve: resolver.resolveArtifacts,
+	}
+
 	objectType := graphql.NewObject(graphql.ObjectConfig{
 		Name:   string(OTN_Version),
 		Fields: fields,
@@ -106,4 +118,13 @@ func (resolver *VersionResolver) resolveUpdate(p graphql.ResolveParams) (interfa
 	version.ProductID = product.ID
 
 	return resolver.versionRepo.Update(version)
+}
+
+func (resolver *VersionResolver) resolveArtifacts(p graphql.ResolveParams) (interface{}, error) {
+	version, ok := p.Source.(*domain.Version)
+	if !ok {
+		return nil, errors.New("param error")
+	}
+
+	return resolver.artifactRepo.List(version.ID)
 }

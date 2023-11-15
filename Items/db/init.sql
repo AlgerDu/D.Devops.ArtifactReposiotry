@@ -44,6 +44,7 @@ CREATE TABLE artifact (
     version_id BIGINT NOT NULL,
     "data" JSONB NOT NULL,
     create_at TIMESTAMPTZ NOT NULL,
+    update_at TIMESTAMPTZ NOT NULL,
     is_delete BOOLEAN NOT NULL,
     PRIMARY KEY (id)
 );

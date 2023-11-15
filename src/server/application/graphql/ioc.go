@@ -10,6 +10,7 @@ func IoC(services di.ServiceCollector) error {
 
 	di.AddSingletonFor[Resolver](services, NewVersionResolver)
 	di.AddSingletonFor[Resolver](services, NewProductResolver)
+	di.AddSingletonFor[Resolver](services, NewArtifactResolver)
 
 	di.AddSingleton(services, NewSchemaBuilder)
 	di.AddSingleton(services, NewGraphqlController)

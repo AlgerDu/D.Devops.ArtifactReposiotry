@@ -58,6 +58,7 @@ func (builder *SchemaBuilder) Build() (graphql.Schema, error) {
 		}
 
 		toResolveResolvers = nextRoundResolvers
+		nextRoundResolvers = []Resolver{}
 	}
 
 	schema, err := graphql.NewSchema(graphql.SchemaConfig{
