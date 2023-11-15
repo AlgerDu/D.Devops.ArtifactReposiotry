@@ -3,7 +3,6 @@ package appdocker
 import (
 	"app/src/server/infra"
 	"app/src/server/po"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -59,9 +58,7 @@ func (controller *Controller) ListingRepositories(c echo.Context) error {
 	}
 
 	if len(names) >= page.N {
-		path := c.Request().URL.Path
-		link := fmt.Sprintf("%s?n=%d&last=%s; rel=\"next\"", path, page.N, names[len(names)-1])
-		c.Response().Header().Set(HttpHeader_Link, link)
+		Ext_Context_SetRespLink(c, page.N, names[len(names)-1])
 	}
 
 	return c.JSON(http.StatusOK, &Catalog{
