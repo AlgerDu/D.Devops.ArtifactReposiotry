@@ -34,6 +34,7 @@ func (app *DockerApp) Run() error {
 	g := app.httpServer.Group("/docker")
 
 	g.GET("/v2", app.controller.VersionCheck)
+	g.GET("/v2/_catalog", app.controller.ListingRepositories)
 	g.HEAD("/v2/manifests/:reference", app.controller.PullingManifest)
 
 	return nil

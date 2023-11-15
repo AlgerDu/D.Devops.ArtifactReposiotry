@@ -36,7 +36,7 @@ func NewNameMiddleware(
 	}
 
 	return &NameMiddleware{
-		logger:  logger.WithField(infra.LF_Track, "NameMiddleware"),
+		logger:  logger.WithField(infra.LF_Source, "NameMiddleware"),
 		regexps: regexps,
 	}, nil
 }

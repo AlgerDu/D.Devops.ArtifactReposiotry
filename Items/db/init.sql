@@ -1,3 +1,6 @@
+CREATE EXTENSION pg_trgm;
+CREATE EXTENSION btree_gin;
+
 CREATE TABLE schema (
     id BIGINT,
     parent_id BIGINT,
@@ -21,6 +24,7 @@ CREATE TABLE product (
     is_delete BOOLEAN NOT NULL,
     PRIMARY KEY (id)
 );
+CREATE INDEX index_product_docker_name ON product USING gin ((data->>'dockerName'));
 
 CREATE TABLE version (
     id BIGSERIAL,
