@@ -6,6 +6,7 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	glogger "gorm.io/gorm/logger"
 )
 
 type (
@@ -46,6 +47,7 @@ func NewDatabase(
 		DSN: dsn,
 	}), &gorm.Config{
 		SkipDefaultTransaction: true,
+		Logger:                 glogger.Default.LogMode(glogger.Info),
 	})
 	if err != nil {
 		logger.WithError(err).Error("create grom db err")
