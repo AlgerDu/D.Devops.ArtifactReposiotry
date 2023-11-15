@@ -6,6 +6,7 @@ import (
 
 	"github.com/graphql-go/graphql"
 	"github.com/labstack/echo/v4"
+	"github.com/sirupsen/logrus"
 )
 
 type (
@@ -39,19 +40,24 @@ func NewGraphqlController(
 
 func (controller *GraphqlController) Query(c echo.Context) error {
 
-	var p postData
-	if err := c.Bind(&p); err != nil {
+	var data postData
+	if err := c.Bind(&data); err != nil {
 		return err
 	}
+
+	controller.logger.WithFields(logrus.Fields{
+		"query":     data.Query,
+		"variables": data.Variables,
+		"operation": data.Operation,
+	}).Trace("graphql post data")
 
 	result := graphql.Do(graphql.Params{
 		Context:        context.Background(),
 		Schema:         controller.schmea,
-		RequestString:  p.Query,
-		VariableValues: p.Variables,
-		OperationName:  p.Operation,
+		RequestString:  data.Query,
+		VariableValues: data.Variables,
+		OperationName:  data.Operation,
 	})
 
-	c.JSON(200, result)
-	return nil
+	return c.JSON(200, result)
 }
