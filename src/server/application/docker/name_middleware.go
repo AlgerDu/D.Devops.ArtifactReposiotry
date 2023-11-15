@@ -19,7 +19,7 @@ type (
 
 func NewNameMiddleware(
 	logger infra.Logger,
-) *NameMiddleware {
+) (*NameMiddleware, error) {
 
 	regexps := []*regexp.Regexp{}
 	patterns := []string{
@@ -30,7 +30,7 @@ func NewNameMiddleware(
 	for _, pattern := range patterns {
 		reg, err := regexp.Compile(pattern)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 		regexps = append(regexps, reg)
 	}
@@ -38,7 +38,7 @@ func NewNameMiddleware(
 	return &NameMiddleware{
 		logger:  logger.WithField(infra.LF_Track, "NameMiddleware"),
 		regexps: regexps,
-	}
+	}, nil
 }
 
 func (middleware *NameMiddleware) Handle(context echo.Context, next echo.HandlerFunc) error {
