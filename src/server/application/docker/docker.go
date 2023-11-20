@@ -22,6 +22,11 @@ type (
 	Catalog struct {
 		Repositories []string `json:"repositories"`
 	}
+
+	ImageTags struct {
+		Name string   `json:"name"`
+		Tags []string `json:"tags"`
+	}
 )
 
 const (

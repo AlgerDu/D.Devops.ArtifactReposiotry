@@ -31,14 +31,9 @@ func (controller *Controller) VersionCheck(c echo.Context) error {
 }
 
 func (controller *Controller) ListingRepositories(c echo.Context) error {
-
-	page := &Pagination{}
-	if err := c.Bind(page); err != nil {
+	page, err := Ext_Context_GetPage(c)
+	if err != nil {
 		return err
-	}
-
-	if page.N == 0 {
-		page.N = 5
 	}
 
 	sql := controller.db.Table(po.Product{}.TableName()).
@@ -63,6 +58,42 @@ func (controller *Controller) ListingRepositories(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, &Catalog{
 		Repositories: names,
+	})
+}
+
+func (controller *Controller) ListingImageTags(c echo.Context) error {
+	repoName := Ext_Context_GetName(c)
+	page, err := Ext_Context_GetPage(c)
+	if err != nil {
+		return err
+	}
+
+	sql := controller.db.Table("artifact AS a").
+		Select("a.name").
+		Joins("LEFT JOIN version AS v ON a.version_id = v.id").
+		Joins("LEFT JOIN product AS p ON v.product_id = p.id").
+		Where("a.type = ?", "docker").
+		Where("p.data->>'dockerName' = ?", repoName).
+		Order("a.name").
+		Limit(page.N)
+
+	if page.Last != "" {
+		sql = sql.Where("a.Name > ?", page.Last)
+	}
+
+	tags := []string{}
+	sqlRst := sql.Find(&tags)
+	if sqlRst.Error != nil {
+		return sqlRst.Error
+	}
+
+	if len(tags) >= page.N {
+		Ext_Context_SetRespLink(c, page.N, tags[len(tags)-1])
+	}
+
+	return c.JSON(http.StatusOK, &ImageTags{
+		Name: repoName,
+		Tags: tags,
 	})
 }
 

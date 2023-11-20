@@ -35,6 +35,7 @@ func (app *DockerApp) Run() error {
 
 	g.GET("/v2", app.controller.VersionCheck)
 	g.GET("/v2/_catalog", app.controller.ListingRepositories)
+	g.GET("/v2/tags/list", app.controller.ListingImageTags)
 	g.HEAD("/v2/manifests/:reference", app.controller.PullingManifest)
 
 	return nil

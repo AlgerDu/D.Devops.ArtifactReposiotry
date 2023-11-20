@@ -23,6 +23,7 @@ func NewNameMiddleware(
 
 	regexps := []*regexp.Regexp{}
 	patterns := []string{
+		"/docker/v2/([\\s\\S]+)/tags/list",
 		"/docker/v2/([\\s\\S]+)/blobs/uploads/[\\s\\S]+$",
 		"/docker/v2/([\\s\\S]+)/manifests/[\\s\\S]+$",
 	}
@@ -63,10 +64,10 @@ func (middleware *NameMiddleware) Handle(context echo.Context, next echo.Handler
 
 	if hasName {
 		name := path[match[2]:match[3]]
-		path = fmt.Sprintf("%s%s", path[0:match[2]-1], path[match[3]:len(path)-1])
+		path = fmt.Sprintf("%s%s", path[0:match[2]-1], path[match[3]:])
 
 		req.URL.Path = path
-		context.Set("name", name)
+		Ext_Context_SetName(context, name)
 
 		middleware.logger.WithFields(logrus.Fields{
 			"name": name,
