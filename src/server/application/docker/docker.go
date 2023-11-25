@@ -27,6 +27,19 @@ type (
 		Name string   `json:"name"`
 		Tags []string `json:"tags"`
 	}
+
+	BlobSum struct {
+		BlobSum string `json:"blobSums"`
+	}
+
+	ImageManifest struct {
+		Name          string    `json:"name"`
+		Tag           string    `json:"tag"`
+		Architecture  string    `json:"architecture"`
+		SchemaVersion string    `json:"schemaVersion"`
+		History       []string  `json:"history"`
+		BlobSums      []BlobSum `json:"blobSums"`
+	}
 )
 
 const (

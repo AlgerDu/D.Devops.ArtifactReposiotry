@@ -56,6 +56,7 @@ CREATE TABLE tag (
     "key" TEXT NOT NULL,
     "value" TEXT NOT NULL,
     create_at TIMESTAMPTZ NOT NULL,
+    update_at TIMESTAMPTZ NOT NULL,
     is_delete BOOLEAN NOT NULL,
     PRIMARY KEY (id)
 );

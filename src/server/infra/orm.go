@@ -2,10 +2,14 @@ package infra
 
 import "gorm.io/gorm"
 
-type Database struct {
-	*gorm.DB
-}
+type (
+	// 数据库 ORM 结构体
+	Database struct {
+		*gorm.DB
+	}
 
-type DatabaseProvider interface {
-	Provide(name string) (*Database, error)
-}
+	// 数据库 provider
+	DatabaseProvider interface {
+		Provide(name string) (*Database, error)
+	}
+)
